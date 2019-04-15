@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/op_inicio"
+            android:icon="@drawable/home"
+            android:title="@string/inicio" />
+        <item
+            android:id="@+id/op_perfil"
+            android:icon="@drawable/user"
+            android:title="@string/perfil" />
+        <item
+            android:id="@+id/op_misplanes"
+            android:icon="@drawable/users"
+            android:title="@string/misplanes" />
+        <item
+            android:id="@+id/op_buscarplanes"
+            android:icon="@drawable/busca"
+            android:title="@string/buscarPlanes" />
+        <item
+            android:id="@+id/op_nuevoplan"
+            android:icon="@drawable/add"
+            android:title="@string/nuevoPlan" />
+    </group>
+
+    <item android:title="Otras opciones">
+        <menu>
+            <item
+                android:id="@+id/logout"
+                android:icon="@drawable/logout"
+                android:title="@string/signout" />
+            <item
+                android:id="@+id/op_opciones"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="@string/opciones" />
+        </menu>
+    </item>
+
+</menu>

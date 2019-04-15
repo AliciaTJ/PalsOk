@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "445597789329",
+    "firebase_url": "https://pals-fae71.firebaseio.com",
+    "project_id": "pals-fae71",
+    "storage_bucket": "pals-fae71.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:445597789329:android:c18aa22353880d89",
+        "android_client_info": {
+          "package_name": "e.alicia.pals"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "445597789329-jv1p4kt3csss0p2bgrleaic95qdinqrh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "e.alicia.pals",
+            "certificate_hash": "2f265f569e9dcd0a47db184e2b9395c44a05ecd5"
+          }
+        },
+        {
+          "client_id": "445597789329-l1nb5dtif2eed45qjl5bjq1t31ctdblv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeahrR2QFiY8UXgU5Wwnq2vFEZYas_3Dk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "445597789329-l1nb5dtif2eed45qjl5bjq1t31ctdblv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

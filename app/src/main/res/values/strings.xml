@@ -1,0 +1,93 @@
+<resources>
+    <string name="app_name">Pals</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Contraseña (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="titulo">Pals!</string>
+    <string name="subtitulo">Comparte experiencias</string>
+    <string name="perfil">Mi perfil</string>
+    <string name="misplanes">Mis planes</string>
+    <string name="buscarPlanes">Buscar planes</string>
+    <string name="signout">Cerrar sesión</string>
+    <string name="nuevoPlan">Nuevo plan</string>
+    <string name="inicio">Inicio</string>
+    <string name="opciones">Opciones</string>
+    <string name="nombre">Nombre</string>
+    <string name="apellidos">Apellidos</string>
+    <string name="fechaNac">Fecha de nacimiento</string>
+    <string name="email">Email</string>
+    <string name="pass">Contraseña</string>
+    <string name="reg">Registrar</string>
+    <string name="login">Iniciar sesión</string>
+    <string name="planmio">Planes propuestos por mi</string>
+    <string name="planotro">Planes a los que asistir</string>
+    <string name="planescercanos">Cercanos a mi</string>
+    <string name="recomendados">Recomendados</string>
+    <string name="filtro">Filtro</string>
+    <string name="ciudad">Ciudad</string>
+    <string name="tipo">Tipo</string>
+    <string name="musica">Música</string>
+    <string name="cine">Cine</string>
+    <string name="freak">Freak</string>
+    <string name="cultura">Cultura</string>
+    <string name="turismo">Turismo</string>
+    <string name="deporte">Deportes</string>
+    <string name="otros">Otros</string>
+    <string name="fiesta">Fiesta</string>
+    <string name="titulopub">Título de la publicación</string>
+    <string name="lugar">Lugar</string>
+    <string name="hora">Hora</string>
+    <string name="descripción">Descripción</string>
+    <string name="imagen">Imagen</string>
+    <string name="maxuser">Máximo de participantes</string>
+    <string name="fecha">Fecha</string>
+    <string name="inscritos">Participantes inscritos</string>
+    <string name="chat">Chat</string>
+    <string name="publicar">Publicar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="modificar">Modificar</string>
+    <string name="guardar">Guardar</string>
+    <string name="fin">Finalizar registro</string>
+    <string name="meapunto">¡Me apunto!</string>
+    <string name="dejardeparticipar">Ya no quiero ir</string>
+    <string name="segurodejar">¿Estás seguro de no querer ir?</string>
+    <string name="si">Si</string>
+    <string name="no">No</string>
+    <string name="eliminado">Has sido eliminado de la lista de participantes</string>
+    <string name="agregar">Te has apuntado al plan. ¡Accede al chat y habla con los participantes!</string>
+    <string name="notificaciones">Activar notificaciones</string>
+    <string name="vibracion">Vibración</string>
+    <string name="miubicacion">Mi ubicacion</string>
+    <string name="crearPlan">Crear nuevo plan</string>
+    <string name="eliminarplan">Eliminar</string>
+    <string name="seguroeliminar">¿Estás seguro de querer eliminar el plan? Quedará en estado "cerrado" y no será posible su modificación</string>
+    <string name="todos">Todos los planes</string>
+    <string name="user">Usuario</string>
+    <string name="seleccionatipo">Selecciona el tipo de plan</string>
+    <string name="enviar">Enviar</string>
+    <string name="abandonar">Abandonar chat</string>
+    <string name="not_ok">¡Un usuario nuevo se ha apuntado a uno de tus planes!</string>
+    <string name="seleccionarfecha">Seleccionar fecha</string>
+    <string name="indiferente">Indiferente</string>
+    <string name="editar">Editar</string>
+    <string name="sobreti">Escribe algo sobre ti! Gustos, aficiones, personalidad...</string>
+    <string name="cambiarfoto">Cambiar foto</string>
+    <string name="noticias">Noticias</string>
+    <string name="creador">Creador: </string>
+    <string name="apuntados">Cantidad de usuarios que participan: </string>
+    <string name="publicarplan">¡Publicar plan!</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>

@@ -9,7 +9,6 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.CalendarView;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -24,14 +23,13 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -93,6 +91,7 @@ public class PlanNuevo extends AppCompatActivity {
         user = fba.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
         dbr = firebaseDatabase.getReference();
+
         imagen = findViewById(R.id.ivCabecera);
         db = new DataBasePlan(dbr);
         switch (tipo) {
@@ -152,10 +151,13 @@ public class PlanNuevo extends AppCompatActivity {
             plan.setTipo(tipoPlan);
             plan.setUsuariocreador(user.getUid());
             plan.setLugar(etLugar.getText().toString());
-            plan.setMaximo("10");
+            List<String>usuarios=new ArrayList<>();
+            usuarios.add(user.getUid());
+
+           plan.setUsuariosapuntados(usuarios);
             plan.setNombre(etTitulo.getText().toString());
             plan.setCodigo(hora.getTimeInMillis() + user.getUid());
-            db.save(plan);
+            db.save(plan, user.getUid());
             verPlan();
         } else {
 
@@ -176,7 +178,7 @@ public class PlanNuevo extends AppCompatActivity {
         List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
         Intent intent = new Autocomplete.IntentBuilder(
                 AutocompleteActivityMode.FULLSCREEN, fields)
-
+.setCountry("Spain")
                 .build(this);
 
         startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);

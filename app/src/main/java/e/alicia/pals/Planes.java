@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -14,6 +16,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import e.alicia.pals.adaptadores.AdapterPlanes;
+import e.alicia.pals.adaptadores.ItemClickListener;
 import e.alicia.pals.baseDatos.DataBasePlan;
 import e.alicia.pals.modelo.Plan;
 
@@ -31,11 +35,9 @@ public class Planes extends AppCompatActivity {
         setContentView(R.layout.content_planes);
         rv = findViewById(R.id.rv);
         planes = new ArrayList<>();
-
         rv.setLayoutManager(new LinearLayoutManager(this));
         db = FirebaseDatabase.getInstance();
         cargarPlanes();
-
 
     }
 
@@ -55,7 +57,7 @@ public class Planes extends AppCompatActivity {
                 adapterPlanes = new AdapterPlanes(Planes.this, planes);
                 rv.setAdapter(adapterPlanes);
                 adapterPlanes.notifyDataSetChanged();
-                System.out.println(adapterPlanes.getItemCount());
+
             }
 
             @Override

@@ -1,7 +1,6 @@
-package e.alicia.pals;
+package e.alicia.pals.adaptadores;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +13,8 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
+import e.alicia.pals.R;
 import e.alicia.pals.modelo.Noticia;
-
-import static java.security.AccessController.getContext;
 
 
 public class AdapterNoticias extends RecyclerView.Adapter<AdapterNoticias.ItemViewHolder> {

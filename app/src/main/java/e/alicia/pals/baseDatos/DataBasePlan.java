@@ -5,33 +5,45 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import e.alicia.pals.modelo.Plan;
+import e.alicia.pals.modelo.Usuario;
 
 public class DataBasePlan {
 
-    DatabaseReference db;
+    DatabaseReference dbPlanes;
     Boolean saved = null;
     List<Plan> planes = new ArrayList<>();
     Plan plan;
+    DatabaseReference dbUsuarios;
+    FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
 
-    public DataBasePlan(DatabaseReference db) {
-        this.db = db;
+
+
+    public DataBasePlan(DatabaseReference dbPlanes) {
+        this.dbPlanes = dbPlanes;
+        dbUsuarios = firebaseDatabase.getReference("usuarios");
     }
+
+
+
 
     //---------------------------planes
 
     //guardar
-    public Boolean save(Plan plan) {
+    public Boolean save(Plan plan, String codigo
+    ) {
         if (plan == null) {
             saved = false;
         } else {
 
             try {
-                db.child("planes").push().setValue(plan);
+                dbPlanes.child("planes").child(plan.getCodigo()).setValue(plan);
+                dbUsuarios.child(codigo).child("planesapuntados").child(plan.getCodigo()).setValue(plan.getCodigo());
                 saved = true;
             } catch (DatabaseException e) {
                 e.printStackTrace();
@@ -45,7 +57,7 @@ public class DataBasePlan {
 
 
     public List<Plan> retrieve() {
-        db.child("planes").addChildEventListener(new ChildEventListener() {
+        dbPlanes.child("planes").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 fetchData(dataSnapshot);
@@ -89,17 +101,31 @@ public class DataBasePlan {
     }
 
 
-    public Plan buscar(final String codigo) {
+    public void apuntarseAlPlan(Plan plan, String codigoUsuario){
+        plan.getUsuariosapuntados().add(codigoUsuario);
+        dbPlanes.child(plan.getCodigo()).setValue(plan);
+      dbUsuarios.child(codigoUsuario).child("planesapuntados").child(plan.getCodigo()).setValue(plan.getCodigo());
 
-        List<Plan> planes = retrieve();
-        for (int i = 0; i < planes.size(); i++) {
-            plan = planes.get(i);
-            if (plan.getCodigo().equalsIgnoreCase(codigo)) {
-                return plan;
+    }
+
+    public boolean borrarPlan(Plan plan){
+      for (int i=0; i<  plan.getUsuariosapuntados().size(); i++){
+          dbUsuarios.child(plan.getUsuariosapuntados().get(i)).child("planesapuntados").child(plan.getCodigo()).removeValue();
+      }
+        dbPlanes.child(plan.getCodigo()).removeValue();
+        return true;
+
+
+    }
+
+    public void dejarPlan(Plan plan, String codigoUsuario){
+        for (int i=0; i<plan.getUsuariosapuntados().size(); i++){
+            if ( plan.getUsuariosapuntados().get(i).equalsIgnoreCase(codigoUsuario)){
+                plan.getUsuariosapuntados().remove(i);
             }
         }
-
-        return null;
+        dbPlanes.child("planes").child(plan.getCodigo()).setValue(plan);
+        dbUsuarios.child(codigoUsuario).child("planesapuntados").child(plan.getCodigo()).removeValue();
     }
 }
 

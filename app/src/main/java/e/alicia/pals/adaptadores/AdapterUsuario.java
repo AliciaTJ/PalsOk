@@ -1,4 +1,4 @@
-package e.alicia.pals;
+package e.alicia.pals.adaptadores;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -29,6 +28,7 @@ import android.icu.util.Calendar;
 import java.util.ArrayList;
 import java.util.List;
 
+import e.alicia.pals.R;
 import e.alicia.pals.baseDatos.DataBaseUsuario;
 import e.alicia.pals.modelo.Usuario;
 

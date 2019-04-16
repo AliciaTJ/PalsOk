@@ -12,7 +12,7 @@
     tools:context=".Chat">
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/enviar"
         android:layout_width="60dp"
         android:layout_height="51dp"
         android:layout_alignParentEnd="true"
@@ -25,25 +25,25 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/fab"
+        android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true">
+        android:layout_toLeftOf="@id/enviar">
 
         <EditText
-            android:id="@+id/input"
+            android:id="@+id/mensajeEnviar"
             android:layout_width="314dp"
             android:layout_height="wrap_content"
             android:hint="Input" />
     </android.support.design.widget.TextInputLayout>
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/listamensajes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
+        android:layout_above="@id/enviar"
         android:layout_alignParentStart="true"
-        android:layout_above="@id/fab"
-        android:dividerHeight="16dp"
-        android:divider="@android:color/transparent"
-        android:id="@+id/list_of_messages"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp" />
 </RelativeLayout>

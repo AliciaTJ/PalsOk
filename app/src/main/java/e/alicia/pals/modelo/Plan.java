@@ -1,5 +1,7 @@
 package e.alicia.pals.modelo;
 
+import java.util.List;
+
 public class Plan {
     private String nombre;
     private String informacion;
@@ -8,20 +10,22 @@ public class Plan {
     private String lugar;
     private String usuariocreador;
     private String codigo;
-    int cantidadUsuarios;
+    private List<String> usuariosapuntados;
     String tipo;
 
     public Plan() {
 
     }
 
-    public int getCantidadUsuarios() {
-        return cantidadUsuarios;
+
+    public List<String> getUsuariosapuntados() {
+        return usuariosapuntados;
     }
 
-    public void setCantidadUsuarios(int cantidadUsuarios) {
-        this.cantidadUsuarios = cantidadUsuarios;
+    public void setUsuariosapuntados(List<String> usuariosapuntados) {
+        this.usuariosapuntados = usuariosapuntados;
     }
+
 
     public String getTipo() {
         return tipo;

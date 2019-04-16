@@ -32,6 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="25dp"
+                android:gravity="center"
                 android:text="TextView"
                 android:textSize="24sp" />
 
@@ -54,12 +55,6 @@
                 android:text="TextView"
                 tools:layout_editor_absoluteX="0dp"
                 tools:layout_editor_absoluteY="212dp" />
-
-            <TextView
-                android:id="@+id/tvCreador"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
 
             <TextView
                 android:id="@+id/tvUsuarios"
@@ -101,6 +96,15 @@
                 android:text="@string/dejardeparticipar"
                 tools:layout_editor_absoluteX="100dp"
                 tools:layout_editor_absoluteY="473dp" />
+
+            <Button
+                android:id="@+id/botonEliminar"
+                android:layout_width="157dp"
+                android:layout_height="30dp"
+                android:layout_margin="15dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/quantum_error_light"
+                android:text="Borrar" />
 
         </LinearLayout>
     </ScrollView>

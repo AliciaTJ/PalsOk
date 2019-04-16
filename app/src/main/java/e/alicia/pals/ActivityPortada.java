@@ -2,7 +2,6 @@ package e.alicia.pals;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -26,6 +25,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import e.alicia.pals.adaptadores.AdapterNoticias;
+import e.alicia.pals.adaptadores.AdapterPlanes;
 import e.alicia.pals.baseDatos.DataBasePlan;
 import e.alicia.pals.modelo.Noticia;
 import e.alicia.pals.modelo.Plan;
@@ -51,7 +52,7 @@ public class ActivityPortada extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         user = FirebaseAuth.getInstance();
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.enviar);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,7 +100,6 @@ public class ActivityPortada extends AppCompatActivity
                     planes.add(user);
                 }
                 adapterPlanes = new AdapterPlanes(ActivityPortada.this, planes);
-                rv.setAdapter(adapterPlanes);
                 adapterPlanes.notifyDataSetChanged();
                 System.out.println(adapterPlanes.getItemCount());
             }
@@ -124,7 +124,7 @@ public class ActivityPortada extends AppCompatActivity
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
 
                     Noticia user = new Noticia();
-                    user.setTitular( dataSnapshot1.child("titular").getValue(String.class));
+                    user.setTitular(dataSnapshot1.child("titular").getValue(String.class));
                     user.setImagen(dataSnapshot1.child("imagen").getValue(String.class));
                     user.setContenido(dataSnapshot1.child("cuerpo").getValue(String.class));
                     noticias.add(user);

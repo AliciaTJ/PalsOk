@@ -1,8 +1,10 @@
-package e.alicia.pals;
+package e.alicia.pals.adaptadores;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,12 +16,15 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import e.alicia.pals.R;
+import e.alicia.pals.VerPlan;
 import e.alicia.pals.modelo.Plan;
 
 public class AdapterPlanes extends RecyclerView.Adapter<AdapterPlanes.ItemViewHolder> {
     private List<Plan> mUserLsit = new ArrayList<>();
     private Context mContext;
     private CardView cv;
+    private ItemClickListener itemClickListener;
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -30,6 +35,7 @@ public class AdapterPlanes extends RecyclerView.Adapter<AdapterPlanes.ItemViewHo
     public AdapterPlanes(Context mContext, List<Plan> mUserLsit) {
         this.mContext = mContext;
         this.mUserLsit = mUserLsit;
+
     }
 
     @SuppressLint("ResourceAsColor")
@@ -39,7 +45,12 @@ public class AdapterPlanes extends RecyclerView.Adapter<AdapterPlanes.ItemViewHo
         holder.tvTitulo.setText(user.getNombre());
         holder.tvFecha.setText(user.getFecha());
         holder.ivFoto.setImageResource(ponerFoto(user.getTipo()));
-
+        holder.setItemClickListener(new ItemClickListener() {
+            @Override
+            public void onItemClick(int pos) {
+                abrirDetalle(mUserLsit.get(pos).getCodigo());
+            }
+        });
         if (position%2==0) {
             holder.cv.setBackgroundColor(Color.rgb(255,167,38));
             holder.ivFoto.setBackgroundColor(Color.rgb(255,167,38));
@@ -54,18 +65,28 @@ public class AdapterPlanes extends RecyclerView.Adapter<AdapterPlanes.ItemViewHo
         return mUserLsit.size();
     }
 
-    public class ItemViewHolder extends RecyclerView.ViewHolder {
+    public class ItemViewHolder extends RecyclerView.ViewHolder  implements  View.OnClickListener{
         TextView tvTitulo, tvFecha;
         ImageView ivFoto;
         CardView cv;
-
+        ItemClickListener itemClickListener;
         public ItemViewHolder(View itemView) {
             super(itemView);
             tvFecha = itemView.findViewById(R.id.list_desc);
             tvTitulo = itemView.findViewById(R.id.list_title);
             cv = itemView.findViewById(R.id.cv);
             ivFoto = itemView.findViewById(R.id.ivFoto);
+            itemView.setOnClickListener(this);
+        }
 
+        public void setItemClickListener(ItemClickListener itemClickListener)
+        {
+            this.itemClickListener=itemClickListener;
+        }
+
+        @Override
+        public void onClick(View v) {
+            this.itemClickListener.onItemClick(this.getLayoutPosition());
         }
     }
 
@@ -102,4 +123,14 @@ public class AdapterPlanes extends RecyclerView.Adapter<AdapterPlanes.ItemViewHo
 
 
 }
+
+    private void abrirDetalle(String codigo)
+    {
+        Intent i=new Intent(this.mContext, VerPlan.class);
+
+        i.putExtra("codigo",codigo);
+
+
+        this.mContext.startActivity(i);
+    }
 }

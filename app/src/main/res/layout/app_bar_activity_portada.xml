@@ -15,7 +15,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="@color/primaryColor"
             app:logo="@drawable/palsgrandeblanco"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
+        app:backgroundTint="@color/quantum_amber400"
         app:srcCompat="@drawable/add" />
 
 </android.support.design.widget.CoordinatorLayout>

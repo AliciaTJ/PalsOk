@@ -89,14 +89,13 @@
                 android:textSize="12sp" />
 
 
-
             <Button
                 android:id="@+id/botonGuardar"
                 android:layout_width="match_parent"
                 android:layout_height="29dp"
                 android:layout_margin="20dp"
                 android:layout_marginBottom="15dp"
-                android:background="@color/primaryLightColor"
+                android:background="@color/primaryColor"
                 android:onClick="validarCrearUsuario"
                 android:text="@string/guardar"
                 android:textColor="@color/quantum_amber400" />

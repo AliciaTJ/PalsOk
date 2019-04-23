@@ -70,7 +70,7 @@
     <string name="crearPlan">Crear nuevo plan</string>
     <string name="eliminarplan">Eliminar</string>
     <string name="seguroeliminar">¿Estás seguro de querer eliminar el plan? Quedará en estado "cerrado" y no será posible su modificación</string>
-    <string name="todos">Todos los planes</string>
+    <string name="todos">Planes a los que voy</string>
     <string name="user">Usuario</string>
     <string name="seleccionatipo">Selecciona el tipo de plan</string>
     <string name="enviar">Enviar</string>
@@ -79,7 +79,7 @@
     <string name="seleccionarfecha">Seleccionar fecha</string>
     <string name="indiferente">Indiferente</string>
     <string name="editar">Editar</string>
-    <string name="sobreti">Escribe algo sobre ti! Gustos, aficiones, personalidad...</string>
+    <string name="sobreti">¡Escribe algo sobre ti!</string>
     <string name="cambiarfoto">Cambiar foto</string>
     <string name="noticias">Noticias</string>
     <string name="creador">Creador: </string>

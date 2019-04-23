@@ -16,6 +16,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,20 +38,25 @@ public class ActivityPortada extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Context context = this;
     FirebaseAuth user;
-    private View view;
     private RecyclerView rv, rvNot;
     ArrayList<Plan> planes;
-    DataBasePlan database;
     Context con = this;
     AdapterPlanes adapterPlanes;
     AdapterNoticias adapterNoticias;
     FirebaseDatabase db;
     ArrayList<Noticia> noticias;
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_portada);
+        mAdView=findViewById(R.id.adView);
+        MobileAds.initialize(this, "ca-app-pub-6032187278566198~3677017529");
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         user = FirebaseAuth.getInstance();
@@ -71,68 +79,47 @@ public class ActivityPortada extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        rv = findViewById(R.id.rvCercanos);
+
         rvNot = findViewById(R.id.rvNoticias);
         noticias = new ArrayList<>();
-        planes = new ArrayList<>();
 
-        rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
         db = FirebaseDatabase.getInstance();
         rvNot.setLayoutManager(new LinearLayoutManager(this));
 
-        cargarPlanes();
+
         cargarNoticias();
 
 
     }
 
-    public void cargarPlanes() {
-
-        DatabaseReference dbr = db.getReference("planes");
-        database = new DataBasePlan(dbr);
-
-        dbr.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                planes.clear();
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    Plan user = dataSnapshot1.getValue(Plan.class);
-                    planes.add(user);
-                }
-                adapterPlanes = new AdapterPlanes(ActivityPortada.this, planes);
-                adapterPlanes.notifyDataSetChanged();
-                System.out.println(adapterPlanes.getItemCount());
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-    }
 
     public void cargarNoticias() {
 
         DatabaseReference dbr = db.getReference("noticias");
-        database = new DataBasePlan(dbr);
+
 
         dbr.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 noticias.clear();
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
 
                     Noticia user = new Noticia();
-                    user.setTitular(dataSnapshot1.child("titular").getValue(String.class));
-                    user.setImagen(dataSnapshot1.child("imagen").getValue(String.class));
-                    user.setContenido(dataSnapshot1.child("cuerpo").getValue(String.class));
+                    user.setTitular(dataSnapshot.child("1").child("titular").getValue(String.class));
+                    user.setImagen(dataSnapshot.child("1").child("imagen").getValue(String.class));
+                    user.setContenido(dataSnapshot.child("1").child("cuerpo").getValue(String.class));
                     noticias.add(user);
-                }
+                    Noticia user2 = new Noticia();
+                user2.setTitular(dataSnapshot.child("2").child("titular").getValue(String.class));
+                user2.setImagen(dataSnapshot.child("2").child("imagen").getValue(String.class));
+                user2.setContenido(dataSnapshot.child("2").child("cuerpo").getValue(String.class));
+                    noticias.add(user2);
+
+
                 adapterNoticias = new AdapterNoticias(ActivityPortada.this, noticias);
                 rvNot.setAdapter(adapterNoticias);
                 adapterNoticias.notifyDataSetChanged();
-                System.out.println(adapterNoticias.getItemCount());
+
             }
 
             @Override

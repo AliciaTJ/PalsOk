@@ -2,7 +2,9 @@ package e.alicia.pals.adaptadores;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import e.alicia.pals.Chat;
+import e.alicia.pals.MisPlanes;
 import e.alicia.pals.R;
 import e.alicia.pals.VerPlan;
 import e.alicia.pals.baseDatos.DataBasePlan;
@@ -34,11 +37,11 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
     private List<Plan> mUserLsit;
     private Context mContext;
     private Plan plan;
-    FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
-    FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
-    FirebaseUser firebaseUser=firebaseAuth.getCurrentUser();
-    DatabaseReference databaseReference=firebaseDatabase.getReference("planes");
-    DataBasePlan dataBasePlan=new DataBasePlan(databaseReference);
+    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+    DatabaseReference databaseReference = firebaseDatabase.getReference("planes");
+    DataBasePlan dataBasePlan = new DataBasePlan(databaseReference);
 
 
     @Override
@@ -94,7 +97,7 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
     }
 
 
-    public class ItemViewHolder extends RecyclerView.ViewHolder{
+    public class ItemViewHolder extends RecyclerView.ViewHolder {
 
         ImageView ivFoto;
         TextView tvNombre, tvUbicacion, tvFecha, tvUsuarios, tvInformacion;
@@ -109,11 +112,10 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
             tvUsuarios = itemView.findViewById(R.id.tvUsuarios);
             tvInformacion = itemView.findViewById(R.id.tvInformacion);
             botonApuntar = itemView.findViewById(R.id.botonApuntarse);
-            botonDejar.setEnabled(false);
             botonChat = itemView.findViewById(R.id.botonChat);
             botonChat.setVisibility(INVISIBLE);
             ivFoto = itemView.findViewById(R.id.ivRandom);
-            botonEliminar=(Button)itemView.findViewById(R.id.botonEliminar);
+            botonEliminar = (Button) itemView.findViewById(R.id.botonEliminar);
             botonEliminar.setVisibility(INVISIBLE);
 
             botonEliminar.setOnClickListener(new View.OnClickListener() {
@@ -127,7 +129,7 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
                 @Override
                 public void onClick(View v) {
                     apuntarsePlan();
-                    botonApuntar.setVisibility(VISIBLE);
+
                     botonApuntar.setEnabled(false);
                     botonChat.setVisibility(VISIBLE);
                     botonDejar.setVisibility(VISIBLE);
@@ -138,6 +140,8 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
             botonDejar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    System.out.println("oa");
                     dejarPlan();
                 }
             });
@@ -151,59 +155,87 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
         }
 
 
+        public int ponerFoto(String i) {
+            switch (i) {
+                case "freak":
+                    return R.drawable.freak;
+
+                case "cultura":
+                    return R.drawable.cultura;
+                case "musica":
+                    return R.drawable.musica;
+
+                case "deportes":
+                    return R.drawable.deportes;
+
+                case "otros":
+                    return R.drawable.otros;
+
+                case "turismo":
+                    return R.drawable.turismo;
+
+                case "cine":
+                    return R.drawable.cine2;
+
+                case "fiesta":
+                    return R.drawable.fiesta;
+
+                default:
+                    return R.drawable.fiesta;
+            }
 
 
-
-
-    public int ponerFoto(String i) {
-        switch (i) {
-            case "freak":
-                return R.drawable.freak;
-
-            case "cultura":
-                return R.drawable.cultura;
-            case "musica":
-                return R.drawable.musica;
-
-            case "deportes":
-                return R.drawable.deportes;
-
-            case "otros":
-                return R.drawable.otros;
-
-            case "turismo":
-                return R.drawable.turismo;
-
-            case "cine":
-                return R.drawable.cine2;
-
-            case "fiesta":
-                return R.drawable.fiesta;
-
-            default:
-                return R.drawable.fiesta;
         }
 
+        public void borrarPlan() {
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            builder.setMessage(R.string.cancelar)
+                    .setPositiveButton(R.string.si, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dataBasePlan.borrarPlan(plan);
+                            Toast.makeText(mContext, "Has borrado el plan", Toast.LENGTH_LONG).show();
+                            Intent i = new Intent(mContext, MisPlanes.class);
+                            mContext.startActivity(i);
 
-    }
+                        }
+                    })
+                    .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Toast.makeText(mContext, "Sigues en el plan", Toast.LENGTH_LONG).show();
+                        }
+                    }).show();
 
-    public void borrarPlan(){
-       if( dataBasePlan.borrarPlan(plan));
-        Toast.makeText(mContext, "Borrado", Toast.LENGTH_LONG).show();
         }
-    }
 
-    public void apuntarsePlan(){
-        dataBasePlan.apuntarseAlPlan(plan, firebaseUser.getUid());
-    }
+        public void apuntarsePlan() {
+            dataBasePlan.apuntarseAlPlan(plan, firebaseUser.getUid());
+        }
 
-    public void dejarPlan(){
-dataBasePlan.dejarPlan(plan, firebaseUser.getUid());
-    }
+        public void dejarPlan() {
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            builder.setMessage(R.string.abandonar)
+                    .setPositiveButton(R.string.si, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dataBasePlan.dejarPlan(plan, firebaseUser.getUid());
+                            Toast.makeText(mContext, "Has abandonado el plan", Toast.LENGTH_LONG).show();
+                            Intent i = new Intent(mContext, MisPlanes.class);
+                            mContext.startActivity(i);
 
-    public void abrirChat(String codigo){
-        Intent i=new Intent(mContext, Chat.class);
-        i.putExtra("codigo", codigo);
-        mContext.startActivity(i);
+                        }
+                    })
+                    .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Toast.makeText(mContext, "Sigues en el plan", Toast.LENGTH_LONG).show();
+                        }
+                    }).show();
+
+
+        }
+
+        public void abrirChat(String codigo) {
+            Intent i = new Intent(mContext, Chat.class);
+            i.putExtra("codigo", codigo);
+            mContext.startActivity(i);
+        }
     }
 }

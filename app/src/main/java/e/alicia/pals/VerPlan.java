@@ -99,7 +99,7 @@ Button botonApuntar, botonChat, botonDejar;
                     rv.setAdapter(adapterVerPlan);
                     adapterVerPlan.notifyDataSetChanged();
                 }catch(NullPointerException npe){
-                    System.out.println("nooooooooooooooooooooooo");
+
                 }finally{
                     adapterVerPlan = new AdapterVerPlan(VerPlan.this, planes);
                     rv.setAdapter(adapterVerPlan);

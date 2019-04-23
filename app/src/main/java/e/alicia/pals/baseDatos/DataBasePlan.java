@@ -43,7 +43,6 @@ public class DataBasePlan {
 
             try {
                 dbPlanes.child("planes").child(plan.getCodigo()).setValue(plan);
-                dbUsuarios.child(codigo).child("planesapuntados").child(plan.getCodigo()).setValue(plan.getCodigo());
                 saved = true;
             } catch (DatabaseException e) {
                 e.printStackTrace();
@@ -56,62 +55,12 @@ public class DataBasePlan {
     }
 
 
-    public List<Plan> retrieve() {
-        dbPlanes.child("planes").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                fetchData(dataSnapshot);
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                fetchData(dataSnapshot);
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        return planes;
-    }
-
-    private void fetchData(DataSnapshot dataSnapshot) {
-        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-            Plan plan = ds.getValue(Plan.class);
-            planes.add(plan);
-
-
-        }
-
-
-    }
-
-
     public void apuntarseAlPlan(Plan plan, String codigoUsuario){
         plan.getUsuariosapuntados().add(codigoUsuario);
         dbPlanes.child(plan.getCodigo()).setValue(plan);
-      dbUsuarios.child(codigoUsuario).child("planesapuntados").child(plan.getCodigo()).setValue(plan.getCodigo());
-
     }
 
     public boolean borrarPlan(Plan plan){
-      for (int i=0; i<  plan.getUsuariosapuntados().size(); i++){
-          dbUsuarios.child(plan.getUsuariosapuntados().get(i)).child("planesapuntados").child(plan.getCodigo()).removeValue();
-      }
         dbPlanes.child(plan.getCodigo()).removeValue();
         return true;
 
@@ -124,8 +73,9 @@ public class DataBasePlan {
                 plan.getUsuariosapuntados().remove(i);
             }
         }
-        dbPlanes.child("planes").child(plan.getCodigo()).setValue(plan);
-        dbUsuarios.child(codigoUsuario).child("planesapuntados").child(plan.getCodigo()).removeValue();
+        dbPlanes.child(plan.getCodigo()).setValue(plan);
     }
+
+
 }
 

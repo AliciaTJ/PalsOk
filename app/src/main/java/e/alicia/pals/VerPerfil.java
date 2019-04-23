@@ -9,11 +9,13 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import e.alicia.pals.adaptadores.AdapterUsuario;
 import e.alicia.pals.baseDatos.DataBaseUsuario;
@@ -73,6 +76,7 @@ public class VerPerfil extends AppCompatActivity {
 
 
     public void iniciarActivity() {
+
         mAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseReference = firebaseDatabase.getReference("usuarios");
@@ -147,55 +151,6 @@ public class VerPerfil extends AppCompatActivity {
         }
 
     }
-
-    private boolean esNombreValido(String nombre) {
-        if (nombre.length() > 50) {
-            tilNombre.setError("Nombre demasiado largo");
-            return false;
-        } else {
-            tilNombre.setError(null);
-        }
-
-        return true;
-    }
-
-    private boolean esInfoValido(String nombre) {
-
-        if (nombre.length() > 50) {
-            tilInformacion.setError("Introduce información (maximo 50 caracteres)");
-            return false;
-        } else {
-            tilInformacion.setError(null);
-        }
-
-        return true;
-    }
-/*
-    private boolean validarDatos() {
-        String nombre = etNombre.getText().toString();
-        String info = etDescripcion.getText().toString();
-
-
-        boolean a = esNombreValido(nombre);
-        boolean b = esInfoValido(info);
-
-        if (a && b) {
-
-            Toast.makeText(this, "Se guarda el registro", Toast.LENGTH_LONG).show();
-            return true;
-        } else {
-            Toast.makeText(this, "Error al guardar el registro", Toast.LENGTH_LONG).show();
-            return false;
-        }
-
-    }
-
-    private boolean validarEmail(String email) {
-        Pattern pattern = Patterns.EMAIL_ADDRESS;
-        return pattern.matcher(email).matches();
-    }
-*/
-
 
 
 }

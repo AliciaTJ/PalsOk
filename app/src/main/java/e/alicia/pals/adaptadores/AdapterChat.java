@@ -26,6 +26,7 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.ItemViewHolder
     private List<Mensaje> mUserLsit;
     private Context mContext;
     private Mensaje mensaje;
+    private FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
 
 
 
@@ -58,7 +59,7 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.ItemViewHolder
                 +":"+calendar.get(Calendar.MINUTE)
                 +":"+calendar.get(Calendar.SECOND));
 
-        holder.tvUsuario.setText(mensaje.getUsuario());
+        holder.tvUsuario.setText(firebaseUser.getDisplayName());
 
 
     }

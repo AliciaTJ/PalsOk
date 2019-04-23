@@ -11,6 +11,7 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.firebase.FirebaseError;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,7 +37,8 @@ public class DataBaseUsuario {
     Usuario miUsuario;
     List<Usuario> usuarios = new ArrayList<>();
     FirebaseStorage firebaseStorage=FirebaseStorage.getInstance();
-
+    FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
+    FirebaseUser firebaseUser=firebaseAuth.getCurrentUser();
 
 
     public DataBaseUsuario(DatabaseReference db) {
@@ -71,7 +73,13 @@ public class DataBaseUsuario {
                              ){
 
        db.child(usuario.getCodigo()).setValue(usuario);
-
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setDisplayName(usuario.getNombre())
+                .setPhotoUri(Uri.parse(usuario.getFoto()))
+                .build();
+        firebaseUser=firebaseAuth.getCurrentUser();
+        firebaseUser.updateProfile(profileUpdates);
+        firebaseUser.updateEmail(usuario.getEmail());
     }
 
 

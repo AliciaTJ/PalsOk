@@ -8,78 +8,50 @@
     tools:context=".ActivityPortada"
     tools:showIn="@layout/app_bar_activity_portada">
 
-    <ScrollView
-        android:id="@+id/scrollView2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tvNoticias"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:background="@color/quantum_amber400"
+            android:paddingLeft="15dp"
+            android:text="@string/noticias"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
-                android:id="@+id/tvCercanos"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@color/quantum_amber400"
-                android:paddingLeft="15dp"
-                android:text="@string/planescercanos"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="139dp"
-                android:layout_margin="15dp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rvCercanos"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-                </LinearLayout>
-            </HorizontalScrollView>
-
-            <TextView
-                android:id="@+id/tvNoticias"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
-                android:background="@color/quantum_amber400"
-                android:paddingLeft="15dp"
-                android:text="@string/noticias"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:layout_margin="15dp"
+                android:orientation="vertical">
 
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="391dp">
-
-                <LinearLayout
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvNoticias"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="15dp"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </ScrollView>
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rvNoticias"
-                        android:layout_width="match_parent"
-                        android:layout_height="349dp" />
-                </LinearLayout>
-            </ScrollView>
 
-        </LinearLayout>
-    </ScrollView>
-
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-6032187278566198/3900378804">
+        </com.google.android.gms.ads.AdView>
+</LinearLayout>
 </android.support.constraint.ConstraintLayout>

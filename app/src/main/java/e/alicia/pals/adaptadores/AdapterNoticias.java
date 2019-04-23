@@ -35,13 +35,13 @@ public class AdapterNoticias extends RecyclerView.Adapter<AdapterNoticias.ItemVi
 
     @Override
     public void onBindViewHolder(AdapterNoticias.ItemViewHolder holder, int position) {
-        Noticia user = mUserLsit.get(position);
-        holder.tvTitular.setText(user.getTitular());
-        holder.tvCuerpo.setText(user.getContenido());
+        Noticia noticia = mUserLsit.get(position);
+        holder.tvTitular.setText(noticia.getTitular());
+        holder.tvCuerpo.setText(noticia.getContenido());
 
         Glide
     .with(mContext)
-    .load(user.getImagen())
+    .load(noticia.getImagen())
     .into(holder.ivNoticia);
 
 

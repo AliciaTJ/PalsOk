@@ -5,9 +5,11 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,13 +26,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import android.icu.util.Calendar;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import e.alicia.pals.R;
 import e.alicia.pals.baseDatos.DataBaseUsuario;
 import e.alicia.pals.modelo.Usuario;
+
+import static android.view.View.INVISIBLE;
 
 
 @RequiresApi(api = Build.VERSION_CODES.N)
@@ -72,6 +78,7 @@ public class AdapterUsuario extends RecyclerView.Adapter<AdapterUsuario.ItemView
     @Override
     public void onBindViewHolder(AdapterUsuario.ItemViewHolder holder, int position) {
        user = mUserLsit.get(position);
+
         if (user.getCodigo().equalsIgnoreCase(firebaseUser.getUid())) {
             etFecha.setText(user.getFechanac());
             etNombre.setText(user.getNombre());
@@ -88,9 +95,9 @@ public class AdapterUsuario extends RecyclerView.Adapter<AdapterUsuario.ItemView
 
                     etNombre.setEnabled(true);
                     etDescripcion.setEnabled(true);
-                    etEmail.setEnabled(true);
+                    etEmail.setEnabled(false);
                     cambiarFoto.setVisibility(View.VISIBLE);
-
+                    etFecha.setTextColor(Color.BLUE);
                 }
             });
             etFecha.setOnClickListener(new View.OnClickListener() {
@@ -108,8 +115,15 @@ public class AdapterUsuario extends RecyclerView.Adapter<AdapterUsuario.ItemView
                         user.setEmail(etEmail.getText().toString());
                         user.setDescripcion(etDescripcion.getText().toString());
                         user.setCodigo(firebaseUser.getUid());
-
+                        if (validarGuardar())
                         bd.modificar(user);
+
+                        etFecha.setTextColor(Color.BLACK);
+                        etNombre.setEnabled(false);
+                        etDescripcion.setEnabled(false);
+                        cambiarFoto.setVisibility(INVISIBLE);
+
+
 
                     }
 
@@ -151,7 +165,7 @@ public class AdapterUsuario extends RecyclerView.Adapter<AdapterUsuario.ItemView
             tilNombre = itemView.findViewById(R.id.tilnombre);
             tilEmail = itemView.findViewById(R.id.tilemail);
             tilInformacion = itemView.findViewById(R.id.tilinformacion);
-            cambiarFoto.setVisibility(View.INVISIBLE);
+            cambiarFoto.setVisibility(INVISIBLE);
 
 
         }
@@ -186,11 +200,64 @@ public class AdapterUsuario extends RecyclerView.Adapter<AdapterUsuario.ItemView
     }
 
 
+    private boolean esNombreValido(String nombre) {
+        if (nombre.length() > 50) {
+            tilNombre.setError("Nombre demasiado largo (máximo 50 caracteres)");
+            return false;
+        } else {
+            tilNombre.setError(null);
+        }
+
+        return true;
+    }
+
+    private boolean esInfoValido(String nombre) {
+
+        if (nombre.length() > 200) {
+            tilInformacion.setError("Introduce información (maximo 200 caracteres)");
+            return false;
+        } else {
+            tilInformacion.setError(null);
+        }
+
+        return true;
+    }
+
+    public boolean validarGuardar() {
+        String nombre = etNombre.getText().toString();
+        String info = etDescripcion.getText().toString();
+        String email=etEmail.getText().toString();
+
+
+        boolean a = esNombreValido(nombre);
+        boolean b = esInfoValido(info);
+        boolean c= validarEmail(email);
+
+
+        if (a && b && c) {
+            Toast.makeText(mContext, "Se modifica el registro", Toast.LENGTH_LONG).show();
+            return true;
+        } else {
+            Toast.makeText(mContext, "Error al guardar el registro", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+    }
+
+    private boolean validarEmail(String email) {
+        Pattern pattern = Patterns.EMAIL_ADDRESS;
+        return pattern.matcher(email).matches();
+    }
 
 
 
 
 }
+
+
+
+
+
 
 
 

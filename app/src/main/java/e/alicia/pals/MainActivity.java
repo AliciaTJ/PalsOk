@@ -1,5 +1,6 @@
 package e.alicia.pals;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.load.engine.Resource;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -24,6 +26,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -93,11 +96,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-
+/*
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
          updateUIG(account);
-
+*/
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser!=null) {
             updateUI(currentUser);
@@ -125,14 +128,16 @@ public class MainActivity extends AppCompatActivity {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-          if (  dataBaseUsuario.buscar(account.getId())==null ){
+
                 Usuario usuario = new Usuario();
                 usuario.setCodigo(account.getId());
                 usuario.setEmail(account.getEmail());
                 usuario.setNombre(account.getDisplayName());
                 usuario.setFoto(account.getPhotoUrl().toString());
                 dataBaseUsuario.save(usuario);
-            }
+         for(int i=0; i< mAuth.getCurrentUser().getProviderData().size(); i++){
+
+         }
 
             updateUIG(account);
 
@@ -150,26 +155,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void logIn (String email, String password){
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
-                            logearse();
-                        } else {
+        if (email.length()>0 && password.length()>0) {
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                updateUI(user);
+                                logearse();
+                            } else {
 
-                            Snackbar sb = Snackbar.make(view, "Error al loguear", Snackbar.LENGTH_LONG);
-                            View snackBarView = sb.getView();
+                                Snackbar sb = Snackbar.make(view, "Error al loguear", Snackbar.LENGTH_LONG);
+                                View snackBarView = sb.getView();
 
-                            snackBarView.setBackgroundColor(Color.RED);
-                            sb.show();
+                                snackBarView.setBackgroundColor(Color.RED);
+                                sb.show();
+                            }
+
+
                         }
 
 
-                    }
-                });
+                    });
+        }else{
+            Snackbar.make(view, "Introduce usuario y contraseña", Toast.LENGTH_LONG).show();
+        }
+
     }
 
 

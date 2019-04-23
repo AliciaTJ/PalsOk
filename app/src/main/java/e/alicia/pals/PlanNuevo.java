@@ -38,7 +38,7 @@ import e.alicia.pals.modelo.Plan;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class PlanNuevo extends AppCompatActivity {
-    String key = "AIzaSyDeahrR2QFiY8UXgU5Wwnq2vFEZYas_3Dk";
+    String key = "AIzaSyDCQwJ6TYi2Tsr4ghyatPxy7r03w_knCOU";
     FirebaseUser user;
     Place place;
     DatabaseReference dbr;
@@ -61,6 +61,7 @@ public class PlanNuevo extends AppCompatActivity {
     final int anio = c.get(Calendar.YEAR);
     TextView fecha;
     Calendar hora;
+    PlacesClient placesClient;
     int AUTOCOMPLETE_REQUEST_CODE = 1;
 
     @Override
@@ -84,7 +85,7 @@ public class PlanNuevo extends AppCompatActivity {
     public void iniciarActivity() {
 
         Places.initialize(getApplicationContext(), key);
-        PlacesClient placesClient = Places.createClient(this);
+        placesClient = Places.createClient(this);
         hora = Calendar.getInstance();
         tipo = getIntent().getIntExtra("id", 0);
         fba = FirebaseAuth.getInstance();
@@ -178,7 +179,6 @@ public class PlanNuevo extends AppCompatActivity {
         List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
         Intent intent = new Autocomplete.IntentBuilder(
                 AutocompleteActivityMode.FULLSCREEN, fields)
-.setCountry("Spain")
                 .build(this);
 
         startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);

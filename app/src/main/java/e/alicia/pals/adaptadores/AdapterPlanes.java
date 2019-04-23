@@ -52,11 +52,11 @@ public class AdapterPlanes extends RecyclerView.Adapter<AdapterPlanes.ItemViewHo
             }
         });
         if (position%2==0) {
-            holder.cv.setBackgroundColor(Color.rgb(255,167,38));
-            holder.ivFoto.setBackgroundColor(Color.rgb(255,167,38));
+           // holder.cv.setBackgroundColor(R.color.places_autocomplete_list_background);
+            //holder.ivFoto.setBackgroundColor(R.color.places_autocomplete_list_background);
         }else{
-            holder.cv.setBackgroundColor(Color.rgb(255,223,56));
-            holder.ivFoto.setBackgroundColor(Color.rgb(255,223,56));
+           // holder.cv.setBackgroundColor(R.color.quantum_black_divider);
+           // holder.ivFoto.setBackgroundColor(R.color.quantum_black_divider);
         }
     }
 

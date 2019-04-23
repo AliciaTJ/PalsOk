@@ -151,7 +151,7 @@
                 android:layout_height="29dp"
                 android:layout_margin="10dp"
                 android:layout_marginBottom="25dp"
-                android:background="@color/primaryLightColor"
+                android:background="@color/primaryColor"
                 android:onClick="guardar"
                 android:text="@string/publicarplan"
                 android:textColor="@color/quantum_amber400" />

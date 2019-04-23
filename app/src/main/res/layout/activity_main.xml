@@ -48,7 +48,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
-        android:background="@color/primaryLightColor"
+        android:background="@color/primaryColor"
         android:onClick="acceder"
         android:text="@string/login"
         android:textColor="@color/quantum_amber400"

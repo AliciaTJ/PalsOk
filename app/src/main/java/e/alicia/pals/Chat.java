@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -48,7 +49,11 @@ public class Chat extends AppCompatActivity {
         mensajes = new ArrayList<>();
         firebaseAuth=FirebaseAuth.getInstance();
         firebaseUser=firebaseAuth.getCurrentUser();
-        rv.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager linearLayout=new LinearLayoutManager(this);
+        linearLayout.setReverseLayout(true);
+        linearLayout.setStackFromEnd(true);
+        rv.setLayoutManager(linearLayout);
+
         iniciarActivity();
         codigo = getIntent().getStringExtra("codigo");
 
@@ -105,7 +110,8 @@ public class Chat extends AppCompatActivity {
                     adapterChat.notifyDataSetChanged();
 
                 } catch (NullPointerException npe) {
-                    System.out.println("nooooooooooooooooooooooo");
+
+
                 } finally {
 
                     adapterChat = new AdapterChat(Chat.this, mensajes);

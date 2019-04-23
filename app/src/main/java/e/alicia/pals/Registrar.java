@@ -89,10 +89,8 @@ public class Registrar extends AppCompatActivity {
                             usuario.setEmail(email);
                             usuario.setNombre(etNombre.getText().toString());
                             usuario.setFoto(imagenUsuario);
-
-
-
                             dataBaseUsuario.save(usuario);
+                            dataBaseUsuario.modificar(usuario);
                             Snackbar sb = Snackbar.make(view, "Usuario registrado con éxito", Snackbar.LENGTH_LONG);
                             View snackBarView = sb.getView();
                             snackBarView.setBackgroundColor(Color.GREEN);
@@ -103,7 +101,6 @@ public class Registrar extends AppCompatActivity {
 
                             Snackbar sb = Snackbar.make(view, "Error al registrar el usuario", Snackbar.LENGTH_LONG);
                             View snackBarView = sb.getView();
-
                             snackBarView.setBackgroundColor(Color.RED);
                             sb.show();
 
@@ -113,6 +110,9 @@ public class Registrar extends AppCompatActivity {
                     }
                 });
     }
+
+
+
 
     //-------------------------validacion de datos
 
@@ -162,7 +162,7 @@ public class Registrar extends AppCompatActivity {
                    Snackbar.make(view,"Formato email no valido", Snackbar.LENGTH_LONG).show();
                }
             }else{
-               Snackbar.make(view,"Contraseña minimo 6 caaracteres", Snackbar.LENGTH_LONG).show();
+               Snackbar.make(view,"Contraseña minimo 6 caracteres", Snackbar.LENGTH_LONG).show();
            }
         } else{
             Snackbar.make(view,"Nombre entre 3 y 15 caracteres", Snackbar.LENGTH_LONG).show();

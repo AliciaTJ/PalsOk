@@ -7,8 +7,7 @@
     android:layout_marginTop="8dp"
     android:layout_marginEnd="16dp"
     android:layout_marginRight="16dp"
-    android:layout_marginBottom="8dp"
-    app:cardBackgroundColor="@color/quantum_amber400">
+    android:layout_marginBottom="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,16 +16,16 @@
 
         <ImageView
             android:id="@+id/ivFoto"
-            android:layout_width="157dp"
+            android:layout_width="162dp"
             android:layout_height="100dp"
             android:layout_weight="1"
-            android:background="@color/quantum_amber400"
             app:srcCompat="@drawable/deportes" />
 
         <LinearLayout
             android:id="@+id/list_root"
             android:layout_width="218dp"
             android:layout_height="96dp"
+            android:background="@color/quantum_amberA100"
             android:clickable="true"
             android:focusable="true"
             android:orientation="vertical"

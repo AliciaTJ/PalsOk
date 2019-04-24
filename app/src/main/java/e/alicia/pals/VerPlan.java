@@ -123,7 +123,7 @@ Button botonApuntar, botonChat, botonDejar;
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent i=new Intent(this, ActivityPortada.class);
+        Intent i=new Intent(this, MisPlanes.class);
         startActivity(i);
     }
 }

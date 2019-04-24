@@ -27,7 +27,7 @@
             <ImageView
                 android:id="@+id/ivCabecera"
                 android:layout_width="match_parent"
-                android:layout_height="118dp"
+                android:layout_height="150dp"
                 android:background="@drawable/side_nav_bar"
                 app:srcCompat="@drawable/user" />
 
@@ -35,7 +35,7 @@
                 android:id="@+id/botonCambiar"
                 android:layout_width="match_parent"
                 android:layout_height="22dp"
-                android:background="@color/quantum_amber200"
+                android:background="@drawable/burbuja"
                 android:onClick="cambiarFoto"
                 android:text="@string/cambiarfoto" />
 
@@ -95,7 +95,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -107,31 +107,18 @@
                     android:enabled="true"
                     android:text="@string/fechaNac" />
 
-                <TextView
+                <Button
                     android:id="@+id/etFecha"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="186dp"
+                    android:layout_height="28dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginBottom="15dp"
+                    android:background="@drawable/burbuja"
                     android:ems="10"
+                    android:enabled="false"
                     android:gravity="center"
                     android:inputType="textPersonName"
                     android:text="Sin determinar" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/tillugar"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginBottom="15dp"/>
-
             </LinearLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -149,16 +136,15 @@
                     android:id="@+id/etDescripcion"
 
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="131dp"
                     android:cursorVisible="true"
                     android:ems="10"
                     android:fallbackLineSpacing="true"
                     android:gravity="top|left"
                     android:hint="@string/sobreti"
-                    android:inputType="textLongMessage|textMultiLine|textCapSentences|textImeMultiLine"
+                    android:inputType="textMultiLine"
                     android:lines="5"
-                    android:maxLines="5"
-                    android:scrollHorizontally="false"
+                    android:scrollHorizontally="true"
                     android:singleLine="false"
                     android:textColorHint="@color/primaryColor"
                     android:textSize="14sp" />
@@ -166,14 +152,14 @@
             </android.support.design.widget.TextInputLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="15dp"
+                android:layout_gravity="center"
                 android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/botonEditar"
-                    android:layout_width="wrap_content"
+                    android:layout_width="150dp"
                     android:layout_height="25dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginEnd="15dp"
@@ -184,7 +170,7 @@
 
                 <Button
                     android:id="@+id/botonGuardar"
-                    android:layout_width="wrap_content"
+                    android:layout_width="155dp"
                     android:layout_height="25dp"
                     android:layout_marginBottom="15dp"
 

@@ -61,6 +61,7 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
     public void onBindViewHolder(ItemViewHolder holder, int position) {
 
         plan = mUserLsit.get(position);
+
         holder.tvNombre.setText(plan.getNombre());
         holder.tvFecha.setText("Fecha: " + plan.getFecha());
         holder.tvInformacion.setText("Informacion: " + plan.getInformacion());
@@ -74,20 +75,37 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
             }
         });
 
-        if (plan.getUsuariocreador().equalsIgnoreCase(firebaseUser.getUid())) {
+        if (plan.getEstado().equalsIgnoreCase("cerrado")){
+            holder.tvInformacion.setText("Este plan ha sido cerrado");
             holder.botonDejar.setEnabled(false);
             holder.botonApuntar.setEnabled(false);
+            holder.botonChat.setVisibility(INVISIBLE);
+            holder.botonEliminar.setVisibility(INVISIBLE);
+        }
+       else if (plan.getEstado().equalsIgnoreCase("vencido")){
+            holder.tvInformacion.setText("Este plan ha vencido. Ya no puedes apuntarte, " +
+                    "pero podrás seguir accediendo al chat durante 7 días");
+            holder.botonDejar.setEnabled(true);
+            holder.botonApuntar.setVisibility(INVISIBLE);
             holder.botonChat.setVisibility(VISIBLE);
-            holder.botonEliminar.setVisibility(VISIBLE);
-        } else {
-            for (int i = 0; i < plan.getUsuariosapuntados().size(); i++) {
-                if (firebaseUser.getUid().equalsIgnoreCase(plan.getUsuariosapuntados().get(i))) {
-                    holder.botonApuntar.setEnabled(false);
-                    holder.botonDejar.setVisibility(VISIBLE);
-                    holder.botonChat.setVisibility(VISIBLE);
+            holder.botonEliminar.setVisibility(INVISIBLE);
+        }
+        else if(plan.getEstado().equalsIgnoreCase("abierto")) {
+            if (plan.getUsuariocreador().equalsIgnoreCase(firebaseUser.getUid())) {
+                holder.botonDejar.setVisibility(INVISIBLE);
+                holder.botonApuntar.setVisibility(INVISIBLE);
+                holder.botonChat.setVisibility(VISIBLE);
+                holder.botonEliminar.setVisibility(VISIBLE);
+            } else {
+                for (int i = 0; i < plan.getUsuariosapuntados().size(); i++) {
+                    if (firebaseUser.getUid().equalsIgnoreCase(plan.getUsuariosapuntados().get(i))) {
+                        holder.botonApuntar.setVisibility(INVISIBLE);
+                        holder.botonDejar.setVisibility(VISIBLE);
+                        holder.botonChat.setVisibility(VISIBLE);
+                    }
                 }
-            }
 
+            }
         }
     }
 
@@ -189,7 +207,7 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
 
         public void borrarPlan() {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-            builder.setMessage(R.string.cancelar)
+            builder.setMessage(R.string.seguroeliminar)
                     .setPositiveButton(R.string.si, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dataBasePlan.borrarPlan(plan);
@@ -201,7 +219,6 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
                     })
                     .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            Toast.makeText(mContext, "Sigues en el plan", Toast.LENGTH_LONG).show();
                         }
                     }).show();
 
@@ -209,15 +226,25 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
 
         public void apuntarsePlan() {
             dataBasePlan.apuntarseAlPlan(plan, firebaseUser.getUid());
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            builder.setMessage(R.string.agregar)
+                    .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+
+                        }
+                    }).show();
+
+
         }
 
         public void dejarPlan() {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-            builder.setMessage(R.string.abandonar)
+            builder.setMessage(R.string.segurodejar)
                     .setPositiveButton(R.string.si, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dataBasePlan.dejarPlan(plan, firebaseUser.getUid());
-                            Toast.makeText(mContext, "Has abandonado el plan", Toast.LENGTH_LONG).show();
+                            Toast.makeText(mContext, R.string.eliminado, Toast.LENGTH_LONG).show();
                             Intent i = new Intent(mContext, MisPlanes.class);
                             mContext.startActivity(i);
 
@@ -225,7 +252,6 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
                     })
                     .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            Toast.makeText(mContext, "Sigues en el plan", Toast.LENGTH_LONG).show();
                         }
                     }).show();
 

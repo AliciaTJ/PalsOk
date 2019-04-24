@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.load.engine.Resource;
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -31,6 +33,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import e.alicia.pals.baseDatos.DataBaseUsuario;
 import e.alicia.pals.modelo.Usuario;
@@ -39,15 +43,13 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseDatabase db;
     private DatabaseReference databaseReference;
-    DataBaseUsuario dataBaseUsuario;
-    EditText etEmail;
-    EditText etPass;
-    View view;
-    private ImageView image;
+    private DataBaseUsuario dataBaseUsuario;
+    private EditText etEmail;
+    private EditText etPass;
+    private View view;
     private int RC_SIGN_IN=1;
     private final String ID_TOKEN="445597789329-l1nb5dtif2eed45qjl5bjq1t31ctdblv.apps.googleusercontent.com";
-    private GoogleSignInClient mGoogleSignInClient;
-    GoogleSignInOptions gso;
+    private GoogleSignInOptions gso;
 
 
 
@@ -63,8 +65,6 @@ public class MainActivity extends AppCompatActivity {
         etPass=(EditText)findViewById(R.id.etPass);
         view = this.findViewById(android.R.id.content);
 
-        image=(ImageView)findViewById(R.id.ivRandom);
-
         mAuth = FirebaseAuth.getInstance();
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(ID_TOKEN)
@@ -77,30 +77,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void cambioImagen(ImageView iv){
-        ArrayList<Integer> imagenes=new ArrayList<>();
-        imagenes.add(R.drawable.a1);
-        imagenes.add(R.drawable.a2);
-        imagenes.add(R.drawable.a3);
-        imagenes.add(R.drawable.a4);
-        imagenes.add(R.drawable.a5);
-        imagenes.add(R.drawable.a6);
-        imagenes.add(R.drawable.a7);
-        imagenes.add(R.drawable.a8);
-        iv.setImageResource(R.drawable.a1);
-        int imagen= (int)Math.random()*7+1;
-        iv.setImageResource(imagenes.get(imagen));
-    }
-
 
     @Override
     public void onStart() {
         super.onStart();
-/*
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
-         updateUIG(account);
-*/
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser!=null) {
             updateUI(currentUser);
@@ -109,44 +90,47 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void google(View view) {
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.GoogleBuilder().build());
+
+
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(providers)
+                        .build(),
+                RC_SIGN_IN);
+
     }
 
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    if (requestCode == RC_SIGN_IN) {
+        IdpResponse response = IdpResponse.fromResultIntent(data);
 
-        if (requestCode == RC_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
+        if (resultCode == RESULT_OK) {
+
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            Usuario usuario = new Usuario();
+            usuario.setCodigo(user.getUid());
+            usuario.setEmail(user.getEmail());
+            usuario.setNombre(user.getDisplayName());
+            usuario.setFoto(String.valueOf(user.getPhotoUrl()));
+            dataBaseUsuario.save(usuario);
+            dataBaseUsuario.modificar(usuario);
+
+            updateUI(user);
+        } else {
+            Snackbar sb = Snackbar.make(view, "Error al registrar al usuario", Snackbar.LENGTH_LONG);
+            View snackBarView = sb.getView();
+            snackBarView.setBackgroundColor(Color.RED);
+            sb.show();
         }
     }
-
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-
-                Usuario usuario = new Usuario();
-                usuario.setCodigo(account.getId());
-                usuario.setEmail(account.getEmail());
-                usuario.setNombre(account.getDisplayName());
-                usuario.setFoto(account.getPhotoUrl().toString());
-                dataBaseUsuario.save(usuario);
-         for(int i=0; i< mAuth.getCurrentUser().getProviderData().size(); i++){
-
-         }
-
-            updateUIG(account);
-
-        } catch (ApiException e) {
-            updateUI(null);
-        }
-    }
-
-
+}
 
     public void logearse(){
         Intent i= new Intent(this, ActivityPortada.class);
@@ -187,14 +171,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void updateUI(FirebaseUser user) {
-
-        if (user != null) {
-            logearse();
-        } else {
-
-        }
-    }
-    private void updateUIG(GoogleSignInAccount user) {
 
         if (user != null) {
             logearse();

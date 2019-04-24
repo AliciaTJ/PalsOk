@@ -2,10 +2,12 @@ package e.alicia.pals;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -36,32 +38,35 @@ import java.util.List;
 import e.alicia.pals.baseDatos.DataBasePlan;
 import e.alicia.pals.modelo.Plan;
 
+import static android.graphics.Typeface.BOLD;
+
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class PlanNuevo extends AppCompatActivity {
-    String key = "AIzaSyDCQwJ6TYi2Tsr4ghyatPxy7r03w_knCOU";
-    FirebaseUser user;
-    Place place;
-    DatabaseReference dbr;
-    FirebaseDatabase firebaseDatabase;
-    FirebaseAuth fba;
-    DataBasePlan db;
-    EditText etInfo, etTitulo, etLugar;
-    TextView etCreado;
-    Switch fechaIndiferente;
+    private String key = "AIzaSyDCQwJ6TYi2Tsr4ghyatPxy7r03w_knCOU";
+    private FirebaseUser user;
+    private Place place;
+    private DatabaseReference dbr;
+    private FirebaseDatabase firebaseDatabase;
+    private FirebaseAuth fba;
+    private DataBasePlan db;
+    private EditText etInfo, etTitulo, etLugar;
+    private TextView etCreado;
+    private Switch fechaIndiferente;
     int tipo;
-    String tipoPlan;
-    Plan plan;
-    ImageView imagen;
+    private String tipoPlan;
+    private Plan plan;
+    private ImageView imagen;
     private TextInputLayout tilTitulo;
     private TextInputLayout tilInformacion;
     private TextInputLayout tilLugar;
     public final Calendar c = Calendar.getInstance();
+    private Calendar ca=Calendar.getInstance();
     final int mes = c.get(Calendar.MONTH);
     final int dia = c.get(Calendar.DAY_OF_MONTH);
     final int anio = c.get(Calendar.YEAR);
-    TextView fecha;
-    Calendar hora;
-    PlacesClient placesClient;
+    private TextView fecha;
+    private Calendar hora;
+   PlacesClient placesClient;
     int AUTOCOMPLETE_REQUEST_CODE = 1;
 
     @Override
@@ -72,7 +77,9 @@ public class PlanNuevo extends AppCompatActivity {
         fechaIndiferente.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
+                    fecha.setTextColor(Color.BLACK);
                     obtenerFecha();
+
                 }else{
                     fecha.setText("Indiferente");
                 }
@@ -91,7 +98,7 @@ public class PlanNuevo extends AppCompatActivity {
         fba = FirebaseAuth.getInstance();
         user = fba.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        dbr = firebaseDatabase.getReference();
+        dbr = firebaseDatabase.getReference("planes");
 
         imagen = findViewById(R.id.ivCabecera);
         db = new DataBasePlan(dbr);
@@ -154,14 +161,14 @@ public class PlanNuevo extends AppCompatActivity {
             plan.setLugar(etLugar.getText().toString());
             List<String>usuarios=new ArrayList<>();
             usuarios.add(user.getUid());
-
-           plan.setUsuariosapuntados(usuarios);
+            plan.setEstado("abierto");
+            plan.setUsuariosapuntados(usuarios);
             plan.setNombre(etTitulo.getText().toString());
             plan.setCodigo(hora.getTimeInMillis() + user.getUid());
-            db.save(plan, user.getUid());
+            db.guardar(plan);
             verPlan();
-        } else {
-
+        }else{
+            Snackbar.make(view, "No ha sido posible crear el plan", Snackbar.LENGTH_LONG).show();
         }
     }
 
@@ -186,49 +193,88 @@ public class PlanNuevo extends AppCompatActivity {
     }
 
     private boolean esNombreValido(String nombre) {
-        if (nombre.length() > 50) {
-            tilTitulo.setError("Nombre demasiado largo");
+        if (nombre.length() > 30 || nombre.length()<3) {
+            tilTitulo.setError("El titulo debe tener entre 3 y 50 caracteres");
             return false;
         } else {
             tilTitulo.setError(null);
+        }
+
+        return true;
+    }
+    private boolean esLugarValido(String lugar){
+        if (lugar.length()<3 || lugar.length() > 50) {
+            tilLugar.setError("Introduce el lugar (entre 3 y 50 caracteres)");
+            return false;
+        } else {
+            tilLugar.setError(null);
         }
 
         return true;
     }
     private boolean esInfoValido(String nombre) {
 
-        if (nombre.length()<10 || nombre.length() > 50) {
-            tilTitulo.setError("Introduce información (minimo 10 caracteres)");
+        if (nombre.length()<10) {
+            tilInformacion.setError("Introduce información (minimo 10 caracteres)");
             return false;
         } else {
-            tilTitulo.setError(null);
+            tilInformacion.setError(null);
         }
 
         return true;
     }
 
+    private boolean esFechaValida(String fechaPlan){
+        if (fechaPlan.equalsIgnoreCase("Indiferente")){
+            return true;
+        }
+        else{
+            if (ca.getTimeInMillis()<c.getTimeInMillis()){
+               fecha.setTextColor(Color.RED);
+               fecha.setTextAppearance(BOLD);
+
+                return false;
+            }else{
+                return true;
+            }
+
+
+        }
+    }
+
     private boolean validarDatos() {
         String nombre = etTitulo.getText().toString();
         String info = etInfo.getText().toString();
+        String lugar=etLugar.getText().toString();
+        String fechaPlan=fecha.getText().toString();
 
-
-        boolean a = esNombreValido(nombre);
-        boolean b = esInfoValido(info);
-
-        if (a && b) {
-
-            Toast.makeText(this, "Se guarda el registro", Toast.LENGTH_LONG).show();
-            return true;
+        if (esNombreValido(nombre)) {
+            if (esLugarValido(lugar)) {
+                if (esInfoValido(info)) {
+                    if (esFechaValida(fechaPlan)) {
+                        Toast.makeText(this, "Se guarda el registro", Toast.LENGTH_LONG).show();
+                        return true;
+                    }else{
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }else{
+                return false;
+            }
         } else {
-            Toast.makeText(this, "Error al guardar el registro", Toast.LENGTH_LONG).show();
             return false;
         }
+
 
     }
 
 
     private void obtenerFecha() {
-        DatePickerDialog recogerFecha = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+
+
+        final DatePickerDialog recogerFecha = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 //Esta variable lo que realiza es aumentar en uno el mes ya que comienza desde 0 = enero
@@ -238,17 +284,14 @@ public class PlanNuevo extends AppCompatActivity {
                 //Formateo el mes obtenido: antepone el 0 si son menores de 10
                 String mesFormateado = (mesActual < 10) ? 0 + String.valueOf(mesActual) : String.valueOf(mesActual);
                 //Muestro la fecha con el formato deseado
+                ca.set(year, month, dayOfMonth);
                 fecha.setText(diaFormateado + "/" + mesFormateado + "/" + year);
+                }
 
-
-            }
-            //Estos valores deben ir en ese orden, de lo contrario no mostrara la fecha actual
-            /**
-             *También puede cargar los valores que usted desee
-             */
         }, anio, mes, dia);
         //Muestro el widget
         recogerFecha.show();
+
 
     }
     @Override
@@ -256,15 +299,24 @@ public class PlanNuevo extends AppCompatActivity {
         if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                place = Autocomplete.getPlaceFromIntent(data);
+                System.out.println(place.getAddress());
+                System.out.println(place.getName());
                 etLugar.setText(place.getAddress());
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
 
                 Status status = Autocomplete.getStatusFromIntent(data);
 
+
             } else if (resultCode == RESULT_CANCELED) {
 
             }
         }
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i=new Intent(this, TipoPlan.class);
+        startActivity(i);
     }
 
 }

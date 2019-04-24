@@ -1,5 +1,6 @@
 package e.alicia.pals;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
@@ -50,7 +51,7 @@ public class Chat extends AppCompatActivity {
         firebaseAuth=FirebaseAuth.getInstance();
         firebaseUser=firebaseAuth.getCurrentUser();
         LinearLayoutManager linearLayout=new LinearLayoutManager(this);
-        linearLayout.setReverseLayout(true);
+
         linearLayout.setStackFromEnd(true);
         rv.setLayoutManager(linearLayout);
 
@@ -136,6 +137,12 @@ public class Chat extends AppCompatActivity {
         dataBaseChat.enviar(mensaje, codigo);
         adapterChat.notifyDataSetChanged();
         etEnviar.setText("");
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i=new Intent(this, VerPlan.class);
+        startActivity(i);
     }
 
 

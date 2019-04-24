@@ -1,6 +1,7 @@
 package e.alicia.pals;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -31,21 +33,28 @@ import e.alicia.pals.modelo.Usuario;
 
 public class Registrar extends AppCompatActivity {
 
-    EditText etNombre, etEmail, etPass;
+    private EditText etNombre, etEmail, etPass, etPass2;
     private FirebaseAuth mAuth;
     private FirebaseDatabase db;
     private DatabaseReference databaseReference;
-    DataBaseUsuario dataBaseUsuario;
-    Button botonGuardar;
+    private DataBaseUsuario dataBaseUsuario;
+    private Button botonGuardar;
     private View view;
     private ImageView image;
-    String imagenUsuario="https://firebasestorage.googleapis.com/v0/b/pals-fae71.appspot.com/o/usuarios%2Fuser.png?alt=media&token=e928a126-f91b-40fb-a852-4164f15148ed";
+    private String imagenUsuario = "https://firebasestorage.googleapis.com/v0/b/pals-fae71.appspot.com/o/usuarios%2Fuser.png?alt=media&token=e928a126-f91b-40fb-a852-4164f15148ed";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrar);
+        iniciarActivity();
+
+
+    }
+
+    public void iniciarActivity() {
+        etPass2 = (EditText) findViewById(R.id.etPass2);
         view = this.findViewById(android.R.id.content);
         etEmail = findViewById(R.id.etEmail);
         etNombre = findViewById(R.id.etNombre);
@@ -53,16 +62,15 @@ public class Registrar extends AppCompatActivity {
         botonGuardar = findViewById(R.id.botonGuardar);
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseDatabase.getInstance();
-        image=(ImageView)findViewById(R.id.ivRandom);
+        image = (ImageView) findViewById(R.id.ivRandom);
         cambioImagen(image);
         databaseReference = db.getReference("usuarios");
         dataBaseUsuario = new DataBaseUsuario(databaseReference);
-
-
     }
 
-    public void cambioImagen(ImageView iv){
-        ArrayList<Integer> imagenes=new ArrayList<>();
+
+    public void cambioImagen(ImageView iv) {
+        ArrayList<Integer> imagenes = new ArrayList<>();
         imagenes.add(R.drawable.a1);
         imagenes.add(R.drawable.a2);
         imagenes.add(R.drawable.a3);
@@ -72,12 +80,13 @@ public class Registrar extends AppCompatActivity {
         imagenes.add(R.drawable.a7);
         imagenes.add(R.drawable.a8);
         iv.setImageResource(R.drawable.a1);
-        int imagen= (int)Math.random()*7+1;
+        int imagen = (int) (Math.random() * 7) + 1;
         iv.setImageResource(imagenes.get(imagen));
     }
 
 
-    public void creaUsuario(final String email, String password) {
+    public void creaUsuario(final String email, String password) throws FirebaseAuthUserCollisionException {
+
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -98,8 +107,7 @@ public class Registrar extends AppCompatActivity {
 
 
                         } else {
-
-                            Snackbar sb = Snackbar.make(view, "Error al registrar el usuario", Snackbar.LENGTH_LONG);
+                            Snackbar sb = Snackbar.make(view, "El email ya existe en el sistema", Snackbar.LENGTH_LONG);
                             View snackBarView = sb.getView();
                             snackBarView.setBackgroundColor(Color.RED);
                             sb.show();
@@ -109,9 +117,8 @@ public class Registrar extends AppCompatActivity {
 
                     }
                 });
+
     }
-
-
 
 
     //-------------------------validacion de datos
@@ -131,19 +138,23 @@ public class Registrar extends AppCompatActivity {
         if (nombre.length() > 15 || nombre.length() < 5) {
 
             return false;
-        } else {
-
         }
 
         return true;
+    }
+
+    private boolean passIgual(String pass, String pass2) {
+        if (pass.equalsIgnoreCase(pass2))
+            return true;
+        else
+            return false;
+
     }
 
     private boolean validarEmail(String email) {
 
         Pattern pattern = Patterns.EMAIL_ADDRESS;
         if (!pattern.matcher(email).matches()) {
-
-
             return false;
         } else {
 
@@ -154,20 +165,34 @@ public class Registrar extends AppCompatActivity {
 
     public void validarCrearUsuario(View view) {
 
-        if (esNombreValido(etNombre.getText().toString())){
-           if ( esPassValido(etPass.getText().toString())){
-               if (validarEmail(etEmail.getText().toString())){
-                   creaUsuario(etEmail.getText().toString(), etPass.getText().toString());
-               }else{
-                   Snackbar.make(view,"Formato email no valido", Snackbar.LENGTH_LONG).show();
-               }
-            }else{
-               Snackbar.make(view,"Contraseña minimo 6 caracteres", Snackbar.LENGTH_LONG).show();
-           }
-        } else{
-            Snackbar.make(view,"Nombre entre 3 y 15 caracteres", Snackbar.LENGTH_LONG).show();
+        if (esNombreValido(etNombre.getText().toString())) {
+            if (esPassValido(etPass.getText().toString())) {
+                if (passIgual(etPass.getText().toString(), etPass2.getText().toString())) {
+
+                    if (validarEmail(etEmail.getText().toString())) {
+
+                        try {
+                            creaUsuario(etEmail.getText().toString(), etPass.getText().toString());
+
+                        } catch (FirebaseAuthUserCollisionException e) {
+                            Snackbar.make(view, "Email utilizado por otro usuario", Snackbar.LENGTH_LONG).show();
+
+                        }
+                    } else {
+                        Snackbar.make(view, "Formato email no valido", Snackbar.LENGTH_LONG).show();
+                    }
+                } else {
+                    Snackbar.make(view, "Las contraseñas no coinciden", Snackbar.LENGTH_LONG).show();
+
+                }
+            } else {
+                Snackbar.make(view, "Contraseña minimo 6 caracteres", Snackbar.LENGTH_LONG).show();
+            }
+        } else {
+            Snackbar.make(view, "Nombre entre 3 y 15 caracteres", Snackbar.LENGTH_LONG).show();
         }
-
     }
-
 }
+
+
+

@@ -74,7 +74,7 @@ public class MisPlanes extends AppCompatActivity {
                             Plan plan = dataSnapshot1.getValue(Plan.class);
                             if (plan.getUsuariocreador().equalsIgnoreCase(user.getUid())) {
                                 planes.add(plan);
-                                System.out.println("hola");
+
                             }
                         }
                     }catch(NullPointerException npe){
@@ -107,10 +107,12 @@ public class MisPlanes extends AppCompatActivity {
                 try {
                     for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                         Plan plan = dataSnapshot1.getValue(Plan.class);
-                        if (plan.getUsuariosapuntados().contains(user.getUid()) && !plan.getUsuariocreador().equalsIgnoreCase(user.getUid())) {
+                        if (plan.getUsuariosapuntados().contains(user.getUid()) && !plan.getUsuariocreador().equalsIgnoreCase(user.getUid()) &&
+                                !plan.getEstado().equalsIgnoreCase("cerrado")) {
                             planesApuntados.add(plan);
-                            System.out.println(plan.getCodigo());
                         }
+
+
                     }
                 }catch(NullPointerException npe){
 
@@ -125,9 +127,16 @@ public class MisPlanes extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
+
         });
 
-    }
 
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i=new Intent(this, MainActivity.class);
+        startActivity(i);
+    }
 
 }

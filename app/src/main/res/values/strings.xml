@@ -85,6 +85,8 @@
     <string name="creador">Creador: </string>
     <string name="apuntados">Cantidad de usuarios que participan: </string>
     <string name="publicarplan">¡Publicar plan!</string>
+    <string name="repite">Repite la contraseña</string>
+    <string name="ok">Ok</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

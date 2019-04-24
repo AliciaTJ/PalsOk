@@ -43,25 +43,23 @@ import static android.view.View.INVISIBLE;
 public class AdapterUsuario extends RecyclerView.Adapter<AdapterUsuario.ItemViewHolder> {
     private List<Usuario> mUserLsit = new ArrayList<>();
     private Context mContext;
-    Calendar fechaC;
-    FirebaseAuth auth=FirebaseAuth.getInstance();
-    FirebaseUser firebaseUser=auth.getCurrentUser();
+    private Calendar fechaC;
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
+    private FirebaseUser firebaseUser = auth.getCurrentUser();
     public final Calendar c = Calendar.getInstance();
-    Button botonGuardar, botonEditar, cambiarFoto;
+    private Button botonGuardar, botonEditar, cambiarFoto;
     final int mes = c.get(Calendar.MONTH);
     final int dia = c.get(Calendar.DAY_OF_MONTH);
     final int anio = c.get(Calendar.YEAR);
-    EditText etNombre, etEmail, etDescripcion;
-    TextView etFecha;
-    ImageView foto;
-    TextInputLayout tilNombre;
-    TextInputLayout tilInformacion;
-    TextInputLayout tilEmail;
-    TextView tvFecha;
-    Usuario user;
-    FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
-    DatabaseReference databaseReference=firebaseDatabase.getReference("usuarios");
-    DataBaseUsuario bd=new DataBaseUsuario(databaseReference);
+    private EditText etNombre, etEmail, etDescripcion;
+    private ImageView foto;
+    private TextInputLayout tilNombre;
+    private TextInputLayout tilInformacion;
+    private Usuario user;
+    private Button etFecha;
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference databaseReference = firebaseDatabase.getReference("usuarios");
+    private DataBaseUsuario bd = new DataBaseUsuario(databaseReference);
 
 
     @Override
@@ -77,7 +75,7 @@ public class AdapterUsuario extends RecyclerView.Adapter<AdapterUsuario.ItemView
 
     @Override
     public void onBindViewHolder(AdapterUsuario.ItemViewHolder holder, int position) {
-       user = mUserLsit.get(position);
+        user = mUserLsit.get(position);
 
         if (user.getCodigo().equalsIgnoreCase(firebaseUser.getUid())) {
             etFecha.setText(user.getFechanac());
@@ -95,9 +93,8 @@ public class AdapterUsuario extends RecyclerView.Adapter<AdapterUsuario.ItemView
 
                     etNombre.setEnabled(true);
                     etDescripcion.setEnabled(true);
-                    etEmail.setEnabled(false);
                     cambiarFoto.setVisibility(View.VISIBLE);
-                    etFecha.setTextColor(Color.BLUE);
+                    etFecha.setEnabled(true);
                 }
             });
             etFecha.setOnClickListener(new View.OnClickListener() {
@@ -106,26 +103,24 @@ public class AdapterUsuario extends RecyclerView.Adapter<AdapterUsuario.ItemView
                     obtenerFecha();
                 }
             });
-
             botonGuardar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                        user.setNombre(etNombre.getText().toString());
-                        user.setEmail(etEmail.getText().toString());
-                        user.setDescripcion(etDescripcion.getText().toString());
-                        user.setCodigo(firebaseUser.getUid());
-                        if (validarGuardar())
+                    user.setNombre(etNombre.getText().toString());
+                    user.setEmail(etEmail.getText().toString());
+                    user.setDescripcion(etDescripcion.getText().toString());
+                    user.setCodigo(firebaseUser.getUid());
+                    user.setFechanac(etFecha.getText().toString());
+                    if (validarGuardar())
                         bd.modificar(user);
-
-                        etFecha.setTextColor(Color.BLACK);
-                        etNombre.setEnabled(false);
-                        etDescripcion.setEnabled(false);
-                        cambiarFoto.setVisibility(INVISIBLE);
-
+                    etNombre.setEnabled(false);
+                    etDescripcion.setEnabled(false);
+                    etFecha.setEnabled(false);
+                    cambiarFoto.setVisibility(INVISIBLE);
 
 
-                    }
+                }
 
 
             });
@@ -144,7 +139,6 @@ public class AdapterUsuario extends RecyclerView.Adapter<AdapterUsuario.ItemView
 
         public ItemViewHolder(View itemView) {
             super(itemView);
-            tvFecha= itemView.findViewById(R.id.fecha);
             etNombre = itemView.findViewById(R.id.etNombre);
             etEmail = itemView.findViewById(R.id.etEmail);
             etDescripcion = itemView.findViewById(R.id.etDescripcion);
@@ -159,11 +153,10 @@ public class AdapterUsuario extends RecyclerView.Adapter<AdapterUsuario.ItemView
             etDescripcion.setTextColor(Color.BLACK);
             etNombre.setTextColor(Color.BLACK);
             etEmail.setTextColor(Color.BLACK);
-            botonEditar=itemView.findViewById(R.id.botonEditar);
+            botonEditar = itemView.findViewById(R.id.botonEditar);
             cambiarFoto = itemView.findViewById(R.id.botonCambiar);
             botonGuardar = itemView.findViewById(R.id.botonGuardar);
             tilNombre = itemView.findViewById(R.id.tilnombre);
-            tilEmail = itemView.findViewById(R.id.tilemail);
             tilInformacion = itemView.findViewById(R.id.tilinformacion);
             cambiarFoto.setVisibility(INVISIBLE);
 
@@ -191,7 +184,7 @@ public class AdapterUsuario extends RecyclerView.Adapter<AdapterUsuario.ItemView
                 etFecha.setText(diaFormateado + "/" + mesFormateado + "/" + year);
                 fechaC = Calendar.getInstance();
                 fechaC.set(year, mesActual, dayOfMonth);
-                user.setFechanac(dayOfMonth+"/"+mesActual+"/"+year);
+                user.setFechanac(dayOfMonth + "/" + mesActual + "/" + year);
             }
         }, anio, mes, dia);
 
@@ -226,12 +219,12 @@ public class AdapterUsuario extends RecyclerView.Adapter<AdapterUsuario.ItemView
     public boolean validarGuardar() {
         String nombre = etNombre.getText().toString();
         String info = etDescripcion.getText().toString();
-        String email=etEmail.getText().toString();
+        String email = etEmail.getText().toString();
 
 
         boolean a = esNombreValido(nombre);
         boolean b = esInfoValido(info);
-        boolean c= validarEmail(email);
+        boolean c = validarEmail(email);
 
 
         if (a && b && c) {
@@ -248,8 +241,6 @@ public class AdapterUsuario extends RecyclerView.Adapter<AdapterUsuario.ItemView
         Pattern pattern = Patterns.EMAIL_ADDRESS;
         return pattern.matcher(email).matches();
     }
-
-
 
 
 }

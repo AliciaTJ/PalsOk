@@ -6,12 +6,12 @@ public class Plan {
     private String nombre;
     private String informacion;
     private String fecha;
-    private String maxusuarios;
+    private String estado;
     private String lugar;
     private String usuariocreador;
     private String codigo;
     private List<String> usuariosapuntados;
-    String tipo;
+    private String tipo;
 
     public Plan() {
 
@@ -35,12 +35,12 @@ public class Plan {
         this.tipo = tipo;
     }
 
-    public String getMaxusuarios() {
-        return maxusuarios;
+    public String getEstado() {
+        return estado;
     }
 
-    public void setMaxusuarios(String maxusuarios) {
-        this.maxusuarios = maxusuarios;
+    public void setEstado(String maxusuarios) {
+        this.estado = maxusuarios;
     }
 
     public String getUsuariocreador() {
@@ -84,7 +84,7 @@ public class Plan {
     }
 
     public void setMaximo(String maximo) {
-        this.maxusuarios = maximo;
+        this.estado = maximo;
     }
 
     public String getLugar() {

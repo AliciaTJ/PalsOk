@@ -16,9 +16,7 @@ import e.alicia.pals.modelo.Usuario;
 public class DataBasePlan {
 
     DatabaseReference dbPlanes;
-    Boolean saved = null;
-    List<Plan> planes = new ArrayList<>();
-    Plan plan;
+    Boolean guardado = null;
     DatabaseReference dbUsuarios;
     FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
 
@@ -30,28 +28,24 @@ public class DataBasePlan {
     }
 
 
-
-
-    //---------------------------planes
-
     //guardar
-    public Boolean save(Plan plan, String codigo
+    public Boolean guardar(Plan plan
     ) {
         if (plan == null) {
-            saved = false;
+            guardado = false;
         } else {
 
             try {
-                dbPlanes.child("planes").child(plan.getCodigo()).setValue(plan);
-                saved = true;
+                dbPlanes.child(plan.getCodigo()).setValue(plan);
+                guardado = true;
             } catch (DatabaseException e) {
                 e.printStackTrace();
-                saved = false;
+                guardado = false;
             }
 
         }
 
-        return saved;
+        return guardado;
     }
 
 
@@ -60,8 +54,12 @@ public class DataBasePlan {
         dbPlanes.child(plan.getCodigo()).setValue(plan);
     }
 
+
     public boolean borrarPlan(Plan plan){
+        plan.setEstado("cerrado");
         dbPlanes.child(plan.getCodigo()).removeValue();
+        dbPlanes.getDatabase().getReference().child("planescerrados").child(plan.getCodigo()).setValue(plan);
+        dbPlanes.getDatabase().getReference().child("chats").child(plan.getCodigo()).removeValue();
         return true;
 
 

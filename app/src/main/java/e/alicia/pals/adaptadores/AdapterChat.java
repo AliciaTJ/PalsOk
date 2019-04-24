@@ -1,31 +1,27 @@
 package e.alicia.pals.adaptadores;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.Calendar;
 import java.util.List;
-
 import e.alicia.pals.R;
 import e.alicia.pals.modelo.Mensaje;
+
+import static android.view.Gravity.LEFT;
+import static android.view.Gravity.RIGHT;
 
 
 public class AdapterChat extends RecyclerView.Adapter<AdapterChat.ItemViewHolder> {
     private List<Mensaje> mUserLsit;
     private Context mContext;
-    private Mensaje mensaje;
     private FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
 
 
@@ -54,6 +50,12 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.ItemViewHolder
         int mDay = calendar.get(Calendar.DAY_OF_MONTH);
         calendar.get(Calendar.HOUR);
         holder.tvMensaje.setText(mensaje.getMensaje());
+        if (firebaseUser.getEmail().equalsIgnoreCase(mensaje.getUsuario())){
+            holder.tvMensaje.setTextColor(R.color.primaryLightColor);
+
+        }else{
+            holder.tvMensaje.setTextColor(Color.BLACK);
+        }
         holder.tvFecha.setText(mDay+"/"+mMonth+"/"+mYear+"\t"
                 + calendar.get(Calendar.HOUR)
                 +":"+calendar.get(Calendar.MINUTE)

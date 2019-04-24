@@ -54,7 +54,8 @@
             android:layout_height="41dp"
             android:background="@drawable/burbuja"
             android:gravity="center"
-            android:text="TextView" />
+            android:text="TextView"
+            android:textSize="18sp" />
 
     </LinearLayout>
 

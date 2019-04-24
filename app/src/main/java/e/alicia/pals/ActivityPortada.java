@@ -97,8 +97,6 @@ public class ActivityPortada extends AppCompatActivity
     public void cargarNoticias() {
 
         DatabaseReference dbr = db.getReference("noticias");
-
-
         dbr.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -141,9 +139,9 @@ public class ActivityPortada extends AppCompatActivity
         }
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.activity_portada, menu);
         return true;
     }
@@ -159,7 +157,6 @@ public class ActivityPortada extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -173,6 +170,7 @@ public class ActivityPortada extends AppCompatActivity
             startActivity(i);
         } else if (id == R.id.opcionLogOut) {
             user.signOut();
+            user=null;
             Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
         } else if (id == R.id.op_inicio) {

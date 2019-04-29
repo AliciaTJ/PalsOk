@@ -69,7 +69,7 @@
                         android:layout_margin="10dp"
                         android:ems="10"
                         android:hint="@string/lugar"
-                        android:inputType="text"
+                        android:inputType="text|textCapSentences"
                         android:singleLine="true"
                         android:textSize="14sp" />
 

@@ -52,6 +52,8 @@ public class DataBasePlan {
     public void apuntarseAlPlan(Plan plan, String codigoUsuario){
         plan.getUsuariosapuntados().add(codigoUsuario);
         dbPlanes.child(plan.getCodigo()).setValue(plan);
+        dbUsuarios.child(plan.getUsuariocreador()).child("notificaciones").setValue(true);
+
     }
 
 

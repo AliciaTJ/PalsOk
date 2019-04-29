@@ -123,7 +123,7 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
                 deportes.add(R.drawable.a13);
                 deportes.add(R.drawable.a17);
                 deportes.add(R.drawable.a18);
-                imagen = (int) (Math.random() * 7) + 1;
+                imagen = (int) (Math.random() * 6) + 1;
                 System.out.println(imagen);
                 holder.ivFoto.setImageResource(deportes.get(imagen));
                 break;
@@ -136,7 +136,7 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
                 otros.add(R.drawable.a33);
                 otros.add(R.drawable.a36);
 
-                imagen = (int) (Math.random() * 6) + 1;
+                imagen = (int) (Math.random() * 5) + 1;
                 System.out.println(imagen);
                 holder.ivFoto.setImageResource(otros.get(imagen));
                 break;

@@ -13,21 +13,13 @@ public class Usuario {
     private String foto;
     private String descripcion;
     private String fechanac;
+    private Boolean notificacion;
 
 
     public Usuario(){
 
     }
 
-    public Usuario(String nombre) {
-        this.nombre = nombre;
-    }
-    public Usuario(String nombre, String codigo, String email, List planes) {
-        this.nombre = nombre;
-        this.codigo = codigo;
-        this.email = email;
-        this.planes=planes;
-    }
 
     public String getFechanac() {
         return fechanac;
@@ -44,6 +36,14 @@ public class Usuario {
         } else {
             return foto;
         }
+    }
+
+    public Boolean getNotificacion() {
+        return notificacion;
+    }
+
+    public void setNotificacion(Boolean notificacion) {
+        this.notificacion = notificacion;
     }
 
     public void setFoto(String foto) {

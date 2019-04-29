@@ -3,7 +3,6 @@ package e.alicia.pals;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -20,7 +19,7 @@ ImageButton ibFreak, ibCine, ibMusica, ibFiesta, ibOtros, ibTurismo, ibCultura, 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_crear_plan);
+        setContentView(R.layout.tipo_plan);
         user=getIntent().getStringExtra("user");
         //-----------se establecen los enlaces
         ibDeporte=findViewById(R.id.ibDeportes);

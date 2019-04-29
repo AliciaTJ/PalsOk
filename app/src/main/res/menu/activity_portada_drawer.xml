@@ -29,10 +29,6 @@
     <item android:title="Otras opciones">
         <menu>
             <item
-                android:id="@+id/logout"
-                android:icon="@drawable/logout"
-                android:title="@string/signout" />
-            <item
                 android:id="@+id/op_opciones"
                 android:icon="@drawable/ic_menu_manage"
                 android:title="@string/opciones" />

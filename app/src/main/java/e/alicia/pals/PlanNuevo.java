@@ -363,16 +363,16 @@ public class PlanNuevo extends AppCompatActivity {
         if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                place = Autocomplete.getPlaceFromIntent(data);
-                System.out.println(place.getAddress());
+
                 System.out.println(place.getName());
                 etLugar.setText(place.getName());
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
 
                 Status status = Autocomplete.getStatusFromIntent(data);
-                System.out.println("error");
+
 
             } else if (resultCode == RESULT_CANCELED) {
-                System.out.println("cancelado");
+
             }
         }
     }

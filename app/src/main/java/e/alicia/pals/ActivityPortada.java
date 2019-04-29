@@ -1,10 +1,12 @@
 package e.alicia.pals;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -30,24 +32,22 @@ import java.util.ArrayList;
 
 import e.alicia.pals.adaptadores.AdapterNoticias;
 import e.alicia.pals.adaptadores.AdapterPlanes;
-import e.alicia.pals.baseDatos.DataBasePlan;
+import e.alicia.pals.baseDatos.DataBaseUsuario;
 import e.alicia.pals.modelo.Noticia;
 import e.alicia.pals.modelo.Plan;
-
-import static android.support.constraint.solver.widgets.ConstraintWidget.VISIBLE;
-
+import e.alicia.pals.modelo.Usuario;
 
 public class ActivityPortada extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Context context = this;
     FirebaseAuth user;
-    private RecyclerView rv, rvNot;
-    ArrayList<Plan> planes;
+    private RecyclerView  rvNot;
     Context con = this;
-    AdapterPlanes adapterPlanes;
     AdapterNoticias adapterNoticias;
     FirebaseDatabase db;
     ArrayList<Noticia> noticias;
+    DataBaseUsuario bdUsuario;
+    DatabaseReference dbReference;
    // private AdView mAdView;
 
     @Override
@@ -64,6 +64,7 @@ public class ActivityPortada extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         user = FirebaseAuth.getInstance();
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.enviar);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,18 +85,38 @@ public class ActivityPortada extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
         rvNot = findViewById(R.id.rvNoticias);
         noticias = new ArrayList<>();
 
-
         db = FirebaseDatabase.getInstance();
         rvNot.setLayoutManager(new LinearLayoutManager(this));
-
-
+        dbReference=db.getReference("usuarios");
+        bdUsuario=new DataBaseUsuario(dbReference);
         cargarNoticias();
         adapterNoticias = new AdapterNoticias(ActivityPortada.this, noticias);
         rvNot.setAdapter(adapterNoticias);
+
+        comprobarNotificaciones();
+
+    }
+
+    public void comprobarNotificaciones(){
+        System.out.println(dbReference.child(user.getUid()).child("notificaciones").getKey());
+
+        if ( dbReference.child(user.getUid()).child("notificaciones").getSpec().toString().equalsIgnoreCase("true")){
+
+            NotificationCompat.Builder mBuilder;
+            NotificationManager manager = (NotificationManager) getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
+            mBuilder = new NotificationCompat.Builder(getApplicationContext());
+            mBuilder.setContentTitle("Uno de tus planes tiene nuevo usuarios");
+            mBuilder.setContentText("¡Felicidades! Otros usuarios se han apuntado a uno " +
+                    "de tus planes. Sigue creando planes y compartiendo experiencias")
+                    .setSmallIcon(R.drawable.users)
+                    .setVibrate(new long[]{100, 250, 100, 500})
+                    .setAutoCancel(true);
+            manager.notify(1, mBuilder.build());
+        }
+
 
     }
 
@@ -162,10 +183,13 @@ public class ActivityPortada extends AppCompatActivity
             user=null;
             Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
-
         }
         if (id==R.id.opcionNoticia){
             Intent i = new Intent(this, PublicarNoticia.class);
+            startActivity(i);
+        }
+        if (id==R.id.opcionBD){
+            Intent i=new Intent(this, ConfiguracionBD.class);
             startActivity(i);
         }
 
@@ -183,11 +207,7 @@ public class ActivityPortada extends AppCompatActivity
         } else if (id == R.id.op_nuevoplan) {
             Intent i = new Intent(this, TipoPlan.class);
             startActivity(i);
-        } else if (id == R.id.opcionLogOut) {
-            user.signOut();
-            user=null;
-            Intent i = new Intent(this, MainActivity.class);
-            startActivity(i);
+
         } else if (id == R.id.op_inicio) {
             Intent i = new Intent(this, ActivityPortada.class);
             startActivity(i);

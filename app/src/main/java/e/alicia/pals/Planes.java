@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,11 +26,15 @@ import e.alicia.pals.modelo.Plan;
 
 public class Planes extends AppCompatActivity {
     private RecyclerView rv;
-    ArrayList<Plan> planes;
-    Context con = this;
-    AdapterPlanes adapterPlanes;
-    FirebaseDatabase db;
-    Calendar c= Calendar.getInstance();
+    private ArrayList<Plan> planes;
+    private Context con = this;
+    private AdapterPlanes adapterPlanes;
+    private FirebaseDatabase db;
+    private Calendar c= Calendar.getInstance();
+    private Spinner spTipo;
+    private final String[] tipos={"Filtrar por tipo","Freak","Cultura", "Musica",
+            "Cine", "Turismo", "Deportes", "Fiesta","Otros"};
+    private ArrayAdapter adapter;
 
 
     @Override
@@ -36,13 +44,33 @@ public class Planes extends AppCompatActivity {
         rv = findViewById(R.id.rv);
         planes = new ArrayList<>();
         rv.setLayoutManager(new LinearLayoutManager(this));
-        db = FirebaseDatabase.getInstance();;
-        cargarPlanes();
+        db = FirebaseDatabase.getInstance();
+        spTipo=(Spinner)findViewById(R.id.spTipo);
+
+        adapter=new ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, tipos);
+        spTipo.setAdapter(adapter);
+        spTipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position==0){
+                    cargarPlanes("nada");
+                }else{
+                    cargarPlanes(tipos[position]);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                cargarPlanes("nada");
+
+            }
+        });
+
 
 
     }
 
-    public void cargarPlanes() {
+    public void cargarPlanes(final String tipo) {
 
         DatabaseReference dbr = db.getReference("planes");
         dbr.addValueEventListener(new ValueEventListener() {
@@ -51,26 +79,30 @@ public class Planes extends AppCompatActivity {
                 planes.clear();
                 try {
                     for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                        Plan user = dataSnapshot1.getValue(Plan.class);
+                        Plan plan = dataSnapshot1.getValue(Plan.class);
 
-
-                        planes.add(user);
+                        if (tipo.equalsIgnoreCase("nada")) {
+                            planes.add(plan);
+                        }else{
+                            if (plan.getTipo().equalsIgnoreCase(tipo)){
+                                planes.add(plan);
+                            }
+                        }
 
                     }
                     adapterPlanes = new AdapterPlanes(Planes.this, planes);
                     rv.setAdapter(adapterPlanes);
                     adapterPlanes.notifyDataSetChanged();
-                    System.out.println(planes.size());
+
                 } catch (NullPointerException npe) {
 
-                    System.out.println(planes.size()+"ddd1");
                 } finally {
 
 
                     adapterPlanes = new AdapterPlanes(Planes.this, planes);
                     rv.setAdapter(adapterPlanes);
                     adapterPlanes.notifyDataSetChanged();
-                    System.out.println(planes.size()+"poo");
+
 
                 }
             }

@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PublicarNoticia"></activity>
+        <activity android:name=".ConfiguracionBD"></activity>
+        <activity android:name=".PublicarNoticia" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

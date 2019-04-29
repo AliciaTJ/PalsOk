@@ -1,10 +1,12 @@
 package e.alicia.pals;
 
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -38,7 +40,6 @@ public class PublicarNoticia extends AppCompatActivity {
         setContentView(R.layout.activity_publicar_noticia);
         iniciarActivity();
 
-
     }
 
 
@@ -66,6 +67,13 @@ public class PublicarNoticia extends AppCompatActivity {
             etTitulo.setText("");
             imagen.setImageResource(R.drawable.foto);
             Snackbar.make(view, "Noticia publicada con exito", Snackbar.LENGTH_LONG).show();
+
+
+
+
+
+
+
         } else {
             Snackbar.make(view, "Error al publicar la noticia", Snackbar.LENGTH_LONG).show();
         }

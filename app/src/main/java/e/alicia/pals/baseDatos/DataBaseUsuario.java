@@ -166,6 +166,17 @@ return null;
 
     }
 
+    public Boolean comprobarNot(String usuario){
+      String notificacion=  db.child(usuario).child("notificaciones").toString();
+        System.out.println(notificacion);
+      if (notificacion.equalsIgnoreCase("true")){
+          return true;
+      }else{
+          return false;
+      }
+
+    }
+
 
 }
 

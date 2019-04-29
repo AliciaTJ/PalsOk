@@ -4,12 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Planes">
+    tools:context=".ConfiguracionBD">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -17,27 +16,33 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <Spinner
-                android:id="@+id/spTipo"
+            <TextView
+                android:id="@+id/tvPlanesCerrados"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/primaryColor"
-                android:backgroundTintMode="multiply"
-                android:paddingLeft="8dp"
-                android:paddingTop="8dp"
-                android:spinnerMode="dropdown" />
+                android:background="@color/quantum_amber400"
+                android:text="Planes cerrados" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_marginBottom="15dp">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <Button
+                android:id="@+id/botonBorrar"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/primaryColor"
+                android:onClick="borrarPlanesCerrados"
+                android:text="Borrar todos"
+                android:textColor="@color/quantum_amberA400" />
         </LinearLayout>
     </ScrollView>
 

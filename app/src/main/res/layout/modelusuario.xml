@@ -25,7 +25,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/ivCabecera"
+                android:id="@+id/ivImagen"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:background="@drawable/side_nav_bar"

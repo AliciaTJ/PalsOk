@@ -85,7 +85,7 @@ public class DataBaseUsuario {
 
     public List<Usuario> retrieve() {
 
-        db.child("usuarios").addChildEventListener(new ChildEventListener() {
+        db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 fetchData(dataSnapshot);

@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import e.alicia.pals.modelo.Mensaje;
-import e.alicia.pals.modelo.Plan;
-import e.alicia.pals.modelo.Usuario;
 
 
 public class DataBaseChat {

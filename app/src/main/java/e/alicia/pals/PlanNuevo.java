@@ -55,7 +55,7 @@ public class PlanNuevo extends AppCompatActivity {
     int tipo;
     private String tipoPlan;
     private Plan plan;
-    private ImageView imagen;
+    private ImageView ivImagen;
     private TextInputLayout tilTitulo;
     private TextInputLayout tilInformacion;
     private TextInputLayout tilLugar;
@@ -100,39 +100,103 @@ public class PlanNuevo extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         dbr = firebaseDatabase.getReference("planes");
 
-        imagen = findViewById(R.id.ivCabecera);
+        ivImagen = findViewById(R.id.ivImagen);
         db = new DataBasePlan(dbr);
+        int imagen = 0;
         switch (tipo) {
             case 1:
-                imagen.setImageResource(R.drawable.freak);
+                ArrayList<Integer> freak = new ArrayList<>();
+                freak.add(R.drawable.a12);
+                freak.add(R.drawable.a16);
+                freak.add(R.drawable.a28);
+                imagen = (int) (Math.random() * 2) + 1;
+                ivImagen.setImageResource(freak.get(imagen));
+
                 tipoPlan = "freak";
                 break;
             case 2:
-                imagen.setImageResource(R.drawable.cine2);
+                ArrayList<Integer> cine = new ArrayList<>();
+                cine.add(R.drawable.a32);
+                cine.add(R.drawable.a37);
+                cine.add(R.drawable.a38);
+                imagen = (int) (Math.random() * 2) + 1;
+                System.out.println(imagen);
+                ivImagen.setImageResource(cine.get(imagen));
                 tipoPlan = "cine";
                 break;
             case 3:
-                imagen.setImageResource(R.drawable.musica);
+                ArrayList<Integer> musica = new ArrayList<>();
+                musica.add(R.drawable.a24);
+                musica.add(R.drawable.a25);
+                musica.add(R.drawable.a30);
+                musica.add(R.drawable.a27);
+                musica.add(R.drawable.a29);
+                musica.add(R.drawable.a31);
+                imagen = (int) (Math.random() * 5) + 1;
+               ivImagen.setImageResource(musica.get(imagen));
                 tipoPlan = "musica";
                 break;
             case 4:
-                imagen.setImageResource(R.drawable.a3);
+                ArrayList<Integer> fiesta = new ArrayList<>();
+                fiesta.add(R.drawable.a4);
+                fiesta.add(R.drawable.a19);
+                fiesta.add(R.drawable.a5);
+                fiesta.add(R.drawable.a27);
+                fiesta.add(R.drawable.a29);
+                imagen = (int) (Math.random() * 3) + 1;
+               ivImagen.setImageResource(fiesta.get(imagen));
                 tipoPlan = "fiesta";
                 break;
             case 5:
-                imagen.setImageResource(R.drawable.a5);
+                ArrayList<Integer> otros = new ArrayList<>();
+                otros.add(R.drawable.a6);
+                otros.add(R.drawable.a7);
+                otros.add(R.drawable.a8);
+                otros.add(R.drawable.a11);
+                otros.add(R.drawable.a33);
+                otros.add(R.drawable.a36);
+
+                imagen = (int) (Math.random() * 5) + 1;
+                System.out.println(imagen);
+               ivImagen.setImageResource(otros.get(imagen));
                 tipoPlan = "otros";
                 break;
             case 6:
-                imagen.setImageResource(R.drawable.a1);
+                ArrayList<Integer> turismo = new ArrayList<>();
+                turismo.add(R.drawable.a1);
+                turismo.add(R.drawable.a15);
+                turismo.add(R.drawable.a20);
+                turismo.add(R.drawable.a22);
+                turismo.add(R.drawable.a23);
+                turismo.add(R.drawable.a35);
+                imagen = (int) (Math.random() * 5) + 1;
+                System.out.println(imagen);
+                ivImagen.setImageResource(turismo.get(imagen));
                 tipoPlan = "turismo";
                 break;
             case 7:
-                imagen.setImageResource(R.drawable.a2);
+                ArrayList<Integer> imagenes = new ArrayList<>();
+                imagenes.add(R.drawable.a2);
+                imagenes.add(R.drawable.a3);
+                imagenes.add(R.drawable.a14);
+                imagenes.add(R.drawable.a21);
+                imagenes.add(R.drawable.a34);
+                imagen = (int) (Math.random() * 4) + 1;
+               ivImagen.setImageResource(imagenes.get(imagen));
                 tipoPlan = "cultura";
                 break;
             case 8:
-                imagen.setImageResource(R.drawable.deportes);
+                ArrayList<Integer> deportes = new ArrayList<>();
+                deportes.add(R.drawable.a8);
+                deportes.add(R.drawable.a10);
+                deportes.add(R.drawable.a9);
+                deportes.add(R.drawable.a26);
+                deportes.add(R.drawable.a13);
+                deportes.add(R.drawable.a17);
+                deportes.add(R.drawable.a18);
+                imagen = (int) (Math.random() * 6) + 1;
+                System.out.println(imagen);
+                ivImagen.setImageResource(deportes.get(imagen));
                 tipoPlan = "deportes";
                 break;
 
@@ -140,7 +204,7 @@ public class PlanNuevo extends AppCompatActivity {
         etInfo = findViewById(R.id.informacion);
         etCreado=findViewById(R.id.tvCreador);
         etCreado.setText("Creado por: " + user.getDisplayName());
-        etTitulo = findViewById(R.id.titulo);
+        etTitulo = findViewById(R.id.etTitulo);
         etLugar = findViewById(R.id.lugar);
         fechaIndiferente = findViewById(R.id.fechaIndiferente);
         tilInformacion = findViewById(R.id.tilinformacion);
@@ -301,14 +365,14 @@ public class PlanNuevo extends AppCompatActivity {
                place = Autocomplete.getPlaceFromIntent(data);
                 System.out.println(place.getAddress());
                 System.out.println(place.getName());
-                etLugar.setText(place.getAddress());
+                etLugar.setText(place.getName());
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
 
                 Status status = Autocomplete.getStatusFromIntent(data);
-
+                System.out.println("error");
 
             } else if (resultCode == RESULT_CANCELED) {
-
+                System.out.println("cancelado");
             }
         }
     }

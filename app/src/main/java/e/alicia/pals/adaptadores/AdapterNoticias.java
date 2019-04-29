@@ -37,7 +37,7 @@ public class AdapterNoticias extends RecyclerView.Adapter<AdapterNoticias.ItemVi
     public void onBindViewHolder(AdapterNoticias.ItemViewHolder holder, int position) {
         Noticia noticia = mUserLsit.get(position);
         holder.tvTitular.setText(noticia.getTitular());
-        holder.tvCuerpo.setText(noticia.getContenido());
+        holder.tvCuerpo.setText(noticia.getCuerpo());
 
         Glide
     .with(mContext)

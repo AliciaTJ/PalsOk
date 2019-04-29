@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.formats.NativeAd;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -49,8 +50,7 @@ public class VerPlan extends AppCompatActivity {
 RecyclerView rv;
 List<Plan> planes=new ArrayList<>();
 AdapterVerPlan adapterVerPlan;
-
-Button botonApuntar, botonChat, botonDejar;
+ImageView ivFoto;
 
 
     @Override
@@ -59,7 +59,6 @@ Button botonApuntar, botonChat, botonDejar;
         setContentView(R.layout.activity_verplan);
         iniciarActivity();
         codigo = getIntent().getStringExtra("codigo");
-
         cargarPlan(codigo);
 
     }
@@ -67,10 +66,8 @@ Button botonApuntar, botonChat, botonDejar;
 
 
     public void iniciarActivity() {
-
+        ivFoto=(ImageView)findViewById(R.id.ivFoto);
         rv=(RecyclerView)findViewById(R.id.rv);
-        botonApuntar=(Button)findViewById(R.id.botonApuntarse);
-        botonDejar=(Button)findViewById(R.id.botonDejar);
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("planes");
         dataBasePlan = new DataBasePlan(databaseReference);
@@ -78,7 +75,7 @@ Button botonApuntar, botonChat, botonDejar;
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         rv.setLayoutManager(new LinearLayoutManager(this));
-        //falta random imagenes
+
 
     }
 
@@ -104,7 +101,6 @@ Button botonApuntar, botonChat, botonDejar;
                     adapterVerPlan = new AdapterVerPlan(VerPlan.this, planes);
                     rv.setAdapter(adapterVerPlan);
                     adapterVerPlan.notifyDataSetChanged();
-                    System.out.println(planes.size());
                 }
 
 

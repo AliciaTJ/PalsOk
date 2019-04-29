@@ -27,7 +27,7 @@
             <ImageView
                 android:id="@+id/ivRandom"
                 android:layout_width="match_parent"
-                android:layout_height="115dp"
+                android:layout_height="130dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -53,7 +53,8 @@
                 android:layout_marginBottom="10dp"
                 android:ems="10"
                 android:hint="@string/nombre"
-                android:inputType="text"
+                android:inputType="text|textCapSentences"
+                android:textColorHint="@color/primaryColor"
                 android:textColorLink="@color/quantum_amber400"
                 android:textSize="12sp" />
 
@@ -69,6 +70,7 @@
                 android:ems="10"
                 android:hint="@string/email"
                 android:inputType="textEmailAddress"
+                android:textColorHint="@color/primaryColor"
                 android:textColorLink="@color/quantum_amber400"
                 android:textSize="12sp" />
 
@@ -84,6 +86,7 @@
                 android:ems="10"
                 android:hint="@string/pass"
                 android:inputType="textPassword"
+                android:textColorHint="@color/primaryColor"
                 android:textColorLink="@color/quantum_amber400"
                 android:textSize="12sp" />
 
@@ -99,6 +102,7 @@
                 android:ems="10"
                 android:hint="@string/repite"
                 android:inputType="textPassword"
+                android:textColorHint="@color/primaryColor"
                 android:textColorLink="@color/quantum_amber400"
                 android:textSize="12sp" />
 

@@ -79,7 +79,7 @@ public class Registrar extends AppCompatActivity {
         imagenes.add(R.drawable.a6);
         imagenes.add(R.drawable.a7);
         imagenes.add(R.drawable.a8);
-        iv.setImageResource(R.drawable.a1);
+        iv.setImageResource(R.drawable.a3);
         int imagen = (int) (Math.random() * 7) + 1;
         iv.setImageResource(imagenes.get(imagen));
     }
@@ -107,7 +107,7 @@ public class Registrar extends AppCompatActivity {
 
 
                         } else {
-                            Snackbar sb = Snackbar.make(view, "El email ya existe en el sistema", Snackbar.LENGTH_LONG);
+                            Snackbar sb = Snackbar.make(view, "No ha sido posible registrar al usuario", Snackbar.LENGTH_LONG);
                             View snackBarView = sb.getView();
                             snackBarView.setBackgroundColor(Color.RED);
                             sb.show();
@@ -191,6 +191,12 @@ public class Registrar extends AppCompatActivity {
         } else {
             Snackbar.make(view, "Nombre entre 3 y 15 caracteres", Snackbar.LENGTH_LONG).show();
         }
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i=new Intent(this, MainActivity.class);
+        startActivity(i);
     }
 }
 

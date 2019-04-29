@@ -23,7 +23,6 @@ import e.alicia.pals.modelo.Plan;
 public class Planes extends AppCompatActivity {
     private RecyclerView rv;
     ArrayList<Plan> planes;
-
     Context con = this;
     AdapterPlanes adapterPlanes;
     FirebaseDatabase db;
@@ -37,8 +36,9 @@ public class Planes extends AppCompatActivity {
         rv = findViewById(R.id.rv);
         planes = new ArrayList<>();
         rv.setLayoutManager(new LinearLayoutManager(this));
-        db = FirebaseDatabase.getInstance();
+        db = FirebaseDatabase.getInstance();;
         cargarPlanes();
+
 
     }
 
@@ -55,30 +55,22 @@ public class Planes extends AppCompatActivity {
 
 
                         planes.add(user);
-                            /*
-                        }else{
-                                String[] fecha = user.getFecha().split("/");
-                                int dia = Integer.parseInt(fecha[0]);
-                                int mes = Integer.parseInt(fecha[1]);
-                                int anio = Integer.parseInt(fecha[2]);
-                                c.set(anio, mes, dia);
-                            if (c.getTimeInMillis()<System.currentTimeMillis()-82800000){
-                                user.setEstado("vencido");
-                                database.guardar(user);*/
 
                     }
                     adapterPlanes = new AdapterPlanes(Planes.this, planes);
                     rv.setAdapter(adapterPlanes);
                     adapterPlanes.notifyDataSetChanged();
+                    System.out.println(planes.size());
                 } catch (NullPointerException npe) {
 
-
+                    System.out.println(planes.size()+"ddd1");
                 } finally {
 
 
                     adapterPlanes = new AdapterPlanes(Planes.this, planes);
                     rv.setAdapter(adapterPlanes);
                     adapterPlanes.notifyDataSetChanged();
+                    System.out.println(planes.size()+"poo");
 
                 }
             }
@@ -95,7 +87,7 @@ public class Planes extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent i=new Intent(this, MainActivity.class);
+        Intent i=new Intent(this, ActivityPortada.class);
         startActivity(i);
     }
 }

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
@@ -17,7 +16,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -143,7 +141,7 @@ public class AdapterUsuario extends RecyclerView.Adapter<AdapterUsuario.ItemView
             etEmail = itemView.findViewById(R.id.etEmail);
             etDescripcion = itemView.findViewById(R.id.etDescripcion);
             etFecha = itemView.findViewById(R.id.etFecha);
-            foto = itemView.findViewById(R.id.ivCabecera);
+            foto = itemView.findViewById(R.id.ivImagen);
             etNombre.setEnabled(false);
             etEmail.setEnabled(false);
             etDescripcion.setEnabled(false);

@@ -15,9 +15,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -34,6 +34,9 @@ import e.alicia.pals.baseDatos.DataBasePlan;
 import e.alicia.pals.modelo.Noticia;
 import e.alicia.pals.modelo.Plan;
 
+import static android.support.constraint.solver.widgets.ConstraintWidget.VISIBLE;
+
+
 public class ActivityPortada extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Context context = this;
@@ -45,17 +48,18 @@ public class ActivityPortada extends AppCompatActivity
     AdapterNoticias adapterNoticias;
     FirebaseDatabase db;
     ArrayList<Noticia> noticias;
-    private AdView mAdView;
+   // private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_portada);
+        /*
         mAdView=findViewById(R.id.adView);
         MobileAds.initialize(this, "ca-app-pub-6032187278566198~3677017529");
         mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        mAdView.loadAd(adRequest);*/
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -69,6 +73,8 @@ public class ActivityPortada extends AppCompatActivity
             }
         });
 
+
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.common_open_on_phone, R.string.abandonar);
@@ -77,7 +83,6 @@ public class ActivityPortada extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
 
 
         rvNot = findViewById(R.id.rvNoticias);
@@ -89,7 +94,8 @@ public class ActivityPortada extends AppCompatActivity
 
 
         cargarNoticias();
-
+        adapterNoticias = new AdapterNoticias(ActivityPortada.this, noticias);
+        rvNot.setAdapter(adapterNoticias);
 
     }
 
@@ -101,17 +107,10 @@ public class ActivityPortada extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 noticias.clear();
-
-                    Noticia user = new Noticia();
-                    user.setTitular(dataSnapshot.child("1").child("titular").getValue(String.class));
-                    user.setImagen(dataSnapshot.child("1").child("imagen").getValue(String.class));
-                    user.setContenido(dataSnapshot.child("1").child("cuerpo").getValue(String.class));
-                    noticias.add(user);
-                    Noticia user2 = new Noticia();
-                user2.setTitular(dataSnapshot.child("2").child("titular").getValue(String.class));
-                user2.setImagen(dataSnapshot.child("2").child("imagen").getValue(String.class));
-                user2.setContenido(dataSnapshot.child("2").child("cuerpo").getValue(String.class));
-                    noticias.add(user2);
+                   for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                       Noticia noticia=dataSnapshot1.getValue(Noticia.class);
+                       noticias.add(noticia);
+                   }
 
 
                 adapterNoticias = new AdapterNoticias(ActivityPortada.this, noticias);
@@ -142,7 +141,15 @@ public class ActivityPortada extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_portada, menu);
+
+
+
+        if (!user.getCurrentUser().getEmail().equalsIgnoreCase("aliciavisual@gmail.com")){
+            getMenuInflater().inflate(R.menu.activity_portada, menu);
+        }else{
+            getMenuInflater().inflate(R.menu.activity_portada_administrador, menu);
+
+        }
         return true;
     }
 
@@ -151,7 +158,15 @@ public class ActivityPortada extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.opcionLogOut) {
-            return true;
+            user.signOut();
+            user=null;
+            Intent i = new Intent(this, MainActivity.class);
+            startActivity(i);
+
+        }
+        if (id==R.id.opcionNoticia){
+            Intent i = new Intent(this, PublicarNoticia.class);
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);

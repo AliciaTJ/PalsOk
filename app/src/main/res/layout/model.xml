@@ -25,7 +25,7 @@
             android:id="@+id/list_root"
             android:layout_width="218dp"
             android:layout_height="96dp"
-            android:background="@color/quantum_amberA100"
+            android:background="@drawable/burbuja2"
             android:clickable="true"
             android:focusable="true"
             android:orientation="vertical"

@@ -33,7 +33,8 @@
             android:id="@+id/mensajeEnviar"
             android:layout_width="314dp"
             android:layout_height="wrap_content"
-            />
+            android:hint="@string/mensaje"
+            android:inputType="textCapSentences" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.v7.widget.RecyclerView

@@ -9,9 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -40,6 +39,7 @@ public class Chat extends AppCompatActivity {
     private EditText etEnviar;
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
 
 
@@ -50,6 +50,7 @@ public class Chat extends AppCompatActivity {
         mensajes = new ArrayList<>();
         firebaseAuth=FirebaseAuth.getInstance();
         firebaseUser=firebaseAuth.getCurrentUser();
+       mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         LinearLayoutManager linearLayout=new LinearLayoutManager(this);
 
         linearLayout.setStackFromEnd(true);
@@ -69,7 +70,7 @@ public class Chat extends AppCompatActivity {
                 Mensaje mensaje = new Mensaje();
                 mensaje.setFechaHora(System.currentTimeMillis());
                 mensaje.setMensaje(etEnviar.getText().toString());
-                mensaje.setUsuario(firebaseUser.getEmail());
+                mensaje.setUsuario(firebaseUser.getDisplayName());
 
                 mandarMensaje(mensaje, codigo);
             }
@@ -79,6 +80,12 @@ public class Chat extends AppCompatActivity {
     }
 
     public void iniciarActivity() {
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, firebaseUser.getDisplayName());
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME,  firebaseUser.getEmail());
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
+
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("chats");
         dataBaseChat = new DataBaseChat();
@@ -142,6 +149,7 @@ public class Chat extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         Intent i=new Intent(this, VerPlan.class);
+        i.putExtra("codigo", codigo);
         startActivity(i);
     }
 

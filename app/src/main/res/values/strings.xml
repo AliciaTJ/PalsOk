@@ -93,6 +93,8 @@
     <string name="mensaje">Escribe aqui</string>
     <string name="basededatos">Base de datos</string>
     <string name="banner_ad_unit_id">ca-app-pub-6032187278566198/3900378804</string>
-
+    <string name="nochat">Ahora no</string>
+    <string name="sichat">Acceder al chat</string>
+    <string name="borrarcerrados">Se van a borrar los planes en estado cerrado. ¿Continuar?</string>
 
 </resources>

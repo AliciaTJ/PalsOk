@@ -12,13 +12,15 @@ import java.util.List;
 
 import e.alicia.pals.modelo.Mensaje;
 
-
+/**
+ * Clase controladora del elemento chat. Actualiza, borra o crea elementos chat
+ * en la base de datos de firebase
+ */
 public class DataBaseChat {
 
     DatabaseReference bdChat;
     Boolean saved = null;
     List<Mensaje> mensajes = new ArrayList<>();
-    Mensaje plan;
     DatabaseReference dbUsuarios;
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
@@ -29,6 +31,11 @@ public class DataBaseChat {
     }
 
 
+    /**
+     * Metodo que muestra los mensajes. Filtra por codigo de plan.
+     * @param codigo
+     * @return
+     */
     public List<Mensaje> mostrar(String codigo) {
         bdChat.child("chats").child(codigo).addChildEventListener(new ChildEventListener() {
             @Override
@@ -74,6 +81,12 @@ public class DataBaseChat {
 
     }
 
+    /**
+     * Metodo que envia un mensaje.
+     * @param mensaje
+     * @param codigo
+     * @return
+     */
     public Boolean enviar(Mensaje mensaje, String codigo
     ) {
         if (mensaje == null) {

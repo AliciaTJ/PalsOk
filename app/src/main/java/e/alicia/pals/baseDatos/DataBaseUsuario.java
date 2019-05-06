@@ -2,6 +2,7 @@ package e.alicia.pals.baseDatos;
 
 import android.net.Uri;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -19,12 +20,13 @@ import java.util.List;
 
 import e.alicia.pals.modelo.Usuario;
 
+/**
+ * Clase controladora que accede a la base de datos de usuarios de firebase
+ */
 public class DataBaseUsuario {
 
     DatabaseReference db;
     Boolean saved = null;
-    Usuario miUsuario;
-    List<Usuario> usuarios = new ArrayList<>();
     FirebaseStorage firebaseStorage=FirebaseStorage.getInstance();
     FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
     FirebaseUser firebaseUser=firebaseAuth.getCurrentUser();
@@ -36,9 +38,11 @@ public class DataBaseUsuario {
 
     }
 
-
-    //----------------------usuarios
-    //guardar
+    /**
+     * Guarda un nuevo usuario en la base de datos.
+     * @param usuario
+     * @return boolean
+     */
     public Boolean guardar(Usuario usuario) {
         if (usuario == null) {
             saved = false;
@@ -58,6 +62,12 @@ public class DataBaseUsuario {
         return saved;
     }
 
+    /**
+     * Modifica la informacion de un usuario. Tambien modifica, no solo el usuario que
+     * esta en mi base de datos, si no el usuario que se crea en Database auth de google.
+     * Esto se hace para que no haya conflicto entre los datos de ambos sitios.
+     * @param usuario
+     */
     public void modificar(Usuario usuario
                              ){
 
@@ -72,100 +82,47 @@ public class DataBaseUsuario {
     }
 
 
-    public List<Usuario> retrieve() {
 
-        db.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                fetchData(dataSnapshot);
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                fetchData(dataSnapshot);
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        return usuarios;
-    }
-
-    private List<Usuario> fetchData(DataSnapshot dataSnapshot) {
-        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-            Usuario usuario = ds.getValue(Usuario.class);
-            usuarios.add(usuario);
-
-
-        }
-        return usuarios;
-
-    }
-
-
-    public Usuario buscar(String codigo) {
-
-
-
-        db.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                usuarios.clear();
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                   miUsuario = dataSnapshot1.getValue(Usuario.class);
-                    usuarios.add(miUsuario);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        if (miUsuario.getCodigo().equalsIgnoreCase(codigo)){
-            return miUsuario;
-        }
-return null;
-    }
-
-
+    /**
+     * Metodo que guarda la fto del usuario en firestorage con el codigo del usuario
+     * @param foto
+     * @param usuario
+     */
     public void guardarFoto(Uri foto, final Usuario usuario) {
 
-        StorageReference storageReference = firebaseStorage.getReference("usuarios/");
-       storageReference.putFile(foto);
-        usuario.setFoto(foto.toString());
-        guardar(usuario);
+        StorageReference storageReference = firebaseStorage.getReference("usuarios/" + usuario.getCodigo());
+        storageReference.putFile(foto);
+        storageReference
 
+                .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
 
+            @Override
+            public void onSuccess(Uri uri) {
+                usuario.setFoto(uri.toString());
+                guardar(usuario);
+                modificar(usuario);
+            }
+        });
     }
 
-    public Boolean comprobarNot(String usuario){
-      String notificacion=  db.child(usuario).child("notificaciones").toString();
-        System.out.println(notificacion);
-      if (notificacion.equalsIgnoreCase("true")){
-          return true;
-      }else{
-          return false;
-      }
+           /**
+            * Comprueba si el usuario tiene notificaciones activas
+            *
+            * @param usuario
+            * @return boolean
+            */
+           public Boolean comprobarNot(String usuario) {
+               String notificacion = db.child(usuario).child("notificaciones").toString();
 
-    }
+               if (notificacion.equalsIgnoreCase("true")) {
+                   return true;
+               } else {
+                   return false;
+               }
+
+           }
+       }
 
 
-}
+
 

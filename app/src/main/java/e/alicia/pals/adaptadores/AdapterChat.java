@@ -1,8 +1,8 @@
 package e.alicia.pals.adaptadores;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,17 +15,20 @@ import java.util.List;
 import e.alicia.pals.R;
 import e.alicia.pals.modelo.Mensaje;
 
-import static android.view.Gravity.LEFT;
-import static android.view.Gravity.RIGHT;
-
-
+/**
+ * Clase que adapta la vista en la activity a los mensajes del chat
+ */
 public class AdapterChat extends RecyclerView.Adapter<AdapterChat.ItemViewHolder> {
     private List<Mensaje> mUserLsit;
     private Context mContext;
-    private FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
+    private FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-
-
+    /**
+     * Carga la plantilla del modelo mensaje
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @Override
     public AdapterChat.ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.modelmensaje, parent, false);
@@ -33,15 +36,21 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.ItemViewHolder
     }
 
     public AdapterChat(Context mContext, List<Mensaje> mUserLsit) {
-
         this.mContext = mContext;
         this.mUserLsit = mUserLsit;
     }
 
+
+    /**
+     * Recorre el array de objetos y les establece su valor cargando en cada plantilla
+     * uno
+     * @param holder
+     * @param position
+     */
     @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(AdapterChat.ItemViewHolder holder, int position) {
-        Mensaje mensaje=mUserLsit.get(position);
+        Mensaje mensaje = mUserLsit.get(position);
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(mensaje.getFechaHora());
 
@@ -50,19 +59,15 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.ItemViewHolder
         int mDay = calendar.get(Calendar.DAY_OF_MONTH);
         calendar.get(Calendar.HOUR);
         holder.tvMensaje.setText(mensaje.getMensaje());
-        if (firebaseUser.getEmail().equalsIgnoreCase(mensaje.getUsuario())){
-            holder.tvMensaje.setBackgroundResource(R.color.quantum_amber400);
-
-        }else{
-            holder.tvMensaje.setTextColor(Color.BLACK);
-        }
-        holder.tvFecha.setText(mDay+"/"+mMonth+"/"+mYear+"\t"
+        holder.tvFecha.setText(mDay + "/" + mMonth + "/" + mYear + "\t"
                 + calendar.get(Calendar.HOUR)
-                +":"+calendar.get(Calendar.MINUTE)
-                +":"+calendar.get(Calendar.SECOND));
+                + ":" + calendar.get(Calendar.MINUTE)
+                + ":" + calendar.get(Calendar.SECOND));
 
         holder.tvUsuario.setText(mensaje.getUsuario());
-
+        if (mensaje.getUsuario().equalsIgnoreCase(firebaseUser.getEmail())){
+            holder.tvMensaje.setBackgroundResource(R.drawable.burbuja);
+        }
 
     }
 
@@ -71,10 +76,10 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.ItemViewHolder
         return mUserLsit.size();
     }
 
-
+    /**
+     * Recupera los elementos de la plantilla
+     */
     public class ItemViewHolder extends RecyclerView.ViewHolder {
-
-
         TextView tvUsuario, tvMensaje, tvFecha;
 
         public ItemViewHolder(View itemView) {

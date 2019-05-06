@@ -10,28 +10,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
-import com.google.android.gms.auth.api.signin.internal.Storage;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import afu.org.checkerframework.checker.nullness.qual.NonNull;
 import e.alicia.pals.R;
 import e.alicia.pals.modelo.Noticia;
 
 
+/**
+ * Clase que carga los elementos noticia en una plantilla para el recycler view
+ */
 public class AdapterNoticias extends RecyclerView.Adapter<AdapterNoticias.ItemViewHolder> {
-    private List<Noticia> mUserLsit = new ArrayList<>();
+    private List<Noticia> mUserLsit;
     private Context mContext;
-    private Bitmap bmp;
 
 
+    /**
+     * Clase que carga la plantilla del modelo noticia
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @Override
     public AdapterNoticias.ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.modelnoticias, parent, false);
@@ -43,6 +46,11 @@ public class AdapterNoticias extends RecyclerView.Adapter<AdapterNoticias.ItemVi
         this.mUserLsit = mUserLsit;
     }
 
+    /**
+     * Establece el valor de cada elemento del arraylist
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(final AdapterNoticias.ItemViewHolder holder, int position) {
         Noticia noticia = mUserLsit.get(position);
@@ -73,6 +81,9 @@ public class AdapterNoticias extends RecyclerView.Adapter<AdapterNoticias.ItemVi
         return mUserLsit.size();
     }
 
+    /**
+     * Carga los elementos de la plantilla
+     */
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitular, tvCuerpo;
         ImageView ivNoticia;

@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +32,10 @@ import e.alicia.pals.modelo.Plan;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
+
+/**
+ * Clase que carga un plan dentro de una plantilla para que sea visible en el activity
+ */
 public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemViewHolder> {
     private List<Plan> mUserLsit;
     private Context mContext;
@@ -44,6 +47,13 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
     DataBasePlan dataBasePlan = new DataBasePlan(databaseReference);
 
 
+    /**
+     * Carga el layout
+     *
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.modelverplan, parent, false);
@@ -56,6 +66,13 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
         this.mUserLsit = mUserLsit;
     }
 
+    /**
+     * Establece los valores del elemento plan en la plantilla cargada en
+     * la activity
+     *
+     * @param holder
+     * @param position
+     */
     @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
@@ -66,18 +83,16 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
         holder.tvInformacion.setText(plan.getInformacion());
         holder.tvUbicacion.setText("Lugar: " + plan.getLugar());
         holder.tvUsuarios.setText("Usuarios apuntados: " + plan.getUsuariosapuntados().size());
-        holder.botonApuntar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dataBasePlan.apuntarseAlPlan(plan, firebaseUser.getUid());
-
-
-            }
-        });
 
         personalizarAdaptador(holder);
     }
 
+    /**
+     * Método que carga una imagen superior aleatoria dependiendo
+     * del tipo de plan elegido
+     *
+     * @param holder
+     */
     private void personalizarAdaptador(ItemViewHolder holder) {
         int imagen = 0;
         switch (plan.getTipo()) {
@@ -228,6 +243,9 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
         return mUserLsit.size();
     }
 
+    /**
+     * Metodo que carga los elementos de la plantilla
+     */
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
 
@@ -260,7 +278,8 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
             botonApuntar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    apuntarsePlan();
+
+                   apuntarsePlan();
 
                     botonApuntar.setEnabled(false);
                     botonChat.setVisibility(VISIBLE);
@@ -309,15 +328,20 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
         }
 
         public void apuntarsePlan() {
+
             dataBasePlan.apuntarseAlPlan(plan, firebaseUser.getUid());
+
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
             builder.setMessage(R.string.agregar)
-                    .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    .setPositiveButton(R.string.sichat, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-
+                            abrirChat(plan.getCodigo(), plan.getNombre(), plan.getUsuariosapuntados());
 
                         }
-                    }).show();
+                    }).setNegativeButton(R.string.nochat, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                }
+            }).show();
 
 
         }
@@ -329,9 +353,6 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
                         public void onClick(DialogInterface dialog, int id) {
                             dataBasePlan.dejarPlan(plan, firebaseUser.getUid());
                             Toast.makeText(mContext, R.string.eliminado, Toast.LENGTH_LONG).show();
-                            Intent i = new Intent(mContext, MisPlanes.class);
-                            mContext.startActivity(i);
-
                         }
                     })
                     .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -339,11 +360,13 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
                         }
                     }).show();
 
-
         }
 
-        public void abrirChat(String codigo, String nombre, List <String> usuarios) {
-            String [] listaUsuarios= (String[]) usuarios.toArray();
+        public void abrirChat(String codigo, String nombre, List<String> usuarios) {
+            String[] listaUsuarios = new String[usuarios.size()];
+            for (int i = 0; i < usuarios.size(); i++) {
+                listaUsuarios[i] = usuarios.get(i);
+            }
             Intent i = new Intent(mContext, Chat.class);
             i.putExtra("codigo", codigo);
             i.putExtra("nombre", nombre);

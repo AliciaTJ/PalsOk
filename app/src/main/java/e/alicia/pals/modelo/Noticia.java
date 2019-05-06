@@ -1,5 +1,8 @@
 package e.alicia.pals.modelo;
 
+/**
+ * Clase modelo noticia
+ */
 public class Noticia {
 
     private String titular;

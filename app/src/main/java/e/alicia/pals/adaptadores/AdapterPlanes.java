@@ -18,11 +18,13 @@ import e.alicia.pals.R;
 import e.alicia.pals.VerPlan;
 import e.alicia.pals.modelo.Plan;
 
+/**
+ * Clase que carga los elementos Planes en un listado
+ */
 public class AdapterPlanes extends RecyclerView.Adapter<AdapterPlanes.ItemViewHolder> {
-    private List<Plan> mUserLsit = new ArrayList<>();
+    private List<Plan> mUserLsit;
     private Context mContext;
-    private CardView cv;
-    private ItemClickListener itemClickListener;
+
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -36,6 +38,11 @@ public class AdapterPlanes extends RecyclerView.Adapter<AdapterPlanes.ItemViewHo
 
     }
 
+    /**
+     * Establece el valor para cada plan y lo carga en una plantilla
+     * @param holder
+     * @param position
+     */
     @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
@@ -57,6 +64,9 @@ public class AdapterPlanes extends RecyclerView.Adapter<AdapterPlanes.ItemViewHo
         return mUserLsit.size();
     }
 
+    /**
+     * Carga los elementos de la plantilla
+     */
     public class ItemViewHolder extends RecyclerView.ViewHolder  implements  View.OnClickListener{
         TextView tvTitulo, tvFecha;
         ImageView ivFoto;
@@ -82,7 +92,11 @@ public class AdapterPlanes extends RecyclerView.Adapter<AdapterPlanes.ItemViewHo
         }
     }
 
-
+    /**
+     * Establece una imagen dependiendo del tipo de plan
+     * @param i
+     * @return
+     */
     public int ponerFoto(String i) {
         switch (i) {
             case "freak":
@@ -116,13 +130,14 @@ public class AdapterPlanes extends RecyclerView.Adapter<AdapterPlanes.ItemViewHo
 
 }
 
+    /**
+     * Entra en un nuevo intent con los detalles del plan seleccionado
+     * @param  codigo
+     */
     private void abrirDetalle(String codigo)
     {
         Intent i=new Intent(this.mContext, VerPlan.class);
-
         i.putExtra("codigo",codigo);
-
-
         this.mContext.startActivity(i);
     }
 }

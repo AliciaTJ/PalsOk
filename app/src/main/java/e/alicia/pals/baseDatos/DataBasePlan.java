@@ -13,6 +13,9 @@ import java.util.List;
 import e.alicia.pals.modelo.Plan;
 import e.alicia.pals.modelo.Usuario;
 
+/**
+ * Clase controladora de la base de datos de planes
+ */
 public class DataBasePlan {
 
     DatabaseReference dbPlanes;
@@ -28,7 +31,11 @@ public class DataBasePlan {
     }
 
 
-    //guardar
+    /**
+     * Metodo que guarda un plan en la base de datos.
+     * @param plan
+     * @return boolean
+     */
     public Boolean guardar(Plan plan
     ) {
         if (plan == null) {
@@ -48,7 +55,13 @@ public class DataBasePlan {
         return guardado;
     }
 
-
+    /**
+     * Metodo que añade a un usuarios al arraylist de usuarios apuntados a cada plan.
+     * Tambien establece a true las notificaciones del usuario creador
+     * para que sea avisado de que tiene nuevos usuarios.
+     * @param plan
+     * @param codigoUsuario
+     */
     public void apuntarseAlPlan(Plan plan, String codigoUsuario){
         plan.getUsuariosapuntados().add(codigoUsuario);
         dbPlanes.child(plan.getCodigo()).setValue(plan);
@@ -56,6 +69,13 @@ public class DataBasePlan {
 
     }
 
+    /**
+     * Metodo que mueve el estado de un plan a cerrado. Se quedara en la base de datos
+     * hasta que sea borrado por un administrador.
+     * Tambien borra el historial de chats del plan.
+     * @param plan
+     * @return
+     */
 
     public boolean borrarPlan(Plan plan){
         plan.setEstado("cerrado");
@@ -67,6 +87,12 @@ public class DataBasePlan {
 
     }
 
+    /**
+     * Metodo que quita del arraylist de usuarios de un plan al usuario que lo quiera
+     * abandonar.
+     * @param plan
+     * @param codigoUsuario
+     */
     public void dejarPlan(Plan plan, String codigoUsuario){
         for (int i=0; i<plan.getUsuariosapuntados().size(); i++){
             if ( plan.getUsuariosapuntados().get(i).equalsIgnoreCase(codigoUsuario)){

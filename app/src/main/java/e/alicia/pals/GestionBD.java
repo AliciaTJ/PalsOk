@@ -1,11 +1,15 @@
 package e.alicia.pals;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -79,13 +83,32 @@ public class GestionBD extends AppCompatActivity {
 
     }
 
-    public void borrarPlanesCerrados(View view){
-        dbr= db.getReference("planescerrados");
-        for (int i=0; i<planes.size(); i++) {
-            dbr.child(planes.get(i).getCodigo()).removeValue();
-        }
+    public void borrarPlanesCerrados(final View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.borrarcerrados)
+                .setPositiveButton(R.string.si, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dbr= db.getReference("planescerrados");
+                        for (int i=0; i<planes.size(); i++) {
+                            dbr.child(planes.get(i).getCodigo()).removeValue();
+                        }
 
-        Snackbar.make(view, "Se han borrado todos los planes cerrados", Snackbar.LENGTH_LONG);
+                        Snackbar.make(view, "Se han borrado todos los planes cerrados", Snackbar.LENGTH_LONG);
+
+                    }
+                })
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                }).show();
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, ActivityPortada.class);
+        startActivity(intent);
+
 
     }
 }

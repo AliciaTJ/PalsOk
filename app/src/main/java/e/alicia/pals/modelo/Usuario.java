@@ -4,6 +4,9 @@ import com.google.android.libraries.places.api.model.Place;
 
 import java.util.List;
 
+/**
+ * Clase modelo usuario
+ */
 public class Usuario {
     private String nombre;
     private String codigo;

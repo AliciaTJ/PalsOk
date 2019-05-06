@@ -3,7 +3,9 @@ package e.alicia.pals.adaptadores;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.RecyclerView;
@@ -18,10 +20,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import android.icu.util.Calendar;
 import android.widget.Toast;
@@ -36,14 +42,18 @@ import e.alicia.pals.modelo.Usuario;
 
 import static android.view.View.INVISIBLE;
 
-
+/**
+ * Adaptador de carga un unico usuario en la plantilla establecida.
+ * Se utiliza un arraylist de un unico valor.
+ */
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class AdapterUsuario extends RecyclerView.Adapter<AdapterUsuario.ItemViewHolder> {
-    private List<Usuario> mUserLsit = new ArrayList<>();
+    private List<Usuario> mUserLsit;
     private Context mContext;
     private Calendar fechaC;
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private FirebaseUser firebaseUser = auth.getCurrentUser();
+    private FirebaseStorage firebaseStorage=FirebaseStorage.getInstance();
     public final Calendar c = Calendar.getInstance();
     private Button botonGuardar, botonEditar, cambiarFoto;
     final int mes = c.get(Calendar.MONTH);
@@ -59,7 +69,12 @@ public class AdapterUsuario extends RecyclerView.Adapter<AdapterUsuario.ItemView
     private DatabaseReference databaseReference = firebaseDatabase.getReference("usuarios");
     private DataBaseUsuario bd = new DataBaseUsuario(databaseReference);
 
-
+    /**
+     * Carga la plantilla del modelo usuario en la activity
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @Override
     public AdapterUsuario.ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.modelusuario, parent, false);
@@ -71,6 +86,11 @@ public class AdapterUsuario extends RecyclerView.Adapter<AdapterUsuario.ItemView
         this.mUserLsit = mUserLsit;
     }
 
+    /**
+     * Establece los valores del usuario
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(AdapterUsuario.ItemViewHolder holder, int position) {
         user = mUserLsit.get(position);
@@ -80,11 +100,33 @@ public class AdapterUsuario extends RecyclerView.Adapter<AdapterUsuario.ItemView
             etNombre.setText(user.getNombre());
             etEmail.setText(user.getEmail());
             etDescripcion.setText(user.getDescripcion());
-            Glide
-                    .with(mContext)
-                    .load(user.getFoto())
-                    .into(foto);
+            firebaseStorage.getReference().child("usuarios/" + firebaseUser.getUid())
 
+                    .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+
+                @Override
+                public void onSuccess(Uri uri) {
+                    user.setFoto(uri.toString());
+                    Glide
+                            .with(mContext)
+                            .load(uri)
+                            .into(foto);
+                }
+
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Glide
+                            .with(mContext)
+                            .load(R.drawable.user)
+                            .into(foto);
+
+                }
+            });
+        }
+            /**
+             * El boton editar permite modificar el usuario, pone en editable los edittext
+             */
             botonEditar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -101,6 +143,10 @@ public class AdapterUsuario extends RecyclerView.Adapter<AdapterUsuario.ItemView
                     obtenerFecha();
                 }
             });
+
+            /**
+             * Se guarda el usuario en firebase
+             */
             botonGuardar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -125,13 +171,16 @@ public class AdapterUsuario extends RecyclerView.Adapter<AdapterUsuario.ItemView
 
         }
 
-    }
+
 
     @Override
     public int getItemCount() {
         return mUserLsit.size();
     }
 
+    /**
+     * Recupera los elementos de la plantilla del usuario
+     */
     public class ItemViewHolder extends RecyclerView.ViewHolder {
 
 

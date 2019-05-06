@@ -2,6 +2,9 @@ package e.alicia.pals.modelo;
 
 import java.util.Date;
 
+/**
+ * Clase modelo mensaje
+ */
 public class Mensaje {
 
     String mensaje;

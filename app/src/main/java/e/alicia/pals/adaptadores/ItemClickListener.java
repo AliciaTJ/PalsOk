@@ -1,6 +1,9 @@
 package e.alicia.pals.adaptadores;
 
-import android.view.View;
+
+/**
+ * Interfaz que nos permite implementar onitemclick en un recycler view
+ */
 
 public interface ItemClickListener {
 

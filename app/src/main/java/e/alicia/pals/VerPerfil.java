@@ -15,6 +15,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -50,6 +52,7 @@ public class VerPerfil extends AppCompatActivity {
     private Vibrator viService;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +79,7 @@ public class VerPerfil extends AppCompatActivity {
         cargarPerfil(mAuth.getCurrentUser().getUid());
         vibrar=sharedPreferences.getInt("vibracion", 1);
         sonar=sharedPreferences.getInt("sonido", 1);
+
         if (vibrar==1){
             viService = (Vibrator) getSystemService(Service.VIBRATOR_SERVICE);
         }
@@ -150,6 +154,7 @@ public class VerPerfil extends AppCompatActivity {
 
             Uri uri = data.getData();
             dbUsuario.guardarFoto(uri, miUsuario);
+
 
         }
 

@@ -2,6 +2,9 @@ package e.alicia.pals.modelo;
 
 import java.util.List;
 
+/**
+ * Clase modelo plan
+ */
 public class Plan {
     private String nombre;
     private String informacion;

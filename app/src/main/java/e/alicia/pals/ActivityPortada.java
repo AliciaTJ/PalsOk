@@ -1,12 +1,10 @@
 package e.alicia.pals;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.NotificationCompat;
@@ -25,7 +23,6 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,6 +35,11 @@ import e.alicia.pals.adaptadores.AdapterNoticias;
 import e.alicia.pals.baseDatos.DataBaseUsuario;
 import e.alicia.pals.modelo.Noticia;
 
+
+/**
+ * Activity portada. Consta de un recycler view de noticias, el
+ * menu lateral, el menu flotante y el boton flotante.
+ */
 public class ActivityPortada extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Context context = this;
@@ -56,15 +58,18 @@ public class ActivityPortada extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_portada);
 
-        mAdView=findViewById(R.id.adView);
+        //se carga la publicidad
+        mAdView = findViewById(R.id.adView);
         MobileAds.initialize(this, "ca-app-pub-6032187278566198~3677017529");
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
+        //se carga la toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        user = FirebaseAuth.getInstance();
 
+
+        //se carga el boton flotante
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.enviar);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,19 +79,21 @@ public class ActivityPortada extends AppCompatActivity
             }
         });
 
-
+        //se carga el menu lateral
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.common_open_on_phone, R.string.abandonar);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
+
+        //se cargan los elementos necesarios
+        user = FirebaseAuth.getInstance();
         rvNot = findViewById(R.id.rvNoticias);
         noticias = new ArrayList<>();
-
         db = FirebaseDatabase.getInstance();
         rvNot.setLayoutManager(new LinearLayoutManager(this));
         dbReference = db.getReference("usuarios");
@@ -95,24 +102,37 @@ public class ActivityPortada extends AppCompatActivity
         adapterNoticias = new AdapterNoticias(ActivityPortada.this, noticias);
         rvNot.setAdapter(adapterNoticias);
 
-        comprobarNotificaciones();
+        // comprobarNotificaciones();
 
     }
 
 
+    /**
+     * Metodo que lanza una notificacion push si el usuario tiene notificaciones
+     * pendientes
+      */
     public void comprobarNotificaciones() {
-            NotificationCompat.Builder mBuilder;
-            NotificationManager namager=(NotificationManager)getApplicationContext()
-                    .getSystemService(NOTIFICATION_SERVICE);
-            mBuilder=new NotificationCompat.Builder(getApplicationContext())
-                    .setContentTitle("Notificaciones")
-                    .setContentText("Texto")
-                    .setSmallIcon(R.drawable.users);
-            namager.notify(1, mBuilder.build());
+
+        NotificationCompat.Builder mBuilder;
+        Intent i = new Intent(this, MisPlanes.class);
+        NotificationManager namager = (NotificationManager) getApplicationContext()
+                .getSystemService(NOTIFICATION_SERVICE);
+        mBuilder = new NotificationCompat.Builder(getApplicationContext())
+                .setContentTitle("Notificaciones")
+                .setContentText("Texto")
+                .setSmallIcon(R.drawable.users)
+                .setAutoCancel(true)
+                .setContentIntent(PendingIntent.getActivity(ActivityPortada.this, 0, i, 0))
+                .setVibrate(new long[]{100, 250, 100, 500});
+        namager.notify(1, mBuilder.build());
+        dbReference.child(user.getUid()).child("notificaciones").removeValue();
 
 
     }
 
+    /**
+     * Metodo que carga las noticias en el arraylist
+     */
     public void cargarNoticias() {
 
         DatabaseReference dbr = db.getReference("noticias");
@@ -141,6 +161,9 @@ public class ActivityPortada extends AppCompatActivity
     }
 
 
+    /**
+     * Al pulsar atras, se cierra el menu si esta abierto.
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -152,10 +175,15 @@ public class ActivityPortada extends AppCompatActivity
     }
 
 
+    /**
+     * Nos permite seleccionar las opciones del menu
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-
+//si el usuario es el administrador se le abre un layout distinto
         if (!user.getCurrentUser().getEmail().equalsIgnoreCase("aliciavisual@gmail.com")) {
             getMenuInflater().inflate(R.menu.activity_portada, menu);
         } else {
@@ -165,6 +193,11 @@ public class ActivityPortada extends AppCompatActivity
         return true;
     }
 
+    /**
+     * Accede a la intent de la opcion de menu que se seleccione
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();

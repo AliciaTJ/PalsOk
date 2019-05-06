@@ -40,38 +40,14 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/listamensajes"
-        android:layout_width="wrap_content"
-        android:layout_height="558dp"
+        android:layout_width="395dp"
+        android:layout_height="659dp"
         android:layout_above="@id/enviar"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="16dp" />
-
-    <TextView
-        android:id="@+id/tvInformacion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:background="@color/quantum_amber400"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/tvUsuarios"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/listamensajes"
         android:layout_below="@+id/tvInformacion"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:background="@color/quantum_amber400"
-        android:inputType="textPersonName"
-        android:text="Name" />
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="16dp" />
 
 </RelativeLayout>

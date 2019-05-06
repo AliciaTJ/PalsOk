@@ -12,7 +12,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,7 @@ import java.util.List;
 import e.alicia.pals.adaptadores.AdapterPlanes;
 import e.alicia.pals.modelo.Plan;
 
-public class ConfiguracionBD extends AppCompatActivity {
+public class GestionBD extends AppCompatActivity {
 
     FirebaseDatabase db= FirebaseDatabase.getInstance();
     List<Plan> planes=new ArrayList<>();
@@ -34,9 +33,10 @@ public class ConfiguracionBD extends AppCompatActivity {
         setContentView(R.layout.activity_configuracion_bd);
         rv=(RecyclerView)findViewById(R.id.rv);
         rv.setLayoutManager(new LinearLayoutManager(this));
-        adapterPlanes = new AdapterPlanes(ConfiguracionBD.this, planes);
+        adapterPlanes = new AdapterPlanes(GestionBD.this, planes);
         rv.setAdapter(adapterPlanes);
         adapterPlanes.notifyDataSetChanged();
+        rv.setEnabled(false);
         cargarPlanes();
     }
 
@@ -52,7 +52,7 @@ public class ConfiguracionBD extends AppCompatActivity {
                         Plan plan = dataSnapshot1.getValue(Plan.class);
                             planes.add(plan);
                     }
-                    adapterPlanes = new AdapterPlanes(ConfiguracionBD.this, planes);
+                    adapterPlanes = new AdapterPlanes(GestionBD.this, planes);
                     rv.setAdapter(adapterPlanes);
                     adapterPlanes.notifyDataSetChanged();
 
@@ -61,7 +61,7 @@ public class ConfiguracionBD extends AppCompatActivity {
                 } finally {
 
 
-                    adapterPlanes = new AdapterPlanes(ConfiguracionBD.this, planes);
+                    adapterPlanes = new AdapterPlanes(GestionBD.this, planes);
                     rv.setAdapter(adapterPlanes);
                     adapterPlanes.notifyDataSetChanged();
 

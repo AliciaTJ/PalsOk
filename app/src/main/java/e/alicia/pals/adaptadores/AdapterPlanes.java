@@ -3,8 +3,6 @@ package e.alicia.pals.adaptadores;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,7 +26,7 @@ public class AdapterPlanes extends RecyclerView.Adapter<AdapterPlanes.ItemViewHo
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.model, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.modellistaplanes, parent, false);
         return new ItemViewHolder(view);
     }
 
@@ -51,13 +49,7 @@ public class AdapterPlanes extends RecyclerView.Adapter<AdapterPlanes.ItemViewHo
                 abrirDetalle(mUserLsit.get(pos).getCodigo());
             }
         });
-        if (position%2==0) {
-           // holder.cv.setBackgroundColor(R.color.places_autocomplete_list_background);
-            //holder.ivFoto.setBackgroundColor(R.color.places_autocomplete_list_background);
-        }else{
-           // holder.cv.setBackgroundColor(R.color.quantum_black_divider);
-           // holder.ivFoto.setBackgroundColor(R.color.quantum_black_divider);
-        }
+
     }
 
     @Override

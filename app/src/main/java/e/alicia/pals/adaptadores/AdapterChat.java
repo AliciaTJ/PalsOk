@@ -51,7 +51,7 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.ItemViewHolder
         calendar.get(Calendar.HOUR);
         holder.tvMensaje.setText(mensaje.getMensaje());
         if (firebaseUser.getEmail().equalsIgnoreCase(mensaje.getUsuario())){
-            holder.tvMensaje.setTextColor(R.color.primaryLightColor);
+            holder.tvMensaje.setBackgroundResource(R.color.quantum_amber400);
 
         }else{
             holder.tvMensaje.setTextColor(Color.BLACK);

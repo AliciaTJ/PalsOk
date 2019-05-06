@@ -1,22 +1,20 @@
 package e.alicia.pals;
 
+import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Patterns;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Switch;
-import android.widget.Toast;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,11 +24,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import e.alicia.pals.adaptadores.AdapterUsuario;
 import e.alicia.pals.baseDatos.DataBaseUsuario;
-import e.alicia.pals.modelo.Plan;
 import e.alicia.pals.modelo.Usuario;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
@@ -39,32 +35,25 @@ public class VerPerfil extends AppCompatActivity {
 
 
 
-    Uri urlFoto;
-    Usuario usuario;
-    Button botonGuardar, botonEditar, cambiarFoto;
+    private Usuario usuario;
     private FirebaseAuth mAuth;
-    private TextInputLayout tilNombre;
-    private TextInputLayout tilInformacion;
-    private TextInputLayout tilEmail;
-    private Switch sw;
-    private ImageView ivFoto;
     private DataBaseUsuario dbUsuario;
-    private EditText
-            etNombre, etEmail, etDescripcion;
     private AdapterUsuario adapterUsuario;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference firebaseReference;
-    List<Usuario>usuarios=new ArrayList<>();
-    RecyclerView rv;
-    ArrayList<Plan> planes;
+    private List<Usuario>usuarios=new ArrayList<>();
+    private RecyclerView rv;
+    private Usuario miUsuario;
+    private SharedPreferences sharedPreferences;
+    private int vibrar, sonar;
+    private MediaPlayer mp;
+    private Vibrator viService;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ver_perfil);
-
-
         iniciarActivity();
 
 
@@ -81,10 +70,18 @@ public class VerPerfil extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseReference = firebaseDatabase.getReference("usuarios");
         dbUsuario = new DataBaseUsuario(firebaseReference);
-
+        sharedPreferences = getSharedPreferences("opciones", Context.MODE_PRIVATE);
         rv = findViewById(R.id.rv);
         rv.setLayoutManager(new LinearLayoutManager(this));
         cargarPerfil(mAuth.getCurrentUser().getUid());
+        vibrar=sharedPreferences.getInt("vibracion", 1);
+        sonar=sharedPreferences.getInt("sonido", 1);
+        if (vibrar==1){
+            viService = (Vibrator) getSystemService(Service.VIBRATOR_SERVICE);
+        }
+        if (sonar==1){
+            mp = MediaPlayer.create(this, R.raw.boing);
+        }
     }
 
 
@@ -97,12 +94,19 @@ public class VerPerfil extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     usuarios.clear();
                     try {
+                        if (vibrar==1){
+                            viService.vibrate(30);
+                        }
+                        if (sonar==1){
+                            mp.start();
+                        }
                         for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                             usuario = dataSnapshot1.getValue(Usuario.class);
 
-                            if (usuario.getCodigo().equalsIgnoreCase(codigo))
+                            if (usuario.getCodigo().equalsIgnoreCase(codigo)) {
                                 usuarios.add(usuario);
-
+                                miUsuario=usuario;
+                            }
                         }
                         adapterUsuario = new AdapterUsuario(VerPerfil.this, usuarios);
                         rv.setAdapter(adapterUsuario);
@@ -145,8 +149,7 @@ public class VerPerfil extends AppCompatActivity {
         if ((resultCode == RESULT_OK) && (requestCode == VALOR_RETORNO)) {
 
             Uri uri = data.getData();
-            usuario.setFoto(uri.toString());
-            dbUsuario.guardarFoto(uri, usuario);
+            dbUsuario.guardarFoto(uri, miUsuario);
 
         }
 

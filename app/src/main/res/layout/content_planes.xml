@@ -23,12 +23,13 @@
             <Spinner
                 android:id="@+id/spTipo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/primaryColor"
+                android:layout_height="27dp"
+                android:background="@color/quantum_amber400"
                 android:backgroundTintMode="multiply"
+                android:dropDownWidth="wrap_content"
                 android:paddingLeft="8dp"
                 android:paddingTop="8dp"
-                android:spinnerMode="dropdown" />
+                android:spinnerMode="dialog" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv"

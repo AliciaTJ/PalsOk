@@ -1,6 +1,8 @@
 package e.alicia.pals;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private int RC_SIGN_IN = 1;
     private final String ID_TOKEN = "445597789329-l1nb5dtif2eed45qjl5bjq1t31ctdblv.apps.googleusercontent.com";
     private GoogleSignInOptions gso;
-
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +53,12 @@ public class MainActivity extends AppCompatActivity {
         etEmail = (EditText) findViewById(R.id.etEmail);
         etPass = (EditText) findViewById(R.id.etPass);
         view = this.findViewById(android.R.id.content);
-
+        sharedPreferences=getSharedPreferences("preferencias", Context.MODE_PRIVATE);
         mAuth = FirebaseAuth.getInstance();
+        String correo=sharedPreferences.getString("correo","");
+        String pass=sharedPreferences.getString("pass","");
+        etEmail.setText(correo);
+        etPass.setText(pass);
 
     }
 
@@ -98,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                 usuario.setEmail(user.getEmail());
                 usuario.setNombre(user.getDisplayName());
                 usuario.setFoto(String.valueOf(user.getPhotoUrl()));
-                dataBaseUsuario.save(usuario);
+                dataBaseUsuario.guardar(usuario);
                 dataBaseUsuario.modificar(usuario);
 
                 updateUI(user);

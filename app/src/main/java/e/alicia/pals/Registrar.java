@@ -2,12 +2,11 @@ package e.alicia.pals;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Patterns;
 import android.view.View;
@@ -17,7 +16,6 @@ import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.libraries.places.api.model.Place;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
@@ -42,13 +40,14 @@ public class Registrar extends AppCompatActivity {
     private View view;
     private ImageView image;
     private String imagenUsuario = "https://firebasestorage.googleapis.com/v0/b/pals-fae71.appspot.com/o/usuarios%2Fuser.png?alt=media&token=e928a126-f91b-40fb-a852-4164f15148ed";
-
+   private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrar);
         iniciarActivity();
+
 
 
     }
@@ -66,6 +65,7 @@ public class Registrar extends AppCompatActivity {
         cambioImagen(image);
         databaseReference = db.getReference("usuarios");
         dataBaseUsuario = new DataBaseUsuario(databaseReference);
+        sharedPreferences=getSharedPreferences("preferencias", Context.MODE_PRIVATE);
     }
 
 
@@ -85,7 +85,7 @@ public class Registrar extends AppCompatActivity {
     }
 
 
-    public void creaUsuario(final String email, String password) throws FirebaseAuthUserCollisionException {
+    public void creaUsuario(final String email, final String password) throws FirebaseAuthUserCollisionException {
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -98,8 +98,12 @@ public class Registrar extends AppCompatActivity {
                             usuario.setEmail(email);
                             usuario.setNombre(etNombre.getText().toString());
                             usuario.setFoto(imagenUsuario);
-                            dataBaseUsuario.save(usuario);
+                            dataBaseUsuario.guardar(usuario);
                             dataBaseUsuario.modificar(usuario);
+                            SharedPreferences.Editor editor=sharedPreferences.edit();
+                            editor.putString("correo", email);
+                            editor.putString("pass", password);
+                            editor.commit();
                             Snackbar sb = Snackbar.make(view, "Usuario registrado con éxito", Snackbar.LENGTH_LONG);
                             View snackBarView = sb.getView();
                             snackBarView.setBackgroundColor(Color.GREEN);

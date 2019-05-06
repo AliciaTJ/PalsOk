@@ -19,6 +19,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
@@ -68,6 +71,7 @@ public class PlanNuevo extends AppCompatActivity {
     private Calendar hora;
    PlacesClient placesClient;
     int AUTOCOMPLETE_REQUEST_CODE = 1;
+    private InterstitialAd interstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +89,7 @@ public class PlanNuevo extends AppCompatActivity {
                 }
             }
         });
-
+        MobileAds.initialize(this, "ca-app-pub-6032187278566198~3677017529");
 
     }
 
@@ -99,7 +103,9 @@ public class PlanNuevo extends AppCompatActivity {
         user = fba.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
         dbr = firebaseDatabase.getReference("planes");
-
+        interstitialAd=new InterstitialAd(this);
+        interstitialAd.setAdUnitId("ca-app-pub-6032187278566198/3861231223");
+        interstitialAd.loadAd(new AdRequest.Builder().build());
         ivImagen = findViewById(R.id.ivImagen);
         db = new DataBasePlan(dbr);
         int imagen = 0;
@@ -230,6 +236,11 @@ public class PlanNuevo extends AppCompatActivity {
             plan.setNombre(etTitulo.getText().toString());
             plan.setCodigo(hora.getTimeInMillis() + user.getUid());
             db.guardar(plan);
+
+            if (interstitialAd.isLoaded()){
+                interstitialAd.show();
+                System.out.println("hola");
+            }
             verPlan();
         }else{
             Snackbar.make(view, "No ha sido posible crear el plan", Snackbar.LENGTH_LONG).show();
@@ -316,7 +327,7 @@ public class PlanNuevo extends AppCompatActivity {
             if (esLugarValido(lugar)) {
                 if (esInfoValido(info)) {
                     if (esFechaValida(fechaPlan)) {
-                        Toast.makeText(this, "Se guarda el registro", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "Nuevo plan generado", Toast.LENGTH_LONG).show();
                         return true;
                     }else{
                         return false;

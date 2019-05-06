@@ -1,14 +1,7 @@
 package e.alicia.pals.baseDatos;
 
-import android.media.Image;
 import android.net.Uri;
-import android.renderscript.Sampler;
-import android.support.annotation.NonNull;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.firebase.FirebaseError;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -20,14 +13,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 
-import e.alicia.pals.modelo.Plan;
 import e.alicia.pals.modelo.Usuario;
 
 public class DataBaseUsuario {
@@ -50,7 +39,7 @@ public class DataBaseUsuario {
 
     //----------------------usuarios
     //guardar
-    public Boolean save(Usuario usuario) {
+    public Boolean guardar(Usuario usuario) {
         if (usuario == null) {
             saved = false;
         } else {
@@ -156,12 +145,12 @@ return null;
     }
 
 
-    public void guardarFoto(Uri foto, Usuario usuario) {
+    public void guardarFoto(Uri foto, final Usuario usuario) {
 
         StorageReference storageReference = firebaseStorage.getReference("usuarios/");
-        storageReference.putFile(foto);
+       storageReference.putFile(foto);
         usuario.setFoto(foto.toString());
-        save(usuario);
+        guardar(usuario);
 
 
     }

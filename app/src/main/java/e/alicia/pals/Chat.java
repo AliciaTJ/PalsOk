@@ -1,14 +1,23 @@
 package e.alicia.pals;
 
+import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.os.Vibrator;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.MediaController;
+import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,6 +28,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +41,8 @@ import e.alicia.pals.modelo.Mensaje;
 
 public class Chat extends AppCompatActivity {
 
-    private String codigo;
+    private String codigo, nombre;
+    private String[] usuarios;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private DataBaseChat dataBaseChat;
@@ -40,7 +53,13 @@ public class Chat extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private TextInputLayout tilMensaje;
 
+    private SharedPreferences sharedPreferences;
+    private int vibrar, sonar, notificaciones;
+    private TextView tvInformacion, tvUsuarios;
+private SoundPool sp;
+private Vibrator viService;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,15 +69,31 @@ public class Chat extends AppCompatActivity {
         mensajes = new ArrayList<>();
         firebaseAuth=FirebaseAuth.getInstance();
         firebaseUser=firebaseAuth.getCurrentUser();
-       mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        tvInformacion=(TextView)findViewById(R.id.tvInformacion);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        tilMensaje=(TextInputLayout)findViewById(R.id.tilMensaje);
         LinearLayoutManager linearLayout=new LinearLayoutManager(this);
-
+        sharedPreferences= getSharedPreferences("opciones", Context.MODE_PRIVATE);
         linearLayout.setStackFromEnd(true);
         rv.setLayoutManager(linearLayout);
-
+        vibrar=sharedPreferences.getInt("vibracion", 1);
+        sonar=sharedPreferences.getInt("sonido", 1);
+        if (vibrar==1){
+            viService = (Vibrator) getSystemService(Service.VIBRATOR_SERVICE);
+        }
+        if (sonar==1){
+          sp=new SoundPool(1,R.raw.boing,1);
+        }
         iniciarActivity();
         codigo = getIntent().getStringExtra("codigo");
+        nombre=getIntent().getStringExtra("nombre");
+        usuarios=getIntent().getStringArrayExtra("usuarios");
+        tvInformacion.setText(nombre);
 
+       tvUsuarios.setText("Usuarios: " );
+       for (int i=0; i<usuarios.length; i++){
+           tvUsuarios.append(usuarios[i]);
+       }
         mostrarMensajes(codigo);
 
         FloatingActionButton fab =
@@ -67,12 +102,18 @@ public class Chat extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Mensaje mensaje = new Mensaje();
-                mensaje.setFechaHora(System.currentTimeMillis());
-                mensaje.setMensaje(etEnviar.getText().toString());
-                mensaje.setUsuario(firebaseUser.getDisplayName());
 
-                mandarMensaje(mensaje, codigo);
+                if (etEnviar.getText().toString().length()<1){
+                    tilMensaje.setError("Mensaje sin texto");
+                }else {
+                    tilMensaje.setError(null);
+                    Mensaje mensaje = new Mensaje();
+                    mensaje.setFechaHora(System.currentTimeMillis());
+                    mensaje.setMensaje(etEnviar.getText().toString());
+                    mensaje.setUsuario(firebaseUser.getDisplayName());
+                    mandarMensaje(mensaje, codigo);
+
+                }
             }
         });
 
@@ -95,18 +136,28 @@ public class Chat extends AppCompatActivity {
 
     }
 
+public void reproducir(){
 
+    sp=new SoundPool(1,1,1);
+    sp.load(this, R.raw.boing, 1);
+    sp.play(1,1,1,1,1,1);
+}
     public void mostrarMensajes(final String codigo) {
 
         databaseReference.child(codigo).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mensajes.clear();
+                if (vibrar==1){
+                    viService.vibrate(30);
+                }
+                if (sonar==1){
+                 reproducir();
+                }
                 try {
                     for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
 
                                     Mensaje mensaje = dataSnapshot1.getValue(Mensaje.class);
-                                    System.out.println(mensaje.getMensaje());
                                     mensajes.add(mensaje);
 
 

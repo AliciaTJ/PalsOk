@@ -16,7 +16,7 @@
 
         <ImageView
             android:id="@+id/ivFoto"
-            android:layout_width="162dp"
+            android:layout_width="185dp"
             android:layout_height="100dp"
             android:layout_weight="1"
             app:srcCompat="@drawable/deportes" />
@@ -25,7 +25,7 @@
             android:id="@+id/list_root"
             android:layout_width="218dp"
             android:layout_height="96dp"
-            android:background="@drawable/burbuja2"
+            android:background="@color/quantum_amber300"
             android:clickable="true"
             android:focusable="true"
             android:orientation="vertical"

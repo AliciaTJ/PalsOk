@@ -39,6 +39,8 @@ public class Usuario {
     }
 
     public Boolean getNotificacion() {
+
+
         return notificacion;
     }
 

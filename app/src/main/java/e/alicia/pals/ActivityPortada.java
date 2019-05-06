@@ -3,7 +3,10 @@ package e.alicia.pals;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.NotificationCompat;
@@ -17,11 +20,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,35 +35,31 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import e.alicia.pals.adaptadores.AdapterNoticias;
-import e.alicia.pals.adaptadores.AdapterPlanes;
 import e.alicia.pals.baseDatos.DataBaseUsuario;
 import e.alicia.pals.modelo.Noticia;
-import e.alicia.pals.modelo.Plan;
-import e.alicia.pals.modelo.Usuario;
 
 public class ActivityPortada extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Context context = this;
     FirebaseAuth user;
-    private RecyclerView  rvNot;
+    private RecyclerView rvNot;
     Context con = this;
     AdapterNoticias adapterNoticias;
     FirebaseDatabase db;
     ArrayList<Noticia> noticias;
     DataBaseUsuario bdUsuario;
     DatabaseReference dbReference;
-   // private AdView mAdView;
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_portada);
-        /*
+
         mAdView=findViewById(R.id.adView);
         MobileAds.initialize(this, "ca-app-pub-6032187278566198~3677017529");
-        mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);*/
+        mAdView.loadAd(adRequest);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -73,7 +73,6 @@ public class ActivityPortada extends AppCompatActivity
                 startActivity(i);
             }
         });
-
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -90,8 +89,8 @@ public class ActivityPortada extends AppCompatActivity
 
         db = FirebaseDatabase.getInstance();
         rvNot.setLayoutManager(new LinearLayoutManager(this));
-        dbReference=db.getReference("usuarios");
-        bdUsuario=new DataBaseUsuario(dbReference);
+        dbReference = db.getReference("usuarios");
+        bdUsuario = new DataBaseUsuario(dbReference);
         cargarNoticias();
         adapterNoticias = new AdapterNoticias(ActivityPortada.this, noticias);
         rvNot.setAdapter(adapterNoticias);
@@ -100,26 +99,19 @@ public class ActivityPortada extends AppCompatActivity
 
     }
 
-    public void comprobarNotificaciones(){
-        System.out.println(dbReference.child(user.getUid()).child("notificaciones").getKey());
 
-        if ( dbReference.child(user.getUid()).child("notificaciones").getSpec().toString().equalsIgnoreCase("true")){
-
+    public void comprobarNotificaciones() {
             NotificationCompat.Builder mBuilder;
-            NotificationManager manager = (NotificationManager) getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
-            mBuilder = new NotificationCompat.Builder(getApplicationContext());
-            mBuilder.setContentTitle("Uno de tus planes tiene nuevo usuarios");
-            mBuilder.setContentText("¡Felicidades! Otros usuarios se han apuntado a uno " +
-                    "de tus planes. Sigue creando planes y compartiendo experiencias")
-                    .setSmallIcon(R.drawable.users)
-                    .setVibrate(new long[]{100, 250, 100, 500})
-                    .setAutoCancel(true);
-            manager.notify(1, mBuilder.build());
-        }
+            NotificationManager namager=(NotificationManager)getApplicationContext()
+                    .getSystemService(NOTIFICATION_SERVICE);
+            mBuilder=new NotificationCompat.Builder(getApplicationContext())
+                    .setContentTitle("Notificaciones")
+                    .setContentText("Texto")
+                    .setSmallIcon(R.drawable.users);
+            namager.notify(1, mBuilder.build());
 
 
     }
-
 
     public void cargarNoticias() {
 
@@ -128,10 +120,10 @@ public class ActivityPortada extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 noticias.clear();
-                   for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
-                       Noticia noticia=dataSnapshot1.getValue(Noticia.class);
-                       noticias.add(noticia);
-                   }
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    Noticia noticia = dataSnapshot1.getValue(Noticia.class);
+                    noticias.add(noticia);
+                }
 
 
                 adapterNoticias = new AdapterNoticias(ActivityPortada.this, noticias);
@@ -164,10 +156,9 @@ public class ActivityPortada extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
 
 
-
-        if (!user.getCurrentUser().getEmail().equalsIgnoreCase("aliciavisual@gmail.com")){
+        if (!user.getCurrentUser().getEmail().equalsIgnoreCase("aliciavisual@gmail.com")) {
             getMenuInflater().inflate(R.menu.activity_portada, menu);
-        }else{
+        } else {
             getMenuInflater().inflate(R.menu.activity_portada_administrador, menu);
 
         }
@@ -180,16 +171,16 @@ public class ActivityPortada extends AppCompatActivity
 
         if (id == R.id.opcionLogOut) {
             user.signOut();
-            user=null;
+            user = null;
             Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
         }
-        if (id==R.id.opcionNoticia){
+        if (id == R.id.opcionNoticia) {
             Intent i = new Intent(this, PublicarNoticia.class);
             startActivity(i);
         }
-        if (id==R.id.opcionBD){
-            Intent i=new Intent(this, ConfiguracionBD.class);
+        if (id == R.id.opcionBD) {
+            Intent i = new Intent(this, GestionBD.class);
             startActivity(i);
         }
 
@@ -230,3 +221,4 @@ public class ActivityPortada extends AppCompatActivity
 
 
 }
+

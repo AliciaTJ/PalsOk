@@ -2,8 +2,10 @@ package e.alicia.pals;
 
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.NotificationCompat;
@@ -12,11 +14,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import afu.org.checkerframework.checker.nullness.qual.NonNull;
 import e.alicia.pals.baseDatos.DataBaseNoticia;
 import e.alicia.pals.modelo.Noticia;
 import e.alicia.pals.modelo.Usuario;
@@ -25,13 +35,10 @@ public class PublicarNoticia extends AppCompatActivity {
 
 
     private EditText etContenido, etTitulo;
-    private Button botonPublicar;
     private ImageView imagen;
     private Noticia noticia = new Noticia();
-    private Uri uri;
     private DataBaseNoticia dataBaseNoticia;
     final int VALOR_RETORNO = 1;
-    private FirebaseStorage firebaseStorage;
     private TextInputLayout tilcontenido, tiltitulo;
 
     @Override
@@ -46,9 +53,7 @@ public class PublicarNoticia extends AppCompatActivity {
     public void iniciarActivity() {
         etContenido = (EditText) findViewById(R.id.etContenido);
         etTitulo = (EditText) findViewById(R.id.etTitulo);
-        botonPublicar = (Button) findViewById(R.id.botonPublicar);
         imagen = (ImageView) findViewById(R.id.ivImagen);
-        firebaseStorage = FirebaseStorage.getInstance();
         dataBaseNoticia = new DataBaseNoticia();
         tilcontenido = (TextInputLayout) findViewById(R.id.tilcontenido);
         tiltitulo = (TextInputLayout) findViewById(R.id.tiltitulo);
@@ -94,12 +99,14 @@ public class PublicarNoticia extends AppCompatActivity {
 
             Uri uri = data.getData();
             noticia.setCodigo(String.valueOf(System.currentTimeMillis()));
-            dataBaseNoticia.guardarFoto(uri, noticia);
-            imagen.setImageURI(uri);
+
+                    dataBaseNoticia.guardarFoto(uri, noticia);
+                    imagen.setImageURI(uri);
+                }
 
         }
 
-    }
+
 
     private boolean esNombreValido(String nombre) {
         if (nombre.length() > 30 || nombre.length() < 3) {

@@ -1,14 +1,9 @@
 package e.alicia.pals.modelo;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-
 public class Noticia {
 
     private String titular;
     private String cuerpo;
-    private String imagen;
     private String codigo;
 
     public Noticia(){
@@ -40,12 +35,4 @@ public class Noticia {
         this.titular = titular;
     }
 
-
-    public String getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
-    }
 }

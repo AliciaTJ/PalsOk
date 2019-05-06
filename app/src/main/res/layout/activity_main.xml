@@ -6,93 +6,84 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/etEmail"
-        android:layout_width="273dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress"
-        android:textColor="@color/primaryColor"
-        android:textColorHint="@color/primaryLightColor"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivRandom" />
-
-    <EditText
-        android:id="@+id/etPass"
-        android:layout_width="270dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:hint="@string/pass"
-        android:inputType="textPassword"
-        android:textColor="@color/primaryColor"
-        android:textColorHint="@color/primaryLightColor"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.472"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etEmail" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="239dp"
-        android:layout_height="29dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
-        android:background="@color/primaryColor"
-        android:onClick="acceder"
-        android:text="@string/login"
-        android:textColor="@color/quantum_amber400"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.435"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPass" />
-
-    <ImageButton
-        android:id="@+id/googleButton"
-        android:layout_width="178dp"
-        android:layout_height="33dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/google"
-        android:onClick="google"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.43"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="128dp"
-        android:layout_height="29dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="68dp"
-        android:background="@color/quantum_amber400"
-        android:onClick="registro"
-        android:text="@string/reg"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/ivRandom"
-        android:layout_width="0dp"
-        android:layout_height="176dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/palsgrandecolores" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/ivRandom"
+                android:layout_width="match_parent"
+                android:layout_height="176dp"
+                android:layout_marginEnd="8dp"
+                app:srcCompat="@drawable/palsgrandecolores" />
+
+            <EditText
+                android:id="@+id/etEmail"
+                android:layout_width="273dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:ems="10"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/primaryColor"
+                android:textColorHint="@color/primaryLightColor"
+                android:textSize="12sp" />
+
+            <EditText
+                android:id="@+id/etPass"
+                android:layout_width="270dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:hint="@string/pass"
+                android:inputType="textPassword"
+                android:textColor="@color/primaryColor"
+                android:textColorHint="@color/primaryLightColor"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="239dp"
+                android:layout_height="29dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="30dp"
+                android:background="@color/primaryColor"
+                android:onClick="acceder"
+                android:text="@string/login"
+                android:textColor="@color/quantum_amber400" />
+
+            <ImageButton
+                android:id="@+id/googleButton"
+                android:layout_width="178dp"
+                android:layout_height="33dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="60dp"
+                android:background="@drawable/google"
+                android:onClick="google" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="128dp"
+                android:layout_height="29dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="68dp"
+                android:background="@color/quantum_amber400"
+                android:onClick="registro"
+                android:text="@string/reg" />
+        </LinearLayout>
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

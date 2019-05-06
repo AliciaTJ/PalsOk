@@ -99,7 +99,7 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
                 imagenes.add(R.drawable.a14);
                 imagenes.add(R.drawable.a21);
                 imagenes.add(R.drawable.a34);
-                imagen = (int) (Math.random() * 5) + 1;
+                imagen = (int) (Math.random() * 4) + 1;
                 holder.ivFoto.setImageResource(imagenes.get(imagen));
                 break;
             case "musica":
@@ -110,7 +110,7 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
                 musica.add(R.drawable.a27);
                 musica.add(R.drawable.a29);
                 musica.add(R.drawable.a31);
-                imagen = (int) (Math.random() * 6) + 1;
+                imagen = (int) (Math.random() * 5) + 1;
                 holder.ivFoto.setImageResource(musica.get(imagen));
                 break;
             case "deportes":
@@ -279,7 +279,7 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
             botonChat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    abrirChat(plan.getCodigo());
+                    abrirChat(plan.getCodigo(), plan.getNombre(), plan.getUsuariosapuntados());
                 }
             });
         }
@@ -342,9 +342,12 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
 
         }
 
-        public void abrirChat(String codigo) {
+        public void abrirChat(String codigo, String nombre, List <String> usuarios) {
+            String [] listaUsuarios= (String[]) usuarios.toArray();
             Intent i = new Intent(mContext, Chat.class);
             i.putExtra("codigo", codigo);
+            i.putExtra("nombre", nombre);
+            i.putExtra("usuarios", listaUsuarios);
             mContext.startActivity(i);
         }
     }

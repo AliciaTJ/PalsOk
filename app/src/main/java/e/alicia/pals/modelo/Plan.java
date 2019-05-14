@@ -15,11 +15,21 @@ public class Plan {
     private String codigo;
     private List<String> usuariosapuntados;
     private String tipo;
+    private String provincia;
 
     public Plan() {
 
     }
+    public Plan (String nombre){
+        this.nombre=nombre;
+    }
+    public String getProvincia() {
+        return provincia;
+    }
 
+    public void setProvincia(String provincia) {
+        this.provincia = provincia;
+    }
 
     public List<String> getUsuariosapuntados() {
         return usuariosapuntados;

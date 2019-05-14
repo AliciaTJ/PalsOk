@@ -10,7 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -50,6 +49,7 @@ public class VerPerfil extends AppCompatActivity {
     private int vibrar, sonar;
     private MediaPlayer mp;
     private Vibrator viService;
+    private ImageView ivFoto;
 
 
 
@@ -68,13 +68,15 @@ public class VerPerfil extends AppCompatActivity {
 
 
     public void iniciarActivity() {
+        ivFoto=(ImageView)findViewById(R.id.ivImagen);
+
 
         mAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseReference = firebaseDatabase.getReference("usuarios");
         dbUsuario = new DataBaseUsuario(firebaseReference);
         sharedPreferences = getSharedPreferences("opciones", Context.MODE_PRIVATE);
-        rv = findViewById(R.id.rv);
+        rv = findViewById(R.id.rvCerrados);
         rv.setLayoutManager(new LinearLayoutManager(this));
         cargarPerfil(mAuth.getCurrentUser().getUid());
         vibrar=sharedPreferences.getInt("vibracion", 1);
@@ -154,7 +156,8 @@ public class VerPerfil extends AppCompatActivity {
 
             Uri uri = data.getData();
             dbUsuario.guardarFoto(uri, miUsuario);
-
+            usuario.setFoto(uri.toString());
+            dbUsuario.modificar(miUsuario);
 
         }
 

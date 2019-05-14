@@ -117,11 +117,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:background="@color/quantum_amber400"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:paddingLeft="8dp"
-                android:text="@string/descripción" />
+                android:text="@string/descripción"
+                android:textAlignment="center" />
 
             <TextView
                 android:id="@+id/tvInformacion"
@@ -138,16 +138,17 @@
                 android:paddingRight="8dp"
                 android:paddingBottom="10dp"
                 android:text="TextView"
-                android:textSize="20dp"
+                android:textSize="16sp"
                 tools:layout_editor_absoluteX="0dp"
                 tools:layout_editor_absoluteY="212dp" />
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/tvOpciones"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:paddingLeft="8dp"
+                android:paddingTop="30dp"
                 android:paddingRight="8dp"
                 android:text="Opciones"
                 android:textAlignment="center" />
@@ -179,7 +180,7 @@
                 android:textColor="@color/quantum_amber500" />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/tvArrepentido"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -207,11 +208,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="29dp"
                 android:layout_margin="15dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="60dp"
                 android:background="@color/quantum_error_dark"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:text="Borrar" />
+
+            <TextView
+                android:id="@+id/tvAdministrador"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:gravity="center"
+                android:text="¿No te parece apropiado?" />
+
+            <Button
+                android:id="@+id/botonAdministrador"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/quantum_error_dark"
+                android:onClick="denunciarPlan"
+                android:text="Denunciar plan"
+                android:textColor="@color/places_text_black_alpha_87" />
 
         </LinearLayout>
     </ScrollView>

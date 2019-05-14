@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -81,7 +83,7 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
         holder.tvNombre.setText(plan.getNombre());
         holder.tvFecha.setText("Fecha: " + plan.getFecha());
         holder.tvInformacion.setText(plan.getInformacion());
-        holder.tvUbicacion.setText("Lugar: " + plan.getLugar());
+        holder.tvUbicacion.setText("Lugar: " + plan.getLugar() + ", " + plan.getProvincia());
         holder.tvUsuarios.setText("Usuarios apuntados: " + plan.getUsuariosapuntados().size());
 
         personalizarAdaptador(holder);
@@ -255,6 +257,7 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
 
         public ItemViewHolder(View itemView) {
             super(itemView);
+
             botonDejar = itemView.findViewById(R.id.botonDejar);
             tvNombre = itemView.findViewById(R.id.tvNombre);
             tvUbicacion = itemView.findViewById(R.id.tvUbicacion);
@@ -265,7 +268,7 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
             botonChat = itemView.findViewById(R.id.botonChat);
             botonChat.setVisibility(INVISIBLE);
             ivFoto = itemView.findViewById(R.id.ivRandom);
-            cambioImagen(ivFoto);
+            //cambioImagen(ivFoto);
             botonEliminar = (Button) itemView.findViewById(R.id.botonEliminar);
             botonEliminar.setVisibility(INVISIBLE);
             botonEliminar.setOnClickListener(new View.OnClickListener() {
@@ -279,7 +282,7 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
                 @Override
                 public void onClick(View v) {
 
-                   apuntarsePlan();
+                    apuntarsePlan();
 
                     botonApuntar.setEnabled(false);
                     botonChat.setVisibility(VISIBLE);
@@ -302,11 +305,6 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
                 }
             });
         }
-
-        public void cambioImagen(ImageView iv) {
-
-        }
-
 
         public void borrarPlan() {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
@@ -373,5 +371,9 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
             i.putExtra("usuarios", listaUsuarios);
             mContext.startActivity(i);
         }
+
+
+
     }
 }
+

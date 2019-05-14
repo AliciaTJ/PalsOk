@@ -96,5 +96,8 @@
     <string name="nochat">Ahora no</string>
     <string name="sichat">Acceder al chat</string>
     <string name="borrarcerrados">Se van a borrar los planes en estado cerrado. ¿Continuar?</string>
+    <string name="filtrotipo">Filtrar por tipo</string>
+    <string name="filtroprovincia">Filtrar por provincia</string>
+
 
 </resources>

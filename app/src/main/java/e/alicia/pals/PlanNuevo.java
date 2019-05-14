@@ -11,10 +11,12 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -72,6 +74,7 @@ public class PlanNuevo extends AppCompatActivity {
    PlacesClient placesClient;
     int AUTOCOMPLETE_REQUEST_CODE = 1;
     private InterstitialAd interstitialAd;
+    private Spinner spProvincias;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +97,15 @@ public class PlanNuevo extends AppCompatActivity {
     }
 
     public void iniciarActivity() {
+         final String[] provincias={"Selecciona la provincia","Alava","Albacete","Alicante","Almería","Asturias","Avila","Badajoz","Barcelona","Burgos","Cáceres",
+                "Cádiz","Cantabria","Castellón","Ciudad Real","Córdoba","La Coruña","Cuenca","Gerona","Granada","Guadalajara",
+                "Guipúzcoa","Huelva","Huesca","Islas Baleares","Jaén","León","Lérida","Lugo","Madrid","Málaga","Murcia","Navarra",
+                "Orense","Palencia","Las Palmas","Pontevedra","La Rioja","Salamanca","Segovia","Sevilla","Soria","Tarragona",
+                "Santa Cruz de Tenerife","Teruel","Toledo","Valencia","Valladolid","Vizcaya","Zamora","Zaragoza"};
+        spProvincias=(Spinner)findViewById(R.id.spProvincias);
+        ArrayAdapter adapter=new ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, provincias);
 
+        spProvincias.setAdapter(adapter);
         Places.initialize(getApplicationContext(), key);
         placesClient = Places.createClient(this);
         hora = Calendar.getInstance();
@@ -229,6 +240,7 @@ public class PlanNuevo extends AppCompatActivity {
             plan.setTipo(tipoPlan);
             plan.setUsuariocreador(user.getUid());
             plan.setLugar(etLugar.getText().toString());
+            plan.setProvincia(spProvincias.getSelectedItem().toString());
             List<String>usuarios=new ArrayList<>();
             usuarios.add(user.getUid());
             plan.setEstado("abierto");

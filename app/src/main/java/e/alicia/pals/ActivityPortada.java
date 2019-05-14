@@ -245,6 +245,9 @@ public class ActivityPortada extends AppCompatActivity
             Intent i = new Intent(this, MisPlanes.class);
             startActivity(i);
 
+        }else if (id==R.id.op_ayuda){
+            Intent i=new Intent(this, Ayuda.class);
+            startActivity(i);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

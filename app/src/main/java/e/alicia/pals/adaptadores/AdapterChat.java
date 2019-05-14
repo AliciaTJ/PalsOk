@@ -65,7 +65,9 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.ItemViewHolder
                 + ":" + calendar.get(Calendar.SECOND));
 
         holder.tvUsuario.setText(mensaje.getUsuario());
-        if (mensaje.getUsuario().equalsIgnoreCase(firebaseUser.getEmail())){
+
+        System.out.println(firebaseUser.getEmail());
+        if (mensaje.getUsuario().equalsIgnoreCase(firebaseUser.getDisplayName())){
             holder.tvMensaje.setBackgroundResource(R.drawable.burbuja);
         }
 

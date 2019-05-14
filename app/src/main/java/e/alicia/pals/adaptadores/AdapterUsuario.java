@@ -8,6 +8,8 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.util.Patterns;
@@ -107,6 +109,7 @@ public class AdapterUsuario extends RecyclerView.Adapter<AdapterUsuario.ItemView
                 @Override
                 public void onSuccess(Uri uri) {
                     user.setFoto(uri.toString());
+              
                     Glide
                             .with(mContext)
                             .load(uri)

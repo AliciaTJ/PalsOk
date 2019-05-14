@@ -101,7 +101,9 @@ public class DataBasePlan {
         }
         dbPlanes.child(plan.getCodigo()).setValue(plan);
     }
-
+        public void denunciarPlan(Plan plan, String codigoUsuario){
+            dbPlanes.getDatabase().getReference().child("denuncias").child(codigoUsuario).setValue(plan);
+        }
 
 }
 

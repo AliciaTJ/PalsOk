@@ -31,7 +31,7 @@
                 android:id="@+id/tiltitulo"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_marginBottom="18dp"
                 android:hint="@string/titulopub"
@@ -49,22 +49,31 @@
                     android:textSize="18sp" />
             </android.support.design.widget.TextInputLayout>
 
+            <Spinner
+                android:id="@+id/spProvincias"
+                android:layout_width="match_parent"
+                android:layout_height="27dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:background="@color/quantum_amber400" />
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/tillugar"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="258dp"
+                    android:layout_width="286dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:textColorHint="@color/primaryColor">
 
                     <EditText
                         android:id="@+id/lugar"
-                        android:layout_width="match_parent"
+                        android:layout_width="273dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:ems="10"
@@ -77,10 +86,9 @@
 
                 <ImageButton
                     android:id="@+id/imageButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="34dp"
+                    android:layout_height="37dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginEnd="15dp"
                     android:background="@drawable/mapa"
                     android:onClick="cargarLugares" />
 
@@ -90,7 +98,7 @@
                 android:id="@+id/tilinformacion"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="166dp"
+                android:layout_height="170dp"
                 android:layout_margin="10dp"
                 android:textColorHint="@color/primaryColor"
                 app:counterMaxLength="50">
@@ -98,7 +106,7 @@
                 <EditText
                     android:id="@+id/informacion"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="150dp"
                     android:layout_margin="10dp"
                     android:ems="10"
                     android:gravity="top"

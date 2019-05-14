@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,21 +26,27 @@ public class GestionBD extends AppCompatActivity {
 
     FirebaseDatabase db= FirebaseDatabase.getInstance();
     List<Plan> planes=new ArrayList<>();
-    AdapterPlanes adapterPlanes;
-    RecyclerView rv;
+    List<Plan> planesDenunciados=new ArrayList<>();
+    AdapterPlanes adapterPlanes, adapterPlanesDenuncias;
+    RecyclerView rv, rvDenuncias;
     DatabaseReference dbr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_configuracion_bd);
-        rv=(RecyclerView)findViewById(R.id.rv);
+        setContentView(R.layout.activity_gestion_bd);
+        rv=(RecyclerView)findViewById(R.id.rvCerrados);
+        rvDenuncias=(RecyclerView)findViewById(R.id.rvDenunciados);
         rv.setLayoutManager(new LinearLayoutManager(this));
         adapterPlanes = new AdapterPlanes(GestionBD.this, planes);
+        adapterPlanesDenuncias = new AdapterPlanes(GestionBD.this, planesDenunciados);
         rv.setAdapter(adapterPlanes);
+        rvDenuncias.setAdapter(adapterPlanesDenuncias);
+        adapterPlanesDenuncias.notifyDataSetChanged();
         adapterPlanes.notifyDataSetChanged();
-        rv.setEnabled(false);
+        //rv.setEnabled(false);
         cargarPlanes();
+        cargarPlanesDenunciados();
     }
 
     public void cargarPlanes() {
@@ -82,7 +87,45 @@ public class GestionBD extends AppCompatActivity {
 
 
     }
+    public void cargarPlanesDenunciados() {
 
+        dbr= db.getReference("denuncias");
+        dbr.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                planesDenunciados.clear();
+                try {
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                        Plan plan = dataSnapshot1.getValue(Plan.class);
+                        planesDenunciados.add(plan);
+                    }
+                    adapterPlanesDenuncias = new AdapterPlanes(GestionBD.this, planesDenunciados);
+                    rvDenuncias.setAdapter(adapterPlanesDenuncias);
+                    adapterPlanesDenuncias.notifyDataSetChanged();
+
+                } catch (NullPointerException npe) {
+                    planesDenunciados.add(new Plan("No hay ningun plan denunciado"));
+
+                                    } finally {
+
+
+                    adapterPlanesDenuncias = new AdapterPlanes(GestionBD.this, planesDenunciados);
+                    rvDenuncias.setAdapter(adapterPlanes);
+                    adapterPlanesDenuncias.notifyDataSetChanged();
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+    }
     public void borrarPlanesCerrados(final View view){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.borrarcerrados)
@@ -103,6 +146,7 @@ public class GestionBD extends AppCompatActivity {
                 }).show();
 
     }
+
 
     @Override
     public void onBackPressed() {

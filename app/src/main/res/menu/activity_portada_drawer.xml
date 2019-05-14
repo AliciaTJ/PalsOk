@@ -32,6 +32,10 @@
                 android:id="@+id/op_opciones"
                 android:icon="@drawable/ic_menu_manage"
                 android:title="@string/opciones" />
+            <item
+                android:id="@+id/op_ayuda"
+                android:icon="@drawable/informacion"
+                android:title="Ayuda" />
         </menu>
     </item>
 

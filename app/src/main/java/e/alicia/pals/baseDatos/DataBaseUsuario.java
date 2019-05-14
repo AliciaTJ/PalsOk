@@ -99,8 +99,8 @@ public class DataBaseUsuario {
             @Override
             public void onSuccess(Uri uri) {
                 usuario.setFoto(uri.toString());
-                guardar(usuario);
-                modificar(usuario);
+
+                modificar(usuario); guardar(usuario);
             }
         });
     }

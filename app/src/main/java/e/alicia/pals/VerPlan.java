@@ -2,7 +2,6 @@ package e.alicia.pals;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -62,7 +61,7 @@ public class VerPlan extends AppCompatActivity {
     public void iniciarActivity() {
         botonDenunciar=(Button)findViewById(R.id.botonAdministrador);
         ivFoto = (ImageView) findViewById(R.id.ivFoto);
-        rv = (RecyclerView) findViewById(R.id.rvCerrados);
+        rv = (RecyclerView) findViewById(R.id.rvPlanes);
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("planes");
         dataBasePlan = new DataBasePlan(databaseReference);
@@ -128,10 +127,4 @@ public class VerPlan extends AppCompatActivity {
                 }).show();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent i = new Intent(this, MisPlanes.class);
-        startActivity(i);
-    }
 }

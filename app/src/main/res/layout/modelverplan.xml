@@ -231,6 +231,15 @@
                 android:text="Denunciar plan"
                 android:textColor="@color/places_text_black_alpha_87" />
 
+            <Button
+                android:id="@+id/botonAdministrador2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/fui_bgPhone"
+                android:onClick="denunciarPlan"
+                android:text="Quitar denuncia"
+                android:textColor="@color/places_text_black_alpha_87" />
+
         </LinearLayout>
     </ScrollView>
 

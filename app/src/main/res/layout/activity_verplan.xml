@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvCerrados"
+            android:id="@+id/rvPlanes"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"

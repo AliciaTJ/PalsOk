@@ -109,7 +109,7 @@ public class PublicarNoticia extends AppCompatActivity {
 
 
     private boolean esNombreValido(String nombre) {
-        if (nombre.length() > 30 || nombre.length() < 3) {
+        if (nombre.length() > 50 || nombre.length() < 3) {
             tiltitulo.setError("El titulo debe tener entre 3 y 50 caracteres");
             return false;
         } else {
@@ -121,7 +121,7 @@ public class PublicarNoticia extends AppCompatActivity {
 
     private boolean esInfoValido(String nombre) {
 
-        if (nombre.length() < 10) {
+        if (nombre.length() < 40) {
             tilcontenido.setError("Introduce contenido (minimo 50 caracteres)");
             return false;
         } else {

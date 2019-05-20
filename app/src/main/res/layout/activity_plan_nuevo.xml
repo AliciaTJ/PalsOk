@@ -98,7 +98,7 @@
                 android:id="@+id/tilinformacion"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="170dp"
+                android:layout_height="189dp"
                 android:layout_margin="10dp"
                 android:textColorHint="@color/primaryColor"
                 app:counterMaxLength="50">

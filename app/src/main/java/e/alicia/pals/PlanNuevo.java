@@ -248,11 +248,6 @@ public class PlanNuevo extends AppCompatActivity {
             plan.setNombre(etTitulo.getText().toString());
             plan.setCodigo(hora.getTimeInMillis() + user.getUid());
             db.guardar(plan);
-
-            if (interstitialAd.isLoaded()){
-                interstitialAd.show();
-                System.out.println("hola");
-            }
             verPlan();
         }else{
             Snackbar.make(view, "No ha sido posible crear el plan", Snackbar.LENGTH_LONG).show();
@@ -280,8 +275,8 @@ public class PlanNuevo extends AppCompatActivity {
     }
 
     private boolean esNombreValido(String nombre) {
-        if (nombre.length() > 30 || nombre.length()<3) {
-            tilTitulo.setError("El titulo debe tener entre 3 y 50 caracteres");
+        if (nombre.length() > 40 || nombre.length()<3) {
+            tilTitulo.setError("El titulo debe tener entre 3 y 40 caracteres");
             return false;
         } else {
             tilTitulo.setError(null);
@@ -290,14 +285,22 @@ public class PlanNuevo extends AppCompatActivity {
         return true;
     }
     private boolean esLugarValido(String lugar){
-        if (lugar.length()<3 || lugar.length() > 50) {
-            tilLugar.setError("Introduce el lugar (entre 3 y 50 caracteres)");
+        if (lugar.length()<3 || lugar.length() > 40) {
+            tilLugar.setError("Introduce el lugar (entre 3 y 40 caracteres)");
             return false;
         } else {
             tilLugar.setError(null);
         }
 
         return true;
+    }
+
+    private boolean esProvinciaValida(int provincia){
+        if (provincia==0){
+            return false;
+        }else{
+            return  true;
+        }
     }
     private boolean esInfoValido(String nombre) {
 
@@ -334,23 +337,28 @@ public class PlanNuevo extends AppCompatActivity {
         String info = etInfo.getText().toString();
         String lugar=etLugar.getText().toString();
         String fechaPlan=fecha.getText().toString();
+        int provincia=spProvincias.getSelectedItemPosition();
 
-        if (esNombreValido(nombre)) {
-            if (esLugarValido(lugar)) {
-                if (esInfoValido(info)) {
-                    if (esFechaValida(fechaPlan)) {
-                        Toast.makeText(this, "Nuevo plan generado", Toast.LENGTH_LONG).show();
-                        return true;
-                    }else{
+        if(esProvinciaValida(provincia)) {
+            if (esNombreValido(nombre)) {
+                if (esLugarValido(lugar)) {
+                    if (esInfoValido(info)) {
+                        if (esFechaValida(fechaPlan)) {
+                            Toast.makeText(this, "Nuevo plan generado", Toast.LENGTH_LONG).show();
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
                         return false;
                     }
                 } else {
                     return false;
                 }
-            }else{
+            } else {
                 return false;
             }
-        } else {
+        }else{
             return false;
         }
 

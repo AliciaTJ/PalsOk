@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class AdapterPlanes extends RecyclerView.Adapter<AdapterPlanes.ItemViewHo
 
     /**
      * Establece el valor para cada plan y lo carga en una plantilla
+     *
      * @param holder
      * @param position
      */
@@ -67,11 +69,12 @@ public class AdapterPlanes extends RecyclerView.Adapter<AdapterPlanes.ItemViewHo
     /**
      * Carga los elementos de la plantilla
      */
-    public class ItemViewHolder extends RecyclerView.ViewHolder  implements  View.OnClickListener{
+    public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvTitulo, tvFecha;
         ImageView ivFoto;
         CardView cv;
         ItemClickListener itemClickListener;
+
         public ItemViewHolder(View itemView) {
             super(itemView);
             tvFecha = itemView.findViewById(R.id.list_desc);
@@ -79,11 +82,12 @@ public class AdapterPlanes extends RecyclerView.Adapter<AdapterPlanes.ItemViewHo
             cv = itemView.findViewById(R.id.cv);
             ivFoto = itemView.findViewById(R.id.ivFoto);
             itemView.setOnClickListener(this);
+            tvTitulo.setOnClickListener(this);
+            tvFecha.setOnClickListener(this);
         }
 
-        public void setItemClickListener(ItemClickListener itemClickListener)
-        {
-            this.itemClickListener=itemClickListener;
+        public void setItemClickListener(ItemClickListener itemClickListener) {
+            this.itemClickListener = itemClickListener;
         }
 
         @Override
@@ -94,6 +98,7 @@ public class AdapterPlanes extends RecyclerView.Adapter<AdapterPlanes.ItemViewHo
 
     /**
      * Establece una imagen dependiendo del tipo de plan
+     *
      * @param i
      * @return
      */
@@ -123,21 +128,20 @@ public class AdapterPlanes extends RecyclerView.Adapter<AdapterPlanes.ItemViewHo
                 return R.drawable.fiesta;
 
             default:
-             return R.drawable.fiesta;
+                return R.drawable.fiesta;
         }
 
 
-
-}
+    }
 
     /**
      * Entra en un nuevo intent con los detalles del plan seleccionado
-     * @param  codigo
+     *
+     * @param codigo
      */
-    private void abrirDetalle(String codigo)
-    {
-        Intent i=new Intent(this.mContext, VerPlan.class);
-        i.putExtra("codigo",codigo);
+    private void abrirDetalle(String codigo) {
+        Intent i = new Intent(this.mContext, VerPlan.class);
+        i.putExtra("codigo", codigo);
         this.mContext.startActivity(i);
     }
 }

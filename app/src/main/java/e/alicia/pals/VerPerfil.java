@@ -76,7 +76,7 @@ public class VerPerfil extends AppCompatActivity {
         firebaseReference = firebaseDatabase.getReference("usuarios");
         dbUsuario = new DataBaseUsuario(firebaseReference);
         sharedPreferences = getSharedPreferences("opciones", Context.MODE_PRIVATE);
-        rv = findViewById(R.id.rvCerrados);
+        rv = findViewById(R.id.rvPlanes);
         rv.setLayoutManager(new LinearLayoutManager(this));
         cargarPerfil(mAuth.getCurrentUser().getUid());
         vibrar=sharedPreferences.getInt("vibracion", 1);

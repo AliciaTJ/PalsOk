@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -244,8 +245,8 @@ public class AdapterUsuario extends RecyclerView.Adapter<AdapterUsuario.ItemView
 
 
     private boolean esNombreValido(String nombre) {
-        if (nombre.length() > 50) {
-            tilNombre.setError("Nombre demasiado largo (máximo 50 caracteres)");
+        if (nombre.length() > 15 || nombre.length()<3) {
+            tilNombre.setError("Nombre entre 3 y 15 caracteres");
             return false;
         } else {
             tilNombre.setError(null);
@@ -266,6 +267,15 @@ public class AdapterUsuario extends RecyclerView.Adapter<AdapterUsuario.ItemView
         return true;
     }
 
+
+    private boolean esFechaValida(long fecha){
+        if (fecha>=System.currentTimeMillis()){
+            Toast.makeText(mContext, "La fecha no puede ser superior a la de hoy", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
+
     public boolean validarGuardar() {
         String nombre = etNombre.getText().toString();
         String info = etDescripcion.getText().toString();
@@ -277,7 +287,7 @@ public class AdapterUsuario extends RecyclerView.Adapter<AdapterUsuario.ItemView
         boolean c = validarEmail(email);
 
 
-        if (a && b && c) {
+        if (a && b && c ) {
             Toast.makeText(mContext, "Se modifica el registro", Toast.LENGTH_LONG).show();
             return true;
         } else {

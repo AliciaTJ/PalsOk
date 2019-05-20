@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,6 +29,9 @@ import e.alicia.pals.baseDatos.DataBasePlan;
 import e.alicia.pals.modelo.Noticia;
 import e.alicia.pals.modelo.Plan;
 
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
+
 public class MisPlanes extends AppCompatActivity {
     Context context = this;
     FirebaseUser user;
@@ -40,6 +44,7 @@ public class MisPlanes extends AppCompatActivity {
     AdapterPlanes adapterApuntado;
     FirebaseDatabase db;
     ArrayList<Plan> planesApuntados;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,42 +60,45 @@ public class MisPlanes extends AppCompatActivity {
 
         cargarPlanes();
         cargarMisPlanes();
+        comprobarVacios();
 
 
     }
 
     public void cargarPlanes() {
 
-            DatabaseReference dbr = db.getReference("planes");
-            database = new DataBasePlan(dbr);
+        DatabaseReference dbr = db.getReference("planes");
+        database = new DataBasePlan(dbr);
 
-            dbr.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    planes.clear();
-                    try {
-                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+        dbr.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                planes.clear();
+                try {
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
 
-                            Plan plan = dataSnapshot1.getValue(Plan.class);
-                            if (plan.getUsuariocreador().equalsIgnoreCase(user.getUid())) {
-                                planes.add(plan);
+                        Plan plan = dataSnapshot1.getValue(Plan.class);
+                        if (plan.getUsuariocreador().equalsIgnoreCase(user.getUid())) {
+                            planes.add(plan);
 
-                            }
                         }
-                    }catch(NullPointerException npe){
-
                     }
+                } catch (NullPointerException npe) {
+                    comprobarVacios();
+                } finally {
                     adapterCreados = new AdapterPlanes(MisPlanes.this, planes);
                     rvPlanesCreados.setAdapter(adapterCreados);
                     adapterCreados.notifyDataSetChanged();
-
+                    comprobarVacios();
                 }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+            }
 
-                }
-            });
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
     }
@@ -114,12 +122,14 @@ public class MisPlanes extends AppCompatActivity {
 
 
                     }
-                }catch(NullPointerException npe){
-
+                } catch (NullPointerException npe) {
+                    comprobarVacios();
+                } finally {
+                    adapterApuntado = new AdapterPlanes(MisPlanes.this, planesApuntados);
+                    rvPlanesApuntados.setAdapter(adapterApuntado);
+                    adapterApuntado.notifyDataSetChanged();
+                    comprobarVacios();
                 }
-                adapterApuntado = new AdapterPlanes(MisPlanes.this, planesApuntados);
-                rvPlanesApuntados.setAdapter(adapterApuntado);
-                adapterApuntado.notifyDataSetChanged();
 
             }
 
@@ -132,10 +142,36 @@ public class MisPlanes extends AppCompatActivity {
 
 
     }
+
+
+    public void comprobarVacios() {
+        try {
+            ImageView ivSinPlanes = (ImageView) findViewById(R.id.ivSinPlanes);
+            ImageView ivSinPlanes2 = (ImageView) findViewById(R.id.ivSinPlanes2);
+            if (rvPlanesApuntados.getAdapter().getItemCount() == 0) {
+
+                ivSinPlanes.setVisibility(VISIBLE);
+                ivSinPlanes.setImageResource(R.drawable.sinplanes);
+            } else {
+                ivSinPlanes.setVisibility(INVISIBLE);
+            }
+            if (rvPlanesCreados.getAdapter().getItemCount() == 0) {
+
+                ivSinPlanes2.setVisibility(VISIBLE);
+                ivSinPlanes2.setImageResource(R.drawable.sinplanes);
+            } else {
+                ivSinPlanes2.setVisibility(INVISIBLE);
+            }
+
+        } catch (NullPointerException npe) {
+
+        }
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent i=new Intent(this, ActivityPortada.class);
+        Intent i = new Intent(this, ActivityPortada.class);
         startActivity(i);
     }
 

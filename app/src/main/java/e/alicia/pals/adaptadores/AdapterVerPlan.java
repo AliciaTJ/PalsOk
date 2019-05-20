@@ -105,7 +105,7 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
                 freak.add(R.drawable.a12);
                 freak.add(R.drawable.a16);
                 freak.add(R.drawable.a28);
-                imagen = (int) (Math.random() * 3) + 1;
+                imagen = (int) (Math.random() * 2) + 1;
                 holder.ivFoto.setImageResource(freak.get(imagen));
                 break;
 
@@ -238,6 +238,10 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
 
             }
         }
+        if (firebaseUser.getEmail().equalsIgnoreCase("aliciavisual@gmail.com")){
+            holder.botonEliminar.setVisibility(VISIBLE);
+            holder.botonQuitarDenuncia.setVisibility(VISIBLE);
+        }
     }
 
     @Override
@@ -253,11 +257,11 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
 
         ImageView ivFoto;
         TextView tvNombre, tvUbicacion, tvFecha, tvUsuarios, tvInformacion;
-        Button botonApuntar, botonChat, botonDejar, botonEliminar;
+        Button botonApuntar, botonChat, botonDejar, botonEliminar, botonQuitarDenuncia;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
-
+            botonQuitarDenuncia=itemView.findViewById(R.id.botonAdministrador2);
             botonDejar = itemView.findViewById(R.id.botonDejar);
             tvNombre = itemView.findViewById(R.id.tvNombre);
             tvUbicacion = itemView.findViewById(R.id.tvUbicacion);
@@ -277,7 +281,16 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
                     borrarPlan();
                 }
             });
-
+            botonQuitarDenuncia.setVisibility(INVISIBLE);
+            if (firebaseUser.getEmail().equalsIgnoreCase("aliciavisual@gmail.com")){
+                botonQuitarDenuncia.setVisibility(VISIBLE);
+            }
+            botonQuitarDenuncia.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    quitarDenuncia();
+                }
+            });
             botonApuntar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -324,7 +337,23 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
                     }).show();
 
         }
+        public void quitarDenuncia() {
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            builder.setMessage("¿Estas seguro que quieres retirar la denuncia?")
+                    .setPositiveButton(R.string.si, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dataBasePlan.quitarDenuncia(plan);
+                            Toast.makeText(mContext, "Quitado de la lista de denunciados", Toast.LENGTH_LONG).show();
 
+
+                        }
+                    })
+                    .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                        }
+                    }).show();
+
+        }
         public void apuntarsePlan() {
 
             dataBasePlan.apuntarseAlPlan(plan, firebaseUser.getUid());

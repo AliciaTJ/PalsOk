@@ -22,12 +22,13 @@ public class DataBasePlan {
     Boolean guardado = null;
     DatabaseReference dbUsuarios;
     FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
-
+    DatabaseReference dbDenunciados;
 
 
     public DataBasePlan(DatabaseReference dbPlanes) {
         this.dbPlanes = dbPlanes;
         dbUsuarios = firebaseDatabase.getReference("usuarios");
+        dbDenunciados=firebaseDatabase.getReference("denunciados");
     }
 
 
@@ -82,6 +83,8 @@ public class DataBasePlan {
         dbPlanes.child(plan.getCodigo()).removeValue();
         dbPlanes.getDatabase().getReference().child("planescerrados").child(plan.getCodigo()).setValue(plan);
         dbPlanes.getDatabase().getReference().child("chats").child(plan.getCodigo()).removeValue();
+        dbDenunciados.getDatabase().getReference("denuncias").child(plan.getCodigo()).removeValue();
+
         return true;
 
 
@@ -102,8 +105,13 @@ public class DataBasePlan {
         dbPlanes.child(plan.getCodigo()).setValue(plan);
     }
         public void denunciarPlan(Plan plan, String codigoUsuario){
-            dbPlanes.getDatabase().getReference().child("denuncias").child(codigoUsuario).setValue(plan);
-        }
+            dbPlanes.getDatabase().getReference().child("denuncias").child(plan.getCodigo()).setValue(plan);
+            dbPlanes.getDatabase().getReference().child("denuncias").child(plan.getCodigo()).child("denunciadopor").setValue(codigoUsuario);
+          //  dbUsuarios.child(plan.getUsuariocreador());
+    }
+    public void quitarDenuncia(Plan plan){
+        dbPlanes.getDatabase().getReference().child("denuncias").child(plan.getCodigo()).removeValue();
 
+    }
 }
 

@@ -19,7 +19,6 @@ import e.alicia.pals.modelo.Mensaje;
 public class DataBaseChat {
 
     DatabaseReference bdChat;
-    Boolean saved = null;
     List<Mensaje> mensajes = new ArrayList<>();
     DatabaseReference dbUsuarios;
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -89,21 +88,22 @@ public class DataBaseChat {
      */
     public Boolean enviar(Mensaje mensaje, String codigo
     ) {
+        Boolean guardado=null;
         if (mensaje == null) {
-            saved = false;
+            guardado = false;
         } else {
 
             try {
                 bdChat.child(codigo).push().setValue(mensaje);
-                saved = true;
+                guardado = true;
             } catch (DatabaseException e) {
                 e.printStackTrace();
-                saved = false;
+                guardado = false;
             }
 
         }
 
-        return saved;
+        return guardado;
     }
 
 }

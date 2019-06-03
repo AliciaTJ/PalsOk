@@ -27,7 +27,11 @@ import e.alicia.pals.modelo.Plan;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
+/**
+ * Clase que carga el activity de gestio de base de datos
+ */
 public class GestionBD extends AppCompatActivity {
+
 
     FirebaseDatabase db = FirebaseDatabase.getInstance();
     List<Plan> planes = new ArrayList<>();
@@ -35,12 +39,14 @@ public class GestionBD extends AppCompatActivity {
     AdapterPlanes adapterPlanes, adapterPlanesDenuncias;
     RecyclerView rv, rvDenuncias;
     DatabaseReference dbr;
-    DataBasePlan dataBasePlan;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gestion_bd);
+
+        //se inician los elementos del activity
         rv = (RecyclerView) findViewById(R.id.rvPlanes);
         rvDenuncias = (RecyclerView) findViewById(R.id.rvDenunciados);
         rv.setLayoutManager(new LinearLayoutManager(this));
@@ -52,13 +58,16 @@ public class GestionBD extends AppCompatActivity {
         rvDenuncias.setAdapter(adapterPlanesDenuncias);
         adapterPlanesDenuncias.notifyDataSetChanged();
         adapterPlanes.notifyDataSetChanged();
-        //rv.setEnabled(false);
+
+
         cargarPlanes();
         cargarPlanesDenunciados();
     }
 
+    /**
+     * Metodo que carga los planes cerrados en el recyclerview
+     */
     public void cargarPlanes() {
-
         dbr = db.getReference("planescerrados");
         dbr.addValueEventListener(new ValueEventListener() {
             @Override
@@ -95,8 +104,10 @@ public class GestionBD extends AppCompatActivity {
 
     }
 
+    /**
+     * Metodo que carga los planes denunciados en el recycler view
+     */
     public void cargarPlanesDenunciados() {
-
         dbr = db.getReference("denuncias");
         dbr.addValueEventListener(new ValueEventListener() {
             @Override
@@ -133,6 +144,10 @@ public class GestionBD extends AppCompatActivity {
 
     }
 
+    /**
+     * Metodo que borra los planes cerrados de la base de datos
+     * @param view view
+     */
     public void borrarPlanesCerrados(final View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.borrarcerrados)
@@ -154,6 +169,10 @@ public class GestionBD extends AppCompatActivity {
 
     }
 
+
+    /**
+     * Metodo que comprueba si hay o no planes para mostrar la imagen "sin planes"
+     */
     public void comprobarVacios() {
         ImageView ivSinPlanes = (ImageView) findViewById(R.id.ivSinPlanes);
         if (rv.getAdapter().getItemCount() == 0) {
@@ -169,10 +188,14 @@ public class GestionBD extends AppCompatActivity {
             ivSinPlanes2.setVisibility(VISIBLE);
             ivSinPlanes2.setImageResource(R.drawable.sinplanes);
         } else {
-            ivSinPlanes.setVisibility(INVISIBLE);
+            ivSinPlanes2.setImageResource(R.color.places_text_white_alpha_26);
+            ivSinPlanes2.setVisibility(INVISIBLE);
         }
     }
 
+    /**
+     * Metodo que vuelve al activity portada al pulsar volver
+     */
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, ActivityPortada.class);

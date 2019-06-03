@@ -60,7 +60,7 @@ public class ActivityPortada extends AppCompatActivity
 
         //se carga la publicidad
         mAdView = findViewById(R.id.adView);
-        MobileAds.initialize(this, "ca-app-pub-6032187278566198~3677017529");
+        MobileAds.initialize(this, "ca-app-pub-6028655171173553~5354375321");
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
@@ -102,7 +102,7 @@ public class ActivityPortada extends AppCompatActivity
         adapterNoticias = new AdapterNoticias(ActivityPortada.this, noticias);
         rvNot.setAdapter(adapterNoticias);
 
-        // comprobarNotificaciones();
+        comprobarNotificaciones();
 
     }
 
@@ -112,21 +112,21 @@ public class ActivityPortada extends AppCompatActivity
      * pendientes
       */
     public void comprobarNotificaciones() {
-
-        NotificationCompat.Builder mBuilder;
-        Intent i = new Intent(this, MisPlanes.class);
-        NotificationManager namager = (NotificationManager) getApplicationContext()
-                .getSystemService(NOTIFICATION_SERVICE);
-        mBuilder = new NotificationCompat.Builder(getApplicationContext())
-                .setContentTitle("Notificaciones")
-                .setContentText("Texto")
-                .setSmallIcon(R.drawable.users)
-                .setAutoCancel(true)
-                .setContentIntent(PendingIntent.getActivity(ActivityPortada.this, 0, i, 0))
-                .setVibrate(new long[]{100, 250, 100, 500});
-        namager.notify(1, mBuilder.build());
-        dbReference.child(user.getUid()).child("notificaciones").removeValue();
-
+if (bdUsuario.comprobarNotificacionUsuario(user.getUid())) {
+    NotificationCompat.Builder mBuilder;
+    Intent i = new Intent(this, MisPlanes.class);
+    NotificationManager namager = (NotificationManager) getApplicationContext()
+            .getSystemService(NOTIFICATION_SERVICE);
+    mBuilder = new NotificationCompat.Builder(getApplicationContext())
+            .setContentTitle("Notificaciones")
+            .setContentText("Texto")
+            .setSmallIcon(R.drawable.users)
+            .setAutoCancel(true)
+            .setContentIntent(PendingIntent.getActivity(ActivityPortada.this, 0, i, 0))
+            .setVibrate(new long[]{100, 250, 100, 500});
+    namager.notify(1, mBuilder.build());
+    dbReference.child(user.getUid()).child("notificaciones").removeValue();
+}
 
     }
 

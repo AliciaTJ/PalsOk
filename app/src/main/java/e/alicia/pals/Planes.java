@@ -53,6 +53,8 @@ public class Planes extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_planes);
+
+        //se inician los elementos
         rv = findViewById(R.id.rvPlanes);
         planes = new ArrayList<>();
         rv.setLayoutManager(new LinearLayoutManager(this));
@@ -66,6 +68,7 @@ public class Planes extends AppCompatActivity {
         adapter = new ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, filtros);
         spTipo.setAdapter(adapter);
 
+        //modifica los planes cargados dependiendo del diltro seleccionado
         spTipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -88,6 +91,11 @@ public class Planes extends AppCompatActivity {
 
     }
 
+    /**
+     * Carga los planes. Recibe el tipo para poder filtrar
+     *
+     * @param tipo String
+     */
     public void cargarPlanes(final String tipo) {
         DatabaseReference dbr = db.getReference("planes");
         dbr.addValueEventListener(new ValueEventListener() {
@@ -133,6 +141,11 @@ public class Planes extends AppCompatActivity {
 
     }
 
+    /**
+     * Carga los planes. Recibe la provincia para poder filtrar.
+     *
+     * @param provincias String
+     */
 
     public void cargarPlanesProvincia(final String provincias) {
         DatabaseReference dbr = db.getReference("planes");
@@ -180,6 +193,9 @@ public class Planes extends AppCompatActivity {
 
     }
 
+    /**
+     * Devuelve a la activityPortada si se pulsa volver
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -199,12 +215,18 @@ public class Planes extends AppCompatActivity {
                 ivSinPlanes.setVisibility(INVISIBLE);
                 ivSinPlanes.setImageResource(R.drawable.places_powered_by_google_light);
             }
-        }catch(NullPointerException npe){
+        } catch (NullPointerException npe) {
 
         }
 
     }
 
+
+    /**
+     * Metodo que modifica el spinner de filtro dependiendo del radiobutton seleccionado
+     *
+     * @param view
+     */
     public void cambiarSpinner(View view) {
         if (rbTipos.isChecked()) {
             adapter = new ArrayAdapter(con, android.R.layout.simple_dropdown_item_1line, tipos);

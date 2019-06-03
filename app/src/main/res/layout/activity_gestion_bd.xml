@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/quantum_amber400"
-                android:text="Planes cerrados" />
+                android:text="@string/planescerrados" />
 
             <ImageView
                 android:id="@+id/ivSinPlanes"
@@ -49,15 +49,16 @@
                 android:layout_marginBottom="20dp"
                 android:background="@color/primaryColor"
                 android:onClick="borrarPlanesCerrados"
-                android:text="Borrar todos"
+                android:text="@string/borrartodos"
                 android:textColor="@color/quantum_amberA400" />
 
             <TextView
                 android:id="@+id/tvPlanesDenunciados"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
                 android:background="@color/quantum_amber400"
-                android:text="Planes cerrados" />
+                android:text="@string/planescercanos" />
 
             <ImageView
                 android:id="@+id/ivSinPlanes2"

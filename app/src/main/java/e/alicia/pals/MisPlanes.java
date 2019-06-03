@@ -32,6 +32,9 @@ import e.alicia.pals.modelo.Plan;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
+/**
+ * Clase que carga el activity misplanes
+ */
 public class MisPlanes extends AppCompatActivity {
     Context context = this;
     FirebaseUser user;
@@ -49,6 +52,8 @@ public class MisPlanes extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mis_planes);
+
+        //se inician los elementos del activity
         user = FirebaseAuth.getInstance().getCurrentUser();
         rvPlanesCreados = findViewById(R.id.rvCreados);
         rvPlanesApuntados = findViewById(R.id.rvApuntado);
@@ -65,6 +70,10 @@ public class MisPlanes extends AppCompatActivity {
 
     }
 
+    /**
+     * Metodo que carga la informacion de la base de datos planes en el recycler view.
+     * Carga los planes a los que estamoso apuntados
+     */
     public void cargarPlanes() {
 
         DatabaseReference dbr = db.getReference("planes");
@@ -103,6 +112,9 @@ public class MisPlanes extends AppCompatActivity {
 
     }
 
+    /**
+     * Metodo que carga los planes creados por el usuario en el recycler view
+     */
     public void cargarMisPlanes() {
 
         DatabaseReference dbr = db.getReference("planes");
@@ -143,6 +155,9 @@ public class MisPlanes extends AppCompatActivity {
 
     }
 
+    /**
+     * Metodo que comprueba si hay datos. En caso contrario, muestra la imagen "sin planes"
+     */
 
     public void comprobarVacios() {
         try {
@@ -168,6 +183,9 @@ public class MisPlanes extends AppCompatActivity {
         }
     }
 
+    /**
+     * Metodo que vuelve al activityportada al pulsar volver.
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();

@@ -7,20 +7,32 @@ import java.util.Date;
  */
 public class Mensaje {
 
+    //atributos del mensaje
     String mensaje;
     String usuario;
     Long fechaHora;
 
+    /**
+     * Conostructor vacio
+     */
     public Mensaje() {
 
     }
 
+    /**
+     * Consutrctor mensaje
+     * @param mensaje string
+     * @param usuario string
+     * @param fechaHora long
+     */
     public Mensaje(String mensaje, String usuario, Long fechaHora) {
         this.mensaje = mensaje;
         this.usuario = usuario;
         this.fechaHora = new Date().getTime();
     }
 
+
+    //getter y setter
     public String getMensaje() {
         return mensaje;
     }

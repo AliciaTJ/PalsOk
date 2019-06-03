@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class Opciones extends AppCompatActivity {
     private Switch swNotificaciones, swVibracion, swSonido;
-    private Button botonEmail;
+
     private View view;
     private FirebaseUser user;
     private SharedPreferences sharedPreferences;
@@ -32,12 +32,15 @@ public class Opciones extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_opciones);
+
+        //se inician los elementos del activity
         swNotificaciones = (Switch) findViewById(R.id.swNotificaciones);
         swSonido = (Switch) findViewById(R.id.swSonido);
         swVibracion = (Switch) findViewById(R.id.swVibracion);
-        botonEmail = (Button) findViewById(R.id.botonAdmin);
         view = this.findViewById(android.R.id.content);
         user = FirebaseAuth.getInstance().getCurrentUser();
+
+        //se guarda en shared preference si se quiere vibracion y sonido
         sharedPreferences = getSharedPreferences("opciones", Context.MODE_PRIVATE);
         vibrar=sharedPreferences.getInt("vibracion", 1);
         sonar=sharedPreferences.getInt("sonido", 1);
@@ -47,6 +50,7 @@ public class Opciones extends AppCompatActivity {
             swSonido.setChecked(true);
         }
 
+        //accion del sswitch vibracion
         final SharedPreferences.Editor editor = sharedPreferences.edit();
         swVibracion.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -61,6 +65,8 @@ public class Opciones extends AppCompatActivity {
                 editor.commit();
             }
         });
+
+        //accion del switch sonido
         swSonido.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -74,6 +80,8 @@ public class Opciones extends AppCompatActivity {
                 editor.commit();
             }
         });
+
+        //accion del switch notificaciones
         swNotificaciones.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -90,6 +98,10 @@ public class Opciones extends AppCompatActivity {
     }
 
 
+    /**
+     * Metodo que envia un email al administrador
+     * @param view
+     */
     public void enviarEmail(View view) {
         String[] TO = {"aliciavisual@gmail.com"};
         String[] CC = {""};
@@ -110,6 +122,9 @@ public class Opciones extends AppCompatActivity {
 
     }
 
+    /**
+     * Metodo que devuelve al acctivity portada si se pulsa volver
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();

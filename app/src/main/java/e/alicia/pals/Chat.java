@@ -18,7 +18,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -50,7 +49,7 @@ public class Chat extends AppCompatActivity implements MediaPlayer.OnPreparedLis
     private EditText etEnviar;
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
-    private FirebaseAnalytics mFirebaseAnalytics;
+    //  private FirebaseAnalytics mFirebaseAnalytics;
     private TextInputLayout tilMensaje;
 
     private SharedPreferences sharedPreferences;
@@ -63,8 +62,7 @@ public class Chat extends AppCompatActivity implements MediaPlayer.OnPreparedLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mensajes);
 
-
-
+        //metood que inicia los datos necesarios
         iniciarActivity();
 
 
@@ -76,7 +74,6 @@ public class Chat extends AppCompatActivity implements MediaPlayer.OnPreparedLis
 
         FloatingActionButton fab =
                 (FloatingActionButton) findViewById(R.id.enviar);
-
 
 
         //envia mensaje
@@ -110,7 +107,7 @@ public class Chat extends AppCompatActivity implements MediaPlayer.OnPreparedLis
         mensajes = new ArrayList<>();
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        // mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         tilMensaje = (TextInputLayout) findViewById(R.id.tilMensaje);
         LinearLayoutManager linearLayout = new LinearLayoutManager(this);
         sharedPreferences = getSharedPreferences("opciones", Context.MODE_PRIVATE);
@@ -122,20 +119,21 @@ public class Chat extends AppCompatActivity implements MediaPlayer.OnPreparedLis
             viService = (Vibrator) getSystemService(Service.VIBRATOR_SERVICE);
         }
         if (sonar == 1) {
-        mp=new MediaPlayer();
+            mp = new MediaPlayer();
 
-          mp.create(this, R.raw.jump);
-          mp.setOnPreparedListener(this);
-       //   mp.prepareAsync();
+            mp.create(this, R.raw.jump);
+            mp.setOnPreparedListener(this);
+            //   mp.prepareAsync();
 
-          //mp.setWakeMode(this, PowerManager.PARTIAL_WAKE_LOCK);
+            //mp.setWakeMode(this, PowerManager.PARTIAL_WAKE_LOCK);
 
         }
+        /*
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, firebaseUser.getDisplayName());
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, firebaseUser.getEmail());
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
-
+*/
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("chats");
         dataBaseChat = new DataBaseChat();
@@ -158,6 +156,7 @@ public class Chat extends AppCompatActivity implements MediaPlayer.OnPreparedLis
 
     /**
      * Carga todos los mensajes del codigo del plan de la base de datos
+     *
      * @param codigo
      */
 
@@ -211,6 +210,7 @@ public class Chat extends AppCompatActivity implements MediaPlayer.OnPreparedLis
 
     /**
      * Guarda el mensaje, actualiza el adaptador del chat para mostrarlo
+     *
      * @param mensaje
      * @param codigo
      */

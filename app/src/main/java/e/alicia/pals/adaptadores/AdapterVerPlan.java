@@ -200,6 +200,9 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
 
 
         }
+        /*
+        Dependiendo del estado del plan y del usuario, se activan o desactivan los botones
+         */
 
         if (plan.getEstado().equalsIgnoreCase("cerrado")) {
             holder.tvInformacion.setText("Este plan ha sido cerrado");
@@ -223,7 +226,7 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
                 holder.botonApuntar.setEnabled(false);
                 holder.botonApuntar.setTextColor(Color.GRAY);
                 holder.botonDejar.setEnabled(false);
-                holder.botonDejar.setTextColor(Color.GRAY);
+
                 holder.botonChat.setVisibility(VISIBLE);
                 holder.botonEliminar.setVisibility(VISIBLE);
             } else {
@@ -232,6 +235,8 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
                         holder.botonApuntar.setEnabled(false);
                         holder.botonApuntar.setTextColor(Color.GRAY);
                         holder.botonDejar.setVisibility(VISIBLE);
+                        holder.botonDejar.setEnabled(true);
+
                         holder.botonChat.setVisibility(VISIBLE);
                     }
                 }
@@ -271,8 +276,9 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
             botonApuntar = itemView.findViewById(R.id.botonApuntarse);
             botonChat = itemView.findViewById(R.id.botonChat);
             botonChat.setVisibility(INVISIBLE);
+            botonDejar.setEnabled(false);
+            botonDejar.setTextColor(Color.GRAY);
             ivFoto = itemView.findViewById(R.id.ivRandom);
-            //cambioImagen(ivFoto);
             botonEliminar = (Button) itemView.findViewById(R.id.botonEliminar);
             botonEliminar.setVisibility(INVISIBLE);
             botonEliminar.setOnClickListener(new View.OnClickListener() {
@@ -301,6 +307,7 @@ public class AdapterVerPlan extends RecyclerView.Adapter<AdapterVerPlan.ItemView
                     botonChat.setVisibility(VISIBLE);
                     botonDejar.setVisibility(VISIBLE);
                     botonDejar.setEnabled(true);
+
                 }
             });
 

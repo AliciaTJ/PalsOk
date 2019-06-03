@@ -98,6 +98,7 @@ public class Registrar extends AppCompatActivity {
                             usuario.setEmail(email);
                             usuario.setNombre(etNombre.getText().toString());
                             usuario.setFoto(imagenUsuario);
+                            usuario.setNotificacion(false);
                             dataBaseUsuario.guardar(usuario);
                             dataBaseUsuario.modificar(usuario);
                             SharedPreferences.Editor editor=sharedPreferences.edit();

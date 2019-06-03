@@ -23,6 +23,9 @@ public class Plan {
     public Plan (String nombre){
         this.nombre=nombre;
     }
+
+
+    //getter y setter
     public String getProvincia() {
         return provincia;
     }

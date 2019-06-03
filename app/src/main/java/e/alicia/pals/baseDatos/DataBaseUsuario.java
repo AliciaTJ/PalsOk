@@ -26,10 +26,10 @@ import e.alicia.pals.modelo.Usuario;
 public class DataBaseUsuario {
 
     DatabaseReference db;
-    Boolean saved = null;
-    FirebaseStorage firebaseStorage=FirebaseStorage.getInstance();
-    FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
-    FirebaseUser firebaseUser=firebaseAuth.getCurrentUser();
+    Boolean guardado = null;
+    FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
 
     public DataBaseUsuario(DatabaseReference db) {
@@ -40,51 +40,63 @@ public class DataBaseUsuario {
 
     /**
      * Guarda un nuevo usuario en la base de datos.
+     *
      * @param usuario
      * @return boolean
      */
     public Boolean guardar(Usuario usuario) {
         if (usuario == null) {
-            saved = false;
+            guardado = false;
         } else {
 
             try {
 
                 db.child(usuario.getCodigo()).setValue(usuario);
-                saved = true;
+                guardado = true;
             } catch (DatabaseException e) {
                 e.printStackTrace();
-                saved = false;
+                guardado = false;
             }
 
         }
 
-        return saved;
+        return guardado;
     }
+
+    public boolean comprobarNotificacionUsuario(String usuario) {
+     /*   String notificacion = db.child(usuario).child("notificaciones");
+        System.out.println(notificacion);
+        if (notificacion.equalsIgnoreCase("true"))
+            return true;
+        else*/
+            return false;
+    }
+
 
     /**
      * Modifica la informacion de un usuario. Tambien modifica, no solo el usuario que
      * esta en mi base de datos, si no el usuario que se crea en Database auth de google.
      * Esto se hace para que no haya conflicto entre los datos de ambos sitios.
+     *
      * @param usuario
      */
     public void modificar(Usuario usuario
-                             ){
+    ) {
 
-       db.child(usuario.getCodigo()).setValue(usuario);
+        db.child(usuario.getCodigo()).setValue(usuario);
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(usuario.getNombre())
                 .setPhotoUri(Uri.parse(usuario.getFoto()))
                 .build();
-        firebaseUser=firebaseAuth.getCurrentUser();
+        firebaseUser = firebaseAuth.getCurrentUser();
         firebaseUser.updateProfile(profileUpdates);
         firebaseUser.updateEmail(usuario.getEmail());
     }
 
 
-
     /**
      * Metodo que guarda la fto del usuario en firestorage con el codigo del usuario
+     *
      * @param foto
      * @param usuario
      */
@@ -100,28 +112,29 @@ public class DataBaseUsuario {
             public void onSuccess(Uri uri) {
                 usuario.setFoto(uri.toString());
 
-                modificar(usuario); guardar(usuario);
+                modificar(usuario);
+                guardar(usuario);
             }
         });
     }
 
-           /**
-            * Comprueba si el usuario tiene notificaciones activas
-            *
-            * @param usuario
-            * @return boolean
-            */
-           public Boolean comprobarNot(String usuario) {
-               String notificacion = db.child(usuario).child("notificaciones").toString();
+    /**
+     * Comprueba si el usuario tiene notificaciones activas
+     *
+     * @param usuario
+     * @return boolean
+     */
+    public Boolean comprobarNot(String usuario) {
+        String notificacion = db.child(usuario).child("notificaciones").toString();
 
-               if (notificacion.equalsIgnoreCase("true")) {
-                   return true;
-               } else {
-                   return false;
-               }
+        if (notificacion.equalsIgnoreCase("true")) {
+            return true;
+        } else {
+            return false;
+        }
 
-           }
-       }
+    }
+}
 
 
 

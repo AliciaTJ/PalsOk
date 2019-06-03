@@ -19,11 +19,11 @@ public class Usuario {
     private Boolean notificacion;
 
 
-    public Usuario(){
+    public Usuario() {
 
     }
 
-
+    //getter y setter
     public String getFechanac() {
         return fechanac;
     }
@@ -34,7 +34,7 @@ public class Usuario {
 
     public String getFoto() {
         if (foto == null) {
-           foto ="https://firebasestorage.googleapis.com/v0/b/pals-fae71.appspot.com/o/usuarios%2Fuser.png?alt=media&token=e928a126-f91b-40fb-a852-4164f15148ed";
+            foto = "https://firebasestorage.googleapis.com/v0/b/pals-fae71.appspot.com/o/usuarios%2Fuser.png?alt=media&token=e928a126-f91b-40fb-a852-4164f15148ed";
             return foto;
         } else {
             return foto;

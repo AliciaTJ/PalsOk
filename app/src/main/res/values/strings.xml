@@ -31,7 +31,7 @@
     <string name="login">Iniciar sesión</string>
     <string name="planmio">Planes propuestos por mi</string>
     <string name="planotro">Planes a los que asistir</string>
-    <string name="planescercanos">Cercanos a mi</string>
+    <string name="planescercanos">Planes denunciados</string>
     <string name="recomendados">Recomendados</string>
     <string name="filtro">Filtro</string>
     <string name="ciudad">Ciudad</string>
@@ -98,6 +98,45 @@
     <string name="borrarcerrados">Se van a borrar los planes en estado cerrado. ¿Continuar?</string>
     <string name="filtrotipo">Filtrar por tipo</string>
     <string name="filtroprovincia">Filtrar por provincia</string>
-
+    <string name="confirmarcerrados">Se han borrado todos los planes cerrados</string>
+    <string name="mensajevacio">Mensaje sin texto</string>
+    <string name="errorregistro">Error al registrar al usuario</string>
+    <string name="errorlogeo">Error al loguear</string>
+    <string name="enterpass">Introduce usuario y contraseña</string>
+    <string name="vibrasi">Vibracion activada</string>
+    <string name="vibrano">Vibracion desactivada</string>
+    <string name="sonino">Sonido desactivado</string>
+    <string name="sonisi">Sonido activado</string>
+    <string name="notisi">Notificaciones activadas</string>
+    <string name="notino">Notificaciones desactivadas</string>
+    <string name="noemail">No tienes clientes de email instalados</string>
+    <string name="crearno">No ha sido posible crear el plan</string>
+    <string name="titulomal">El titulo debe tener entre 3 y 50 caracteres</string>
+    <string name="lugarmal">El lugar debe tener entre 3 y 50 caracteres</string>
+    <string name="infomal">Introduce información, minimo 10 caracteres</string>
+    <string name="planok">Plan creado correctamente</string>
+    <string name="noticiabien">Noticia publicada con exito</string>
+    <string name="noticiamal">Error al publicar la noticia</string>
+    <string name="infonoticiamal">Introduce contenido, minimo 50 caracteres</string>
+    <string name="usuariook">Usuario registrado con éxito</string>
+    <string name="usuarionook">No ha sido posible registrar al usuario</string>
+    <string name="emailrepetido">Email utilizado por otro usuario</string>
+    <string name="emailno">Formato email no valido</string>
+    <string name="passmal">Las contraseñas no coinciden</string>
+    <string name="passminimo">Contraseña minimo 6 caracteres</string>
+    <string name="nombreminimo">Nombre entre 3 y 15 caracteres</string>
+    <string name="planescerrados">Planes cerrados</string>
+    <string name="borrartodos">Borrar todos</string>
+    <string name="sonido">Sonido</string>
+    <string name="administrador">Contacta con el administrador</string>
+    <string name="arrepentido">¿Arrepentido?</string>
+    <string name="otrasopciones">Otras opciones</string>
+    <string name="ayudaalta">Para dar de alta un plan, abre el menú lateral desde la pantalla de noticias y selecciona “Nuevo plan”. Elige el tipo de plan y después, ponle un nombre y una ubicación. Si pulsas sobre el mapa podrás buscar la ubicación perfecta.  Por último, selecciona una fecha si es necesario y una descripción. ¡Recuerda que cuanto mejor lo describas más participantes tendrás!</string>
+    <string name="ayudaborrar">Si has creado un plan y te has arrepentido, desde la pantalla de noticias abre el menú lateral y selecciona “Mis planes”. En la sección “Planes creados por mi”, toca sobre el plan que quieres borrar. Después de la descripción tienes las opciones de gestión de plan. Pulsa sobre el botón borrar y tu plan quedará cerrado. </string>
+    <string name="ayudaapuntarse">Busca el plan que más te interese, tras la descripción del plan, en las opciones, pulsa sobre el botón ¡Me apunto! Y estarás dentro. Recuerda que puedes acceder al chat del plan desde esa misma pantalla. </string>
+    <string name="ayudachat">Busca el plan que te interese, tras la descripción del plan, en las opciones, debe aparecer el botón de chat. ¿No te aparece? Es que no te has apuntado a ese plan, dale a ¡Me apunto! Y debe aparecer el botón. </string>
+    <string name="ayudanotificaciones">En el menú lateral, selecciona opciones. Desde esta sección puedes desactivar las notificaciones, el sonido y la vibración. </string>
+    <string name="ayudabaja">Para darse de baja de la aplicación, en el menú lateral selecciona opciones. En esta sección dale al botón “Ponerse en contacto con el administrador”. En el email, especifica como concepto Baja pals e incluye tu la dirección de correo con la que te diste de alta. Tu baja será procesada por el administrador. </string>
+    <string name="ayudamodificar">¿Has creado un plan y quieres cambiar algo? Pals! No permite la modificación de los planes por el usuario, pero se lo puedes solicitar a nuestro administrador. En el menú lateral selecciona opciones y pulsa el botón “Ponerse en contacto con el administrador”. En el email especifica como concepto “Modificación de plan” e incluye un email, el titulo del plan y las modificaciones a realizar. </string>
 
 </resources>

@@ -160,6 +160,7 @@ public class AdapterUsuario extends RecyclerView.Adapter<AdapterUsuario.ItemView
                     user.setDescripcion(etDescripcion.getText().toString());
                     user.setCodigo(firebaseUser.getUid());
                     user.setFechanac(etFecha.getText().toString());
+                    user.setNotificacion(false);
                     if (validarGuardar())
                         bd.modificar(user);
                     etNombre.setEnabled(false);

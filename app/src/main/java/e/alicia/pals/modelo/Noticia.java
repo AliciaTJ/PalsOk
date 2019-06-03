@@ -9,11 +9,14 @@ public class Noticia {
     private String cuerpo;
     private String codigo;
 
-    public Noticia(){
+    /**
+     * Constructor vacio noticia
+     */
+    public Noticia() {
 
     }
 
-
+    //getter y setter
     public String getCuerpo() {
         return cuerpo;
     }

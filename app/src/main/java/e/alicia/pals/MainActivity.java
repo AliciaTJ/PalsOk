@@ -29,6 +29,9 @@ import java.util.List;
 import e.alicia.pals.baseDatos.DataBaseUsuario;
 import e.alicia.pals.modelo.Usuario;
 
+/**
+ * Clase MainActivity. Carga la activity principal
+ */
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseDatabase db;
@@ -46,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //se inician los elementos
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseDatabase.getInstance();
         databaseReference = db.getReference("usuarios");
@@ -62,7 +67,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
+    /**
+     * Metodo que al iniciar el activity comprueba si el usuario se ha logueado alguna vez y lo carga
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -74,6 +81,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Metodo que permite el registro con google
+     * @param view view
+     */
     public void google(View view) {
 
         List<AuthUI.IdpConfig> providers = Arrays.asList(
@@ -89,6 +100,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Recibe el resultado del logueo con google
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -117,12 +134,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Metodo para loguearse cuandod se esta registrado
+     */
     public void logearse() {
         Intent i = new Intent(this, ActivityPortada.class);
         startActivity(i);
 
     }
 
+    /**
+     * Metodo que permite loguearse con usuario y contraseña
+     * @param email
+     * @param password
+     */
     public void logIn(String email, String password) {
         if (email.length() > 0 && password.length() > 0) {
             mAuth.signInWithEmailAndPassword(email, password)
@@ -153,6 +178,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Metodo que permite cargar el usuario
+     * @param user FirebaseUser
+     */
 
     private void updateUI(FirebaseUser user) {
 
@@ -164,17 +193,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Metodo que permite el acceso con usuario y contraseña. Se llama desde el activity
+     * @param view View
+     */
     public void acceder(View view) {
         logIn(etEmail.getText().toString(), etPass.getText().toString());
     }
 
 
+    /**
+     * Metodo que abre la activity de registro
+     * @param view View
+     */
     public void registro(View view) {
         Intent intent = new Intent(this, Registrar.class);
         startActivity(intent);
     }
 
-
+    /**
+     * Metodo que te devuelve al mainAcctivity si se pulsa volver
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();

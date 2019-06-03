@@ -36,11 +36,12 @@ public class Registrar extends AppCompatActivity {
     private FirebaseDatabase db;
     private DatabaseReference databaseReference;
     private DataBaseUsuario dataBaseUsuario;
-    private Button botonGuardar;
     private View view;
     private ImageView image;
+
+    //imagen generica de usuario
     private String imagenUsuario = "https://firebasestorage.googleapis.com/v0/b/pals-fae71.appspot.com/o/usuarios%2Fuser.png?alt=media&token=e928a126-f91b-40fb-a852-4164f15148ed";
-   private SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,26 +50,31 @@ public class Registrar extends AppCompatActivity {
         iniciarActivity();
 
 
-
     }
 
+    /**
+     * Metodo que carga los datos y elementos de la activity
+     */
     public void iniciarActivity() {
         etPass2 = (EditText) findViewById(R.id.etPass2);
         view = this.findViewById(android.R.id.content);
         etEmail = findViewById(R.id.etEmail);
         etNombre = findViewById(R.id.etNombre);
         etPass = findViewById(R.id.etPass);
-        botonGuardar = findViewById(R.id.botonGuardar);
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseDatabase.getInstance();
         image = (ImageView) findViewById(R.id.ivRandom);
         cambioImagen(image);
         databaseReference = db.getReference("usuarios");
         dataBaseUsuario = new DataBaseUsuario(databaseReference);
-        sharedPreferences=getSharedPreferences("preferencias", Context.MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("preferencias", Context.MODE_PRIVATE);
     }
 
 
+    /**
+     * Metodo que cambia la imagen superior de manera aleatoria
+     * @param iv
+     */
     public void cambioImagen(ImageView iv) {
         ArrayList<Integer> imagenes = new ArrayList<>();
         imagenes.add(R.drawable.a1);
@@ -84,6 +90,12 @@ public class Registrar extends AppCompatActivity {
         iv.setImageResource(imagenes.get(imagen));
     }
 
+    /**
+     * Metodo que crea un usuario en firebase a partir del email y el pass. Si ya existe salta la exception
+     * @param email String
+     * @param password String
+     * @throws FirebaseAuthUserCollisionException
+     */
 
     public void creaUsuario(final String email, final String password) throws FirebaseAuthUserCollisionException {
 
@@ -101,7 +113,7 @@ public class Registrar extends AppCompatActivity {
                             usuario.setNotificacion(false);
                             dataBaseUsuario.guardar(usuario);
                             dataBaseUsuario.modificar(usuario);
-                            SharedPreferences.Editor editor=sharedPreferences.edit();
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("correo", email);
                             editor.putString("pass", password);
                             editor.commit();
@@ -128,6 +140,12 @@ public class Registrar extends AppCompatActivity {
 
     //-------------------------validacion de datos
 
+    /**
+     * Metodo que comprueba que el nombre es correcto
+     * @param nombre String
+     * @return boolean
+     */
+
     private boolean esNombreValido(String nombre) {
         if (nombre.length() > 15 || nombre.length() < 3) {
 
@@ -139,6 +157,11 @@ public class Registrar extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Metodo que comprueba que la contraseña es valida
+     * @param nombre String
+     * @return boolean
+     */
     private boolean esPassValido(String nombre) {
         if (nombre.length() > 15 || nombre.length() < 5) {
 
@@ -148,6 +171,12 @@ public class Registrar extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Metodo que comprueba que la contrasña se introduce igual las dos veces
+     * @param pass String
+     * @param pass2 String
+     * @return boolean
+     */
     private boolean passIgual(String pass, String pass2) {
         if (pass.equalsIgnoreCase(pass2))
             return true;
@@ -156,6 +185,11 @@ public class Registrar extends AppCompatActivity {
 
     }
 
+    /**
+     * Metodo que comprueba que email es correcto
+     * @param email String
+     * @return boolean
+     */
     private boolean validarEmail(String email) {
 
         Pattern pattern = Patterns.EMAIL_ADDRESS;
@@ -167,6 +201,11 @@ public class Registrar extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Metodo que llama a los demas metodos de validacion y comprueba todos los datos antes de guardar
+     * los dats en la base de datos
+     * @param view
+     */
 
     public void validarCrearUsuario(View view) {
 
@@ -197,10 +236,14 @@ public class Registrar extends AppCompatActivity {
             Snackbar.make(view, "Nombre entre 3 y 15 caracteres", Snackbar.LENGTH_LONG).show();
         }
     }
+
+    /**
+     * Metodo que devuelve al mainactivity si se pulsa volver
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent i=new Intent(this, MainActivity.class);
+        Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
     }
 }

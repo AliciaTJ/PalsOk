@@ -31,11 +31,12 @@ import e.alicia.pals.baseDatos.DataBaseUsuario;
 import e.alicia.pals.modelo.Usuario;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
+
+/**
+ * Clase que carga la activity ver perfil
+ */
+
 public class VerPerfil extends AppCompatActivity {
-
-
-
-
     private Usuario usuario;
     private FirebaseAuth mAuth;
     private DataBaseUsuario dbUsuario;
@@ -63,14 +64,13 @@ public class VerPerfil extends AppCompatActivity {
     }
 
 
-
-
-
+    /**
+     * Metodo que carga los elementos y variables necesarias
+     *
+     */
 
     public void iniciarActivity() {
         ivFoto=(ImageView)findViewById(R.id.ivImagen);
-
-
         mAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseReference = firebaseDatabase.getReference("usuarios");
@@ -91,10 +91,12 @@ public class VerPerfil extends AppCompatActivity {
     }
 
 
-
+    /**
+     * Metodo que accede a la base de datos y carga el recycler view con un unico elemento.
+     * El elemento usuario que recibe.
+     * @param codigo String
+     */
         public void cargarPerfil(final String codigo) {
-
-
             firebaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -137,6 +139,10 @@ public class VerPerfil extends AppCompatActivity {
 
     int VALOR_RETORNO =2 ;
 
+    /**
+     * Metodo que llama a otra activity para acceder a los arcchivos del movil. Cambia la foto del perfil
+     * @param view
+     */
     public void cambiarFoto(View view) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
@@ -145,6 +151,13 @@ public class VerPerfil extends AppCompatActivity {
     }
 
 
+    /**
+     * Metodo que trata con los datos llamados en cambiarfoto() y modifica el usuario para
+     * establecerle la nueva imagen
+     * @param requestCode int
+     * @param resultCode int
+     * @param data Intent
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -162,6 +175,10 @@ public class VerPerfil extends AppCompatActivity {
         }
 
     }
+
+    /**
+     * Metodo que devuelve a activityportada al pulsar volver
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();

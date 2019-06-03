@@ -14,23 +14,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
-import afu.org.checkerframework.checker.nullness.qual.NonNull;
 import e.alicia.pals.baseDatos.DataBaseNoticia;
 import e.alicia.pals.modelo.Noticia;
-import e.alicia.pals.modelo.Usuario;
 
+
+/**
+ * Clase que carga el activity publicarnnoticia
+ */
 public class PublicarNoticia extends AppCompatActivity {
 
 
@@ -49,6 +39,9 @@ public class PublicarNoticia extends AppCompatActivity {
 
     }
 
+    /**
+     * Carga los elementos
+     */
 
     public void iniciarActivity() {
         etContenido = (EditText) findViewById(R.id.etContenido);
@@ -61,6 +54,12 @@ public class PublicarNoticia extends AppCompatActivity {
 
     }
 
+
+    /**
+     * Metodo que comprueba la informacion introducida y graba la noticia en la base de datos
+     * si es correcta
+     * @param view View
+     */
     public void publicarNoticia(View view) {
         String cuerpo = etContenido.getText().toString();
         String titular = etTitulo.getText().toString();
@@ -84,6 +83,11 @@ public class PublicarNoticia extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * Metodo que llama a otro intent para acceder al archivo de fotos del movil
+     * @param view View
+     */
     public void cambiarFoto(View view) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
@@ -91,6 +95,12 @@ public class PublicarNoticia extends AppCompatActivity {
     }
 
 
+    /**
+     * Metodo que recoge los datos de cambiarfoto() y los muestra
+     * @param requestCode int
+     * @param resultCode int
+     * @param data Intent
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -107,7 +117,11 @@ public class PublicarNoticia extends AppCompatActivity {
         }
 
 
-
+    /**
+     * Conprueba que el nombre es valido
+     * @param nombre String
+     * @return boolean
+     */
     private boolean esNombreValido(String nombre) {
         if (nombre.length() > 50 || nombre.length() < 3) {
             tiltitulo.setError("El titulo debe tener entre 3 y 50 caracteres");
@@ -119,6 +133,12 @@ public class PublicarNoticia extends AppCompatActivity {
         return true;
     }
 
+
+    /**
+     * Conprueba que la informacion es valida
+     * @param nombre String
+     * @return boolean
+     */
     private boolean esInfoValido(String nombre) {
 
         if (nombre.length() < 40) {

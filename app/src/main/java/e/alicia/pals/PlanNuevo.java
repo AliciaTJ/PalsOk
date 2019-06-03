@@ -65,13 +65,13 @@ public class PlanNuevo extends AppCompatActivity {
     private TextInputLayout tilInformacion;
     private TextInputLayout tilLugar;
     public final Calendar c = Calendar.getInstance();
-    private Calendar ca=Calendar.getInstance();
+    private Calendar ca = Calendar.getInstance();
     final int mes = c.get(Calendar.MONTH);
     final int dia = c.get(Calendar.DAY_OF_MONTH);
     final int anio = c.get(Calendar.YEAR);
     private TextView fecha;
     private Calendar hora;
-   PlacesClient placesClient;
+    PlacesClient placesClient;
     int AUTOCOMPLETE_REQUEST_CODE = 1;
     private InterstitialAd interstitialAd;
     private Spinner spProvincias;
@@ -81,13 +81,15 @@ public class PlanNuevo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plan_nuevo);
         iniciarActivity();
+
+        //accion para el datepicker
         fechaIndiferente.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
+                if (isChecked) {
                     fecha.setTextColor(Color.BLACK);
                     obtenerFecha();
 
-                }else{
+                } else {
                     fecha.setText("Indiferente");
                 }
             }
@@ -96,14 +98,17 @@ public class PlanNuevo extends AppCompatActivity {
 
     }
 
+    /**
+     * Inicia los elementos del la activity
+     */
     public void iniciarActivity() {
-         final String[] provincias={"Selecciona la provincia","Alava","Albacete","Alicante","Almería","Asturias","Avila","Badajoz","Barcelona","Burgos","Cáceres",
-                "Cádiz","Cantabria","Castellón","Ciudad Real","Córdoba","La Coruña","Cuenca","Gerona","Granada","Guadalajara",
-                "Guipúzcoa","Huelva","Huesca","Islas Baleares","Jaén","León","Lérida","Lugo","Madrid","Málaga","Murcia","Navarra",
-                "Orense","Palencia","Las Palmas","Pontevedra","La Rioja","Salamanca","Segovia","Sevilla","Soria","Tarragona",
-                "Santa Cruz de Tenerife","Teruel","Toledo","Valencia","Valladolid","Vizcaya","Zamora","Zaragoza"};
-        spProvincias=(Spinner)findViewById(R.id.spProvincias);
-        ArrayAdapter adapter=new ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, provincias);
+        final String[] provincias = {"Selecciona la provincia", "Alava", "Albacete", "Alicante", "Almería", "Asturias", "Avila", "Badajoz", "Barcelona", "Burgos", "Cáceres",
+                "Cádiz", "Cantabria", "Castellón", "Ciudad Real", "Córdoba", "La Coruña", "Cuenca", "Gerona", "Granada", "Guadalajara",
+                "Guipúzcoa", "Huelva", "Huesca", "Islas Baleares", "Jaén", "León", "Lérida", "Lugo", "Madrid", "Málaga", "Murcia", "Navarra",
+                "Orense", "Palencia", "Las Palmas", "Pontevedra", "La Rioja", "Salamanca", "Segovia", "Sevilla", "Soria", "Tarragona",
+                "Santa Cruz de Tenerife", "Teruel", "Toledo", "Valencia", "Valladolid", "Vizcaya", "Zamora", "Zaragoza"};
+        spProvincias = (Spinner) findViewById(R.id.spProvincias);
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, provincias);
 
         spProvincias.setAdapter(adapter);
         Places.initialize(getApplicationContext(), key);
@@ -114,11 +119,14 @@ public class PlanNuevo extends AppCompatActivity {
         user = fba.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
         dbr = firebaseDatabase.getReference("planes");
-        interstitialAd=new InterstitialAd(this);
+        interstitialAd = new InterstitialAd(this);
         interstitialAd.setAdUnitId("ca-app-pub-6032187278566198/3861231223");
         interstitialAd.loadAd(new AdRequest.Builder().build());
         ivImagen = findViewById(R.id.ivImagen);
         db = new DataBasePlan(dbr);
+
+
+        //muestra una imagen aleatoria del tipo de plan seleccionado
         int imagen = 0;
         switch (tipo) {
             case 1:
@@ -150,7 +158,7 @@ public class PlanNuevo extends AppCompatActivity {
                 musica.add(R.drawable.a29);
                 musica.add(R.drawable.a31);
                 imagen = (int) (Math.random() * 5) + 1;
-               ivImagen.setImageResource(musica.get(imagen));
+                ivImagen.setImageResource(musica.get(imagen));
                 tipoPlan = "musica";
                 break;
             case 4:
@@ -161,7 +169,7 @@ public class PlanNuevo extends AppCompatActivity {
                 fiesta.add(R.drawable.a27);
                 fiesta.add(R.drawable.a29);
                 imagen = (int) (Math.random() * 3) + 1;
-               ivImagen.setImageResource(fiesta.get(imagen));
+                ivImagen.setImageResource(fiesta.get(imagen));
                 tipoPlan = "fiesta";
                 break;
             case 5:
@@ -175,7 +183,7 @@ public class PlanNuevo extends AppCompatActivity {
 
                 imagen = (int) (Math.random() * 5) + 1;
                 System.out.println(imagen);
-               ivImagen.setImageResource(otros.get(imagen));
+                ivImagen.setImageResource(otros.get(imagen));
                 tipoPlan = "otros";
                 break;
             case 6:
@@ -199,7 +207,7 @@ public class PlanNuevo extends AppCompatActivity {
                 imagenes.add(R.drawable.a21);
                 imagenes.add(R.drawable.a34);
                 imagen = (int) (Math.random() * 4) + 1;
-               ivImagen.setImageResource(imagenes.get(imagen));
+                ivImagen.setImageResource(imagenes.get(imagen));
                 tipoPlan = "cultura";
                 break;
             case 8:
@@ -219,7 +227,7 @@ public class PlanNuevo extends AppCompatActivity {
 
         }
         etInfo = findViewById(R.id.informacion);
-        etCreado=findViewById(R.id.tvCreador);
+        etCreado = findViewById(R.id.tvCreador);
         etCreado.setText("Creado por: " + user.getDisplayName());
         etTitulo = findViewById(R.id.etTitulo);
         etLugar = findViewById(R.id.lugar);
@@ -232,6 +240,12 @@ public class PlanNuevo extends AppCompatActivity {
 
     }
 
+
+    /**
+     * Metodo que guarda el plan en la base de datos
+     *
+     * @param view View
+     */
     public void guardar(View view) {
         if (validarDatos()) {
             plan = new Plan();
@@ -241,7 +255,7 @@ public class PlanNuevo extends AppCompatActivity {
             plan.setUsuariocreador(user.getUid());
             plan.setLugar(etLugar.getText().toString());
             plan.setProvincia(spProvincias.getSelectedItem().toString());
-            List<String>usuarios=new ArrayList<>();
+            List<String> usuarios = new ArrayList<>();
             usuarios.add(user.getUid());
             plan.setEstado("abierto");
             plan.setUsuariosapuntados(usuarios);
@@ -249,12 +263,15 @@ public class PlanNuevo extends AppCompatActivity {
             plan.setCodigo(hora.getTimeInMillis() + user.getUid());
             db.guardar(plan);
             verPlan();
-        }else{
+        } else {
             Snackbar.make(view, "No ha sido posible crear el plan", Snackbar.LENGTH_LONG).show();
         }
     }
 
 
+    /**
+     * Metodo que muestra el activity verplan con el plan que se acaba de crear
+     */
     public void verPlan() {
 
         Intent i = new Intent(this, VerPlan.class);
@@ -264,7 +281,12 @@ public class PlanNuevo extends AppCompatActivity {
 
     }
 
-    public void cargarLugares(View view){
+    /**
+     * Metodo que carga los lugares con google places
+     *
+     * @param view
+     */
+    public void cargarLugares(View view) {
         List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
         Intent intent = new Autocomplete.IntentBuilder(
                 AutocompleteActivityMode.FULLSCREEN, fields)
@@ -274,8 +296,15 @@ public class PlanNuevo extends AppCompatActivity {
 
     }
 
+
+    /**
+     * Metodo que comprueba que el titulo introducido es valido
+     *
+     * @param nombre
+     * @return boolean
+     */
     private boolean esNombreValido(String nombre) {
-        if (nombre.length() > 40 || nombre.length()<3) {
+        if (nombre.length() > 40 || nombre.length() < 3) {
             tilTitulo.setError("El titulo debe tener entre 3 y 40 caracteres");
             return false;
         } else {
@@ -284,8 +313,16 @@ public class PlanNuevo extends AppCompatActivity {
 
         return true;
     }
-    private boolean esLugarValido(String lugar){
-        if (lugar.length()<3 || lugar.length() > 40) {
+
+
+    /**
+     * Metodo que comprueba que el lugar introducido es valido
+     *
+     * @param lugar String
+     * @return boolean
+     */
+    private boolean esLugarValido(String lugar) {
+        if (lugar.length() < 3 || lugar.length() > 40) {
             tilLugar.setError("Introduce el lugar (entre 3 y 40 caracteres)");
             return false;
         } else {
@@ -295,16 +332,31 @@ public class PlanNuevo extends AppCompatActivity {
         return true;
     }
 
-    private boolean esProvinciaValida(int provincia){
-        if (provincia==0){
+
+    /**
+     * Metodo que comprueba que la provincia es valida
+     *
+     * @param provincia String
+     * @return boolean
+     */
+    private boolean esProvinciaValida(int provincia) {
+        if (provincia == 0) {
             return false;
-        }else{
-            return  true;
+        } else {
+            return true;
         }
     }
+
+
+    /**
+     * Metodo que comprueba que la informacion introducida es valida
+     *
+     * @param nombre String
+     * @return boolean
+     */
     private boolean esInfoValido(String nombre) {
 
-        if (nombre.length()<10) {
+        if (nombre.length() < 10) {
             tilInformacion.setError("Introduce información (minimo 10 caracteres)");
             return false;
         } else {
@@ -314,17 +366,22 @@ public class PlanNuevo extends AppCompatActivity {
         return true;
     }
 
-    private boolean esFechaValida(String fechaPlan){
-        if (fechaPlan.equalsIgnoreCase("Indiferente")){
+    /**
+     * Metodo que comprueba que la fecha es superior a la actual
+     *
+     * @param fechaPlan String
+     * @return booleab
+     */
+    private boolean esFechaValida(String fechaPlan) {
+        if (fechaPlan.equalsIgnoreCase("Indiferente")) {
             return true;
-        }
-        else{
-            if (ca.getTimeInMillis()<c.getTimeInMillis()){
-               fecha.setTextColor(Color.RED);
-               fecha.setTextAppearance(BOLD);
+        } else {
+            if (ca.getTimeInMillis() < c.getTimeInMillis()) {
+                fecha.setTextColor(Color.RED);
+                fecha.setTextAppearance(BOLD);
 
                 return false;
-            }else{
+            } else {
                 return true;
             }
 
@@ -332,14 +389,20 @@ public class PlanNuevo extends AppCompatActivity {
         }
     }
 
+    /**
+     * Metodo que llama a los metodos de validacion para validar todos los datos del plan
+     * antes de guardar
+     *
+     * @return boolean
+     */
     private boolean validarDatos() {
         String nombre = etTitulo.getText().toString();
         String info = etInfo.getText().toString();
-        String lugar=etLugar.getText().toString();
-        String fechaPlan=fecha.getText().toString();
-        int provincia=spProvincias.getSelectedItemPosition();
+        String lugar = etLugar.getText().toString();
+        String fechaPlan = fecha.getText().toString();
+        int provincia = spProvincias.getSelectedItemPosition();
 
-        if(esProvinciaValida(provincia)) {
+        if (esProvinciaValida(provincia)) {
             if (esNombreValido(nombre)) {
                 if (esLugarValido(lugar)) {
                     if (esInfoValido(info)) {
@@ -358,13 +421,16 @@ public class PlanNuevo extends AppCompatActivity {
             } else {
                 return false;
             }
-        }else{
+        } else {
             return false;
         }
 
 
     }
 
+    /**
+     * Metodo que obtiene la fecha del date picker
+     */
 
     private void obtenerFecha() {
 
@@ -381,7 +447,7 @@ public class PlanNuevo extends AppCompatActivity {
                 //Muestro la fecha con el formato deseado
                 ca.set(year, month, dayOfMonth);
                 fecha.setText(diaFormateado + "/" + mesFormateado + "/" + year);
-                }
+            }
 
         }, anio, mes, dia);
         //Muestro el widget
@@ -389,11 +455,19 @@ public class PlanNuevo extends AppCompatActivity {
 
 
     }
+
+    /**
+     * Metodo que obtiene el lugar buscado en google places
+     *
+     * @param requestCode int
+     * @param resultCode  int
+     * @param data        Intent
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-               place = Autocomplete.getPlaceFromIntent(data);
+                place = Autocomplete.getPlaceFromIntent(data);
 
                 System.out.println(place.getName());
                 etLugar.setText(place.getName());
@@ -407,10 +481,15 @@ public class PlanNuevo extends AppCompatActivity {
             }
         }
     }
+
+
+    /**
+     * Metodo que devuelve a la activity tipoplan al pulsar atras
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent i=new Intent(this, TipoPlan.class);
+        Intent i = new Intent(this, TipoPlan.class);
         startActivity(i);
     }
 

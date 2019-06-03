@@ -10,9 +10,10 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import e.alicia.pals.baseDatos.DataBasePlan;
 
+/**
+ * Clase que carga la activity para elegir el tipo de plan a crear
+ */
 public class TipoPlan extends AppCompatActivity {
-DataBasePlan db;
-FirebaseDatabase firebaseDatabase;
 String user;
 
 ImageButton ibFreak, ibCine, ibMusica, ibFiesta, ibOtros, ibTurismo, ibCultura, ibDeporte;
@@ -80,13 +81,21 @@ ImageButton ibFreak, ibCine, ibMusica, ibFiesta, ibOtros, ibTurismo, ibCultura, 
         });
     }
 
-    public void crearPlan(int tipo){
 
+    /**
+     * Metodo que abre otro intent para crear el plan. Envia el dato tipo entre activitys
+     * @param tipo int
+     */
+    public void crearPlan(int tipo){
         Intent i=new Intent(this, PlanNuevo.class);
         i.putExtra("id", tipo);
 
         startActivity(i);
     }
+
+    /**
+     * Metodo que devuelve a la activity  portada si se pulsa atras
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();

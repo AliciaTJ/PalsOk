@@ -30,8 +30,6 @@ import e.alicia.pals.modelo.Plan;
 
 public class VerPlan extends AppCompatActivity {
 
-
-    ImageView ivRandom;
     DataBaseUsuario usuario;
     DataBasePlan dataBasePlan;
     FirebaseDatabase firebaseDatabase;
@@ -58,6 +56,9 @@ public class VerPlan extends AppCompatActivity {
     }
 
 
+    /**
+     * Metodo que carga los elementos necesarios
+     */
     public void iniciarActivity() {
         botonDenunciar=(Button)findViewById(R.id.botonAdministrador);
         ivFoto = (ImageView) findViewById(R.id.ivFoto);
@@ -73,6 +74,11 @@ public class VerPlan extends AppCompatActivity {
 
     }
 
+    /**
+     * Metodo que accede a la base de datos y carga un elemento plan. El codigo del plan
+     * se le pasa por parametro
+     * @param codigo String
+     */
     public void cargarPlan(final String codigo) {
 
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -107,6 +113,12 @@ public class VerPlan extends AppCompatActivity {
         });
 
     }
+
+
+    /**
+     * Metodo que incluye el plan en la lista de denunciados
+     * @param view View
+     */
 
     public void denunciarPlan(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
